@@ -4,7 +4,11 @@ import { useState } from 'react';
 import { useCartStore } from '../../../store/useCartStore';
 import { useOrderStore } from '../../../store/useOrderStore';
 import { useLoyaltyStore } from '../../../store/useLoyaltyStore';
+import { useAuthStore } from '../../../store/useAuthStore';
+import { createOrder } from '../../../lib/api';
+import { isSupabaseConfigured } from '../../../lib/supabase';
 import { formatSAR } from '../../../utils/formatters';
+import toast from 'react-hot-toast';
 
 const paymentMethods = [
   { id: 'cash', label: 'نقداً', icon: '💵' },
@@ -18,21 +22,58 @@ export default function CartPage() {
   const { items, updateQty, removeItem, clearCart } = useCartStore();
   const addOrder = useOrderStore(s => s.addOrder);
   const { addPoints, pendingDiscount, clearPendingDiscount } = useLoyaltyStore();
+  const { session, user, profile } = useAuthStore();
   const [paymentMethod, setPaymentMethod] = useState('cash');
   const [address, setAddress] = useState('حي الروضة، شارع الأمير محمد، مبنى 12');
+  const [placing, setPlacing] = useState(false);
 
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   const deliveryFee = items.length > 0 ? 10 : 0;
   const loyaltyDiscount = pendingDiscount;
   const total = Math.max(0, subtotal + deliveryFee - loyaltyDiscount);
 
-  const handleConfirmOrder = () => {
-    if (!items.length) return;
+  const handleConfirmOrder = async () => {
+    if (!items.length || placing) return;
+
+    // يتطلب تسجيل الدخول عند تفعيل Supabase
+    if (isSupabaseConfigured && !session) {
+      toast('سجّل الدخول لإتمام الطلب');
+      navigate('/login', { state: { from: '/Customer/cart' } });
+      return;
+    }
+
+    const customerName = profile?.full_name || 'عميل نرجس';
+    const customerPhone = profile?.phone || '';
+    const orderItems = items.map(i => ({ productId: i.id, nameAr: i.nameAr, qty: i.qty, unitPrice: i.price, totalPrice: i.price * i.qty }));
+
+    setPlacing(true);
+    try {
+      // الحفظ في Supabase (عند التهيئة وتسجيل الدخول)
+      if (isSupabaseConfigured && user) {
+        await createOrder({
+          customerName,
+          customerPhone,
+          address: { street: address, district: 'حي الروضة', city: 'الرياض' },
+          items: orderItems,
+          subtotal,
+          deliveryFee,
+          discount: loyaltyDiscount,
+          total,
+          paymentMethod,
+        }, user.id);
+      }
+    } catch (err) {
+      toast.error('تعذّر حفظ الطلب: ' + err.message);
+      setPlacing(false);
+      return;
+    }
+
+    // سجل محلي لتتبّع الطلب في الواجهة
     const order = addOrder({
-      customerName: 'أحمد العمري',
-      customerPhone: '0501234567',
+      customerName,
+      customerPhone,
       deliveryAddress: { street: address, district: 'حي الروضة', city: 'الرياض' },
-      items: items.map(i => ({ productId: i.id, nameAr: i.nameAr, qty: i.qty, unitPrice: i.price, totalPrice: i.price * i.qty })),
+      items: orderItems,
       subtotal,
       deliveryFee,
       total,
@@ -42,6 +83,7 @@ export default function CartPage() {
     addPoints(total);
     clearPendingDiscount();
     clearCart();
+    setPlacing(false);
     navigate(`/Customer/tracking/${order.id}`, { replace: true });
   };
 
@@ -163,8 +205,8 @@ export default function CartPage() {
 
       {/* Confirm Button */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg">
-        <button onClick={handleConfirmOrder} className="w-full btn-primary text-lg">
-          تأكيد الطلب — {formatSAR(total)}
+        <button onClick={handleConfirmOrder} disabled={placing} className="w-full btn-primary text-lg disabled:opacity-60">
+          {placing ? 'جارٍ تأكيد الطلب...' : `تأكيد الطلب — ${formatSAR(total)}`}
         </button>
       </div>
     </div>

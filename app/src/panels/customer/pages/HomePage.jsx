@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Star } from 'lucide-react';
-import { categories } from '../../../data/categories';
-import { getFeatured, getOffers } from '../../../data/products';
+import { fetchCategories, fetchFeatured, fetchOffers } from '../../../lib/api';
+import { useFetch } from '../../../lib/useFetch';
 import { useLoyaltyStore, TIERS } from '../../../store/useLoyaltyStore';
 import ProductCard from '../components/ProductCard';
 import TopBar from '../components/TopBar';
@@ -17,8 +17,11 @@ const offerBanners = [
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const featured = getFeatured().slice(0, 8);
-  const offers = getOffers().slice(0, 8);
+  const { data: featuredAll } = useFetch(fetchFeatured, [], []);
+  const { data: offersAll } = useFetch(fetchOffers, [], []);
+  const { data: categories } = useFetch(fetchCategories, [], []);
+  const featured = (featuredAll || []).slice(0, 8);
+  const offers = (offersAll || []).slice(0, 8);
   const points = useLoyaltyStore(s => s.points);
   const tier = useLoyaltyStore(s => TIERS.findLast(t => s.points >= t.minPoints) || TIERS[0]);
 

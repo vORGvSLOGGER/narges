@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowRight, Star, Plus, Minus, ShoppingCart } from 'lucide-react';
 import { useState } from 'react';
-import { getById } from '../../../data/products';
+import { fetchProductById } from '../../../lib/api';
+import { useFetch } from '../../../lib/useFetch';
 import { useCartStore } from '../../../store/useCartStore';
 import { formatSAR } from '../../../utils/formatters';
 import toast from 'react-hot-toast';
@@ -9,10 +10,16 @@ import toast from 'react-hot-toast';
 export default function ProductPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const product = getById(id);
+  const { data: product, loading } = useFetch(() => fetchProductById(id), [id]);
   const [qty, setQty] = useState(1);
   const { addItem, items } = useCartStore();
   const totalItems = items.reduce((s, i) => s + i.qty, 0);
+
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center text-narjis-text-secondary">
+      <span className="animate-pulse">جاري التحميل...</span>
+    </div>
+  );
 
   if (!product) return (
     <div className="min-h-screen flex items-center justify-center text-narjis-text-secondary">

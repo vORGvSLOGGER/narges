@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowRight, SlidersHorizontal } from 'lucide-react';
 import { useState } from 'react';
-import { categories } from '../../../data/categories';
-import { getByCategory } from '../../../data/products';
+import { fetchCategories, fetchByCategory } from '../../../lib/api';
+import { useFetch } from '../../../lib/useFetch';
 import ProductCard from '../components/ProductCard';
 import BottomNav from '../components/BottomNav';
 import { useCartStore } from '../../../store/useCartStore';
@@ -11,8 +11,10 @@ import { ShoppingCart } from 'lucide-react';
 export default function CategoryPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const category = categories.find(c => c.id === id) || categories[0];
-  const allProducts = getByCategory(id || category.id);
+  const { data: categories } = useFetch(fetchCategories, [], []);
+  const { data: products, loading } = useFetch(() => fetchByCategory(id), [id], []);
+  const category = (categories || []).find(c => c.id === id) || { nameAr: '...', icon: '📦', subcategories: [] };
+  const allProducts = products || [];
   const [activeSubcat, setActiveSubcat] = useState('all');
   const items = useCartStore(s => s.items);
   const totalItems = items.reduce((sum, i) => sum + i.qty, 0);
@@ -74,7 +76,12 @@ export default function CategoryPage() {
 
       {/* Products Grid */}
       <div className="px-4 pt-4">
-        {displayed.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-20 text-narjis-text-secondary">
+            <span className="text-4xl block mb-3 animate-pulse">⏳</span>
+            <p>جاري التحميل...</p>
+          </div>
+        ) : displayed.length === 0 ? (
           <div className="text-center py-20 text-narjis-text-secondary">
             <span className="text-5xl block mb-3">📦</span>
             <p>لا توجد منتجات في هذا القسم</p>

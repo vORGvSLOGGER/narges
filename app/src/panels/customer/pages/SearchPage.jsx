@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Search, X } from 'lucide-react';
-import { searchProducts } from '../../../data/products';
+import { searchProducts } from '../../../lib/api';
+import { useFetch } from '../../../lib/useFetch';
 import ProductCard from '../components/ProductCard';
 
 export default function SearchPage() {
   const navigate = useNavigate();
   const [query, setQuery] = useState('');
-  const results = query.length > 1 ? searchProducts(query) : [];
+  const { data: results } = useFetch(
+    () => (query.length > 1 ? searchProducts(query) : Promise.resolve([])),
+    [query],
+    []
+  );
 
   return (
     <div className="min-h-screen bg-narjis-bg">
