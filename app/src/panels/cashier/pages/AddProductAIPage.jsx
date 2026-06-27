@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Camera, Upload, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { categories } from '../../../data/categories';
+import { buildGeminiContext } from '../../../data/productCatalog';
 import toast from 'react-hot-toast';
 
 const GEMINI_KEY = import.meta.env.VITE_GEMINI_KEY;
@@ -10,13 +11,14 @@ async function analyzeProductImage(base64, mimeType) {
   if (!GEMINI_KEY) {
     await new Promise(r => setTimeout(r, 1800));
     return {
-      nameAr: 'حليب ألمراعي كامل الدسم',
+      nameAr: 'حليب المراعي كامل الدسم',
       unit: 'لتر',
       price: 9.5,
       categoryId: 'dairy-eggs',
       confidence: 0.92,
     };
   }
+  const { brandsText, pricesText, productsText } = buildGeminiContext();
   const res = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`,
     {
@@ -26,9 +28,20 @@ async function analyzeProductImage(base64, mimeType) {
         contents: [{
           parts: [
             { inlineData: { mimeType, data: base64 } },
-            { text: `أنت مساعد لإدارة متجر سوبرماركت سعودي. حلل هذه الصورة وأعطني معلومات المنتج بالتنسيق التالي فقط (JSON):
-{"nameAr":"اسم المنتج بالعربي","unit":"الوحدة (كيلو أو قطعة أو لتر أو علبة)","price":السعر_المقترح_بالريال_رقم_فقط,"categoryId":"من هذه الأقسام: fruits-veg أو dairy-eggs أو meat-poultry أو bakery أو beverages أو grains-staples أو cleaning أو personal-care أو frozen أو snacks","confidence":نسبة_الثقة_0_إلى_1}
-أجب بـ JSON فقط بدون أي نص إضافي.` }
+            { text: `انت خبير في منتجات السوبرماركت السعودي. حلل هذه الصورة بدقة عالية.
+
+الماركات الشائعة في السوق السعودي:
+${brandsText}
+
+نطاقات الاسعار المعتادة بالريال السعودي:
+${pricesText}
+
+امثلة على منتجات شائعة للمرجع:
+${productsText}
+
+بناء على هذا السياق، اعطني معلومات المنتج في الصورة بالتنسيق التالي فقط (JSON):
+{"nameAr":"اسم المنتج بالعربي مع الماركة والحجم","unit":"الوحدة (كيلو او قطعة او لتر او علبة او كيس)","price":السعر_المقترح_بالريال_رقم_فقط,"categoryId":"من هذه الاقسام: fruits-veg او dairy-eggs او meat-poultry او bakery او beverages او grains-staples او cleaning او personal-care او frozen او snacks","confidence":نسبة_الثقة_0_الى_1}
+اجب بـ JSON فقط بدون اي نص اضافي.` }
           ]
         }]
       }),
