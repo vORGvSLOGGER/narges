@@ -27,13 +27,13 @@ export default function TopBar({ onSearchClick, onCartClick }) {
         {/* Actions */}
         <div className="flex items-center gap-2">
           <button
-            onClick={onSearchClick || (() => navigate('/customer/search'))}
+            onClick={onSearchClick || (() => navigate('/Customer/search'))}
             className="w-9 h-9 rounded-xl bg-narjis-bg flex items-center justify-center"
           >
             <Search size={18} className="text-narjis-text" />
           </button>
           <button
-            onClick={onCartClick || (() => navigate('/customer/cart'))}
+            onClick={onCartClick || (() => navigate('/Customer/cart'))}
             className="relative w-9 h-9 rounded-xl bg-narjis-bg flex items-center justify-center"
           >
             <ShoppingCart size={18} className="text-narjis-text" />

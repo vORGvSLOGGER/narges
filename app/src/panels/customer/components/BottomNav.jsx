@@ -2,10 +2,10 @@ import { Home, Grid3X3, ClipboardList, User } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const navItems = [
-  { icon: Home, label: 'الرئيسية', path: '/customer' },
-  { icon: Grid3X3, label: 'الأقسام', path: '/customer/categories' },
-  { icon: ClipboardList, label: 'طلباتي', path: '/customer/orders' },
-  { icon: User, label: 'حسابي', path: '/customer/profile' },
+  { icon: Home, label: 'الرئيسية', path: '/Customer' },
+  { icon: Grid3X3, label: 'الأقسام', path: '/Customer/categories' },
+  { icon: ClipboardList, label: 'طلباتي', path: '/Customer/orders' },
+  { icon: User, label: 'حسابي', path: '/Customer/profile' },
 ];
 
 export default function BottomNav() {
@@ -16,7 +16,7 @@ export default function BottomNav() {
     <div className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-100 safe-area-pb">
       <div className="flex items-center justify-around px-2 py-2">
         {navItems.map(({ icon: Icon, label, path }) => {
-          const active = location.pathname === path || (path !== '/customer' && location.pathname.startsWith(path));
+          const active = location.pathname === path || (path !== '/Customer' && location.pathname.startsWith(path));
           return (
             <button
               key={path}

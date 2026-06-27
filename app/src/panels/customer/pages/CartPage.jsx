@@ -3,6 +3,7 @@ import { ArrowRight, Trash2, Plus, Minus, Tag } from 'lucide-react';
 import { useState } from 'react';
 import { useCartStore } from '../../../store/useCartStore';
 import { useOrderStore } from '../../../store/useOrderStore';
+import { useLoyaltyStore } from '../../../store/useLoyaltyStore';
 import { formatSAR } from '../../../utils/formatters';
 
 const paymentMethods = [
@@ -16,12 +17,14 @@ export default function CartPage() {
   const navigate = useNavigate();
   const { items, updateQty, removeItem, clearCart } = useCartStore();
   const addOrder = useOrderStore(s => s.addOrder);
+  const { addPoints, pendingDiscount, clearPendingDiscount } = useLoyaltyStore();
   const [paymentMethod, setPaymentMethod] = useState('cash');
   const [address, setAddress] = useState('حي الروضة، شارع الأمير محمد، مبنى 12');
 
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
   const deliveryFee = items.length > 0 ? 10 : 0;
-  const total = subtotal + deliveryFee;
+  const loyaltyDiscount = pendingDiscount;
+  const total = Math.max(0, subtotal + deliveryFee - loyaltyDiscount);
 
   const handleConfirmOrder = () => {
     if (!items.length) return;
@@ -36,8 +39,10 @@ export default function CartPage() {
       paymentMethod,
       paymentStatus: paymentMethod === 'cash' ? 'pending' : 'paid',
     });
+    addPoints(total);
+    clearPendingDiscount();
     clearCart();
-    navigate(`/customer/tracking/${order.id}`, { replace: true });
+    navigate(`/Customer/tracking/${order.id}`, { replace: true });
   };
 
   if (items.length === 0) {
@@ -53,7 +58,7 @@ export default function CartPage() {
           <span className="text-7xl">🛒</span>
           <h2 className="text-xl font-bold text-narjis-text">السلة فارغة</h2>
           <p className="text-narjis-text-secondary text-center">أضف منتجات من المتجر لتظهر هنا</p>
-          <button onClick={() => navigate('/customer')} className="btn-primary px-8">تسوق الآن</button>
+          <button onClick={() => navigate('/Customer')} className="btn-primary px-8">تسوق الآن</button>
         </div>
       </div>
     );
@@ -143,6 +148,12 @@ export default function CartPage() {
             <span className="text-narjis-text-secondary">رسوم التوصيل</span>
             <span>{formatSAR(deliveryFee)}</span>
           </div>
+          {loyaltyDiscount > 0 && (
+            <div className="flex justify-between text-sm text-narjis-orange font-medium">
+              <span>خصم الولاء 🎁</span>
+              <span>- {formatSAR(loyaltyDiscount)}</span>
+            </div>
+          )}
           <div className="border-t pt-2 flex justify-between font-bold text-base">
             <span>الإجمالي</span>
             <span className="text-narjis-green">{formatSAR(total)}</span>

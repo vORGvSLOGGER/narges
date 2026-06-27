@@ -159,7 +159,7 @@ export default function OrderTrackingPage() {
           </div>
         </div>
 
-        <button onClick={() => navigate('/customer')} className="w-full btn-outline">
+        <button onClick={() => navigate('/Customer')} className="w-full btn-outline">
           العودة للرئيسية
         </button>
       </div>

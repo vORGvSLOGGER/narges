@@ -3,6 +3,9 @@ import Sidebar from './components/Sidebar';
 import DashboardPage from './pages/DashboardPage';
 import ProductsPage from './pages/ProductsPage';
 import OrdersPage from './pages/OrdersPage';
+import DriversMapPage from './pages/DriversMapPage';
+import OffersPage from './pages/OffersPage';
+import ComplaintsPage from './pages/ComplaintsPage';
 
 export default function AdminApp() {
   return (
@@ -14,9 +17,11 @@ export default function AdminApp() {
             <Route index element={<DashboardPage />} />
             <Route path="products" element={<ProductsPage />} />
             <Route path="orders" element={<OrdersPage />} />
-            <Route path="drivers" element={<DriversPlaceholder />} />
+            <Route path="drivers-map" element={<DriversMapPage />} />
+            <Route path="offers" element={<OffersPage />} />
+            <Route path="complaints" element={<ComplaintsPage />} />
             <Route path="settings" element={<SettingsPlaceholder />} />
-            <Route path="*" element={<Navigate to="/admin" replace />} />
+            <Route path="*" element={<Navigate to="/Admin" replace />} />
           </Routes>
         </div>
       </main>

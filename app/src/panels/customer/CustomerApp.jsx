@@ -6,6 +6,7 @@ import ProductPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
 import OrderTrackingPage from './pages/OrderTrackingPage';
 import SearchPage from './pages/SearchPage';
+import LoyaltyPage from './pages/LoyaltyPage';
 
 export default function CustomerApp() {
   return (
@@ -17,7 +18,8 @@ export default function CustomerApp() {
       <Route path="cart" element={<CartPage />} />
       <Route path="tracking/:id" element={<OrderTrackingPage />} />
       <Route path="search" element={<SearchPage />} />
-      <Route path="*" element={<Navigate to="/customer" replace />} />
+      <Route path="loyalty" element={<LoyaltyPage />} />
+      <Route path="*" element={<Navigate to="/Customer" replace />} />
     </Routes>
   );
 }

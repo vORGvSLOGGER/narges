@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Star } from 'lucide-react';
 import { categories } from '../../../data/categories';
 import { getFeatured, getOffers } from '../../../data/products';
+import { useLoyaltyStore, TIERS } from '../../../store/useLoyaltyStore';
 import ProductCard from '../components/ProductCard';
 import TopBar from '../components/TopBar';
 import BottomNav from '../components/BottomNav';
+
+const TIER_ICONS = { bronze: '🥉', silver: '🥈', gold: '🥇' };
 
 const offerBanners = [
   { id: 1, title: 'خصم 20% على الفواكه والخضروات', subtitle: 'لفترة محدودة', bg: 'from-green-600 to-green-400', emoji: '🥦' },
@@ -16,12 +19,32 @@ export default function HomePage() {
   const navigate = useNavigate();
   const featured = getFeatured().slice(0, 8);
   const offers = getOffers().slice(0, 8);
+  const points = useLoyaltyStore(s => s.points);
+  const tier = useLoyaltyStore(s => TIERS.findLast(t => s.points >= t.minPoints) || TIERS[0]);
 
   return (
     <div className="min-h-screen bg-narjis-bg pb-20">
       <TopBar />
 
       <div className="px-4 pt-3 space-y-5">
+        {/* Loyalty Banner */}
+        <button
+          onClick={() => navigate('/Customer/loyalty')}
+          className="w-full flex items-center justify-between bg-gradient-to-l from-narjis-green to-narjis-green-mid rounded-2xl px-4 py-3"
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-xl">{TIER_ICONS[tier.id]}</span>
+            <div className="text-right">
+              <p className="text-white font-bold text-sm">نقاط الولاء</p>
+              <p className="text-white/70 text-xs">مستوى {tier.label}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-white font-bold text-xl">{points}</span>
+            <span className="text-white/70 text-xs">نقطة</span>
+            <ChevronLeft size={16} className="text-white/50" />
+          </div>
+        </button>
         {/* Hero Banners */}
         <div className="flex gap-3 overflow-x-auto no-scrollbar">
           {offerBanners.map(b => (
@@ -44,7 +67,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between mb-3">
             <h2 className="section-title mb-0">تسوق حسب القسم</h2>
             <button
-              onClick={() => navigate('/customer/categories')}
+              onClick={() => navigate('/Customer/categories')}
               className="text-narjis-light text-sm font-medium flex items-center gap-0.5"
             >
               الكل <ChevronLeft size={16} />
@@ -54,7 +77,7 @@ export default function HomePage() {
             {categories.slice(0, 8).map(cat => (
               <button
                 key={cat.id}
-                onClick={() => navigate(`/customer/category/${cat.id}`)}
+                onClick={() => navigate(`/Customer/category/${cat.id}`)}
                 className="flex flex-col items-center gap-1.5 p-2 bg-white rounded-2xl shadow-sm active:scale-95 transition-transform"
               >
                 <div

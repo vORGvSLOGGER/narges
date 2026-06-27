@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Clock, Package } from 'lucide-react';
+import { Clock, Package, Camera } from 'lucide-react';
 import { useOrderStore } from '../../../store/useOrderStore';
 import { formatRelativeTime, formatSAR } from '../../../utils/formatters';
 import { STATUS_LABELS, STATUS_COLORS, PAYMENT_LABELS } from '../../../data/mockOrders';
@@ -33,8 +33,19 @@ export default function OrderQueuePage() {
     <div className="min-h-screen bg-narjis-bg">
       {/* Header */}
       <div className="bg-narjis-green px-4 pt-12 pb-5">
-        <h1 className="text-white text-2xl font-bold">لوحة الكاشير</h1>
-        <p className="text-white/70 text-sm mt-1">سوبرماركت نرجس — فرع الرياض</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-white text-2xl font-bold">لوحة الكاشير</h1>
+            <p className="text-white/70 text-sm mt-1">سوبرماركت نرجس — فرع الرياض</p>
+          </div>
+          <button
+            onClick={() => navigate('/Cashier/add-product-ai')}
+            className="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-2 rounded-xl transition-all"
+          >
+            <Camera size={14} />
+            <span>إضافة منتج</span>
+          </button>
+        </div>
 
         {/* Status Summary */}
         <div className="grid grid-cols-4 gap-2 mt-4">

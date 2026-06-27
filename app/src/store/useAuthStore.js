@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 export const PANELS = {
   CUSTOMER: 'customer',
-  DRIVER: 'driver',
+  DELIVERY: 'delivery',
   CASHIER: 'cashier',
   ADMIN: 'admin',
 };

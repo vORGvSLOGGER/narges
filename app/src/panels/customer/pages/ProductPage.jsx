@@ -39,7 +39,7 @@ export default function ProductPage() {
           <button onClick={() => navigate(-1)} className="w-10 h-10 rounded-xl bg-white/90 backdrop-blur flex items-center justify-center shadow">
             <ArrowRight size={20} />
           </button>
-          <button onClick={() => navigate('/customer/cart')} className="relative w-10 h-10 rounded-xl bg-white/90 backdrop-blur flex items-center justify-center shadow">
+          <button onClick={() => navigate('/Customer/cart')} className="relative w-10 h-10 rounded-xl bg-white/90 backdrop-blur flex items-center justify-center shadow">
             <ShoppingCart size={18} />
             {totalItems > 0 && (
               <span className="absolute -top-1 -left-1 w-5 h-5 bg-narjis-orange text-white text-xs font-bold rounded-full flex items-center justify-center">

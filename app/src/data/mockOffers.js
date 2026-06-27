@@ -1,0 +1,8 @@
+export const mockOffers = [
+  { id: 'OFF-001', productId: 'p001', productName: 'تفاح أحمر فاخر', discountPct: 20, originalPrice: 12.5, newPrice: 10, validUntil: new Date(Date.now() + 3 * 86400000).toISOString(), status: 'approved', proposedBy: 'كاشير فرع الرياض', branchId: 1, notes: 'فائض في المخزن' },
+  { id: 'OFF-002', productId: 'p008', productName: 'جبن شيدر بلوك 400جم', discountPct: 15, originalPrice: 24, newPrice: 20.4, validUntil: new Date(Date.now() + 5 * 86400000).toISOString(), status: 'approved', proposedBy: 'كاشير فرع جدة', branchId: 2, notes: 'إغراء الزبائن' },
+  { id: 'OFF-003', productId: 'p005', productName: 'فراولة طازجة', discountPct: 25, originalPrice: 18, newPrice: 13.5, validUntil: new Date(Date.now() + 2 * 86400000).toISOString(), status: 'pending', proposedBy: 'كاشير فرع الرياض', branchId: 1, notes: 'ستنتهي صلاحيتها قريباً' },
+  { id: 'OFF-004', productId: 'p016', productName: 'أرز بسمتي طويل الحبة', discountPct: 10, originalPrice: 45, newPrice: 40.5, validUntil: new Date(Date.now() + 7 * 86400000).toISOString(), status: 'pending', proposedBy: 'كاشير فرع الدمام', branchId: 3, notes: 'منافسة السوق' },
+  { id: 'OFF-005', productId: 'p023', productName: 'مياه زمزم 5 لتر', discountPct: 12, originalPrice: 8.5, newPrice: 7.48, validUntil: new Date(Date.now() + 10 * 86400000).toISOString(), status: 'rejected', proposedBy: 'كاشير فرع الرياض', branchId: 1, notes: 'عرض اسبوعي' },
+  { id: 'OFF-006', productId: 'p011', productName: 'كريمة طبخ ألمراعي', discountPct: 15, originalPrice: 6.5, newPrice: 5.53, validUntil: new Date(Date.now() + 4 * 86400000).toISOString(), status: 'approved', proposedBy: 'كاشير فرع جدة', branchId: 2, notes: 'ترويج منتجات الألبان' },
+];

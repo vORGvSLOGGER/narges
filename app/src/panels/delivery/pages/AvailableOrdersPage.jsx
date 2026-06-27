@@ -17,7 +17,7 @@ export default function AvailableOrdersPage() {
     assignDriver(orderId, 'd001', 'خالد العتيبي');
     updateOrderStatus(orderId, 'picked_up');
     setAcceptedId(orderId);
-    navigate(`/driver/delivery/${orderId}`);
+    navigate(`/Delivery/delivery/${orderId}`);
   };
 
   return (

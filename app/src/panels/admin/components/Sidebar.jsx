@@ -1,12 +1,15 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Truck, Settings, ChevronLeft } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Truck, Settings, Tag, MessageSquareWarning } from 'lucide-react';
+import BranchSelector from './BranchSelector';
 
 const navItems = [
-  { icon: LayoutDashboard, label: 'لوحة التحكم', path: '/admin' },
-  { icon: ShoppingBag, label: 'الطلبات', path: '/admin/orders' },
-  { icon: Package, label: 'المنتجات', path: '/admin/products' },
-  { icon: Truck, label: 'المناديب', path: '/admin/drivers' },
-  { icon: Settings, label: 'الإعدادات', path: '/admin/settings' },
+  { icon: LayoutDashboard, label: 'لوحة التحكم', path: '/Admin' },
+  { icon: ShoppingBag, label: 'الطلبات', path: '/Admin/orders' },
+  { icon: Package, label: 'المنتجات', path: '/Admin/products' },
+  { icon: Truck, label: 'تتبع المناديب', path: '/Admin/drivers-map' },
+  { icon: Tag, label: 'العروض', path: '/Admin/offers' },
+  { icon: MessageSquareWarning, label: 'الشكاوي', path: '/Admin/complaints' },
+  { icon: Settings, label: 'الإعدادات', path: '/Admin/settings' },
 ];
 
 export default function Sidebar() {
@@ -25,13 +28,16 @@ export default function Sidebar() {
         </div>
       </div>
 
+      {/* Branch Selector */}
+      <BranchSelector />
+
       {/* Navigation */}
       <nav className="flex-1 px-3 py-4 space-y-1">
         {navItems.map(({ icon: Icon, label, path }) => (
           <NavLink
             key={path}
             to={path}
-            end={path === '/admin'}
+            end={path === '/Admin'}
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-sm font-medium ${
                 isActive

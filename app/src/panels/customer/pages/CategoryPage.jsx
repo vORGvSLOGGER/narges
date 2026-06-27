@@ -34,7 +34,7 @@ export default function CategoryPage() {
             <h1 className="text-lg font-bold text-narjis-text">{category.nameAr}</h1>
           </div>
           <button
-            onClick={() => navigate('/customer/cart')}
+            onClick={() => navigate('/Customer/cart')}
             className="relative w-9 h-9 rounded-xl bg-narjis-bg flex items-center justify-center"
           >
             <ShoppingCart size={18} />

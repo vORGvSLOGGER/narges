@@ -1,16 +1,19 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { Phone, Navigation, CheckCircle2 } from 'lucide-react';
-import { useState } from 'react';
+import { Phone, CheckCircle2 } from 'lucide-react';
+import { useState, Suspense, lazy } from 'react';
 import { useOrderStore } from '../../../store/useOrderStore';
 import { formatSAR } from '../../../utils/formatters';
 import { PAYMENT_LABELS } from '../../../data/mockOrders';
+import ChatWidget from '../components/ChatWidget';
+
+const LiveMap = lazy(() => import('../components/LiveMap'));
 
 export default function ActiveDeliveryPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getOrderById, updateOrderStatus } = useOrderStore();
   const order = getOrderById(id);
-  const [step, setStep] = useState('to_store'); // to_store → picked_up → delivered
+  const [step, setStep] = useState('to_store');
 
   if (!order) return <div className="min-h-screen flex items-center justify-center">الطلب غير موجود</div>;
 
@@ -21,33 +24,37 @@ export default function ActiveDeliveryPage() {
 
   const handleDelivered = () => {
     updateOrderStatus(id, 'delivered');
-    navigate('/driver');
+    navigate('/Delivery');
   };
 
   return (
     <div className="min-h-screen bg-narjis-bg flex flex-col">
-      {/* Map Placeholder */}
-      <div className="relative flex-1 bg-gradient-to-br from-green-50 to-blue-50 min-h-64">
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-          <div className="text-6xl animate-bounce">🚗</div>
-          <div className="bg-white rounded-2xl px-4 py-2 shadow text-sm font-medium text-narjis-green">
-            {step === 'to_store' ? '📍 توجه إلى المتجر' : '🏠 توجه إلى العميل'}
+      {/* Live Map */}
+      <div className="relative h-64 bg-gray-100">
+        <Suspense fallback={
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50">
+            <div className="text-center">
+              <div className="text-5xl animate-bounce">🚗</div>
+              <p className="text-sm text-narjis-text-secondary mt-2">جاري تحميل الخريطة...</p>
+            </div>
           </div>
-        </div>
+        }>
+          <LiveMap
+            customerLat={24.7100}
+            customerLng={46.6600}
+            driverLat={step === 'to_store' ? 24.7250 : 24.7180}
+            driverLng={step === 'to_store' ? 46.6900 : 46.6750}
+          />
+        </Suspense>
 
-        {/* Store & Customer markers */}
-        <div className="absolute top-4 right-4 bg-white rounded-xl p-2 shadow text-xs">
-          <p className="font-bold">🏪 نرجس سوبرماركت</p>
-          <p className="text-narjis-text-secondary">حي العليا، الرياض</p>
-        </div>
-        <div className="absolute top-4 left-4 bg-white rounded-xl p-2 shadow text-xs">
-          <p className="font-bold">🏠 {order.customerName}</p>
-          <p className="text-narjis-text-secondary">{order.deliveryAddress.district}</p>
+        {/* Status Pill */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-white rounded-xl px-4 py-1.5 shadow-lg text-sm font-medium text-narjis-green z-10">
+          {step === 'to_store' ? '📍 توجه إلى المتجر' : '🏠 توجه إلى العميل'}
         </div>
       </div>
 
       {/* Order Info */}
-      <div className="bg-white rounded-t-3xl p-5 space-y-4 shadow-lg">
+      <div className="bg-white rounded-t-3xl -mt-4 p-5 space-y-4 shadow-lg flex-1">
         {/* Customer */}
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-narjis-green rounded-full flex items-center justify-center text-white text-xl font-bold">
@@ -74,12 +81,15 @@ export default function ActiveDeliveryPage() {
           </p>
         </div>
 
+        {/* Steps */}
+        <div className="flex items-center gap-3">
+          <div className={`flex-1 h-1.5 rounded-full ${step === 'to_store' ? 'bg-narjis-green' : 'bg-narjis-lighter'}`} />
+          <div className={`flex-1 h-1.5 rounded-full ${step === 'to_customer' ? 'bg-narjis-green' : 'bg-gray-200'}`} />
+        </div>
+
         {/* Action Button */}
         {step === 'to_store' ? (
-          <button
-            onClick={handlePickedUp}
-            className="w-full btn-primary flex items-center justify-center gap-2"
-          >
+          <button onClick={handlePickedUp} className="w-full btn-primary flex items-center justify-center gap-2">
             <CheckCircle2 size={20} />
             استلمت الطلب من المتجر
           </button>
@@ -100,6 +110,8 @@ export default function ActiveDeliveryPage() {
           </div>
         )}
       </div>
+
+      <ChatWidget customerName={order.customerName} />
     </div>
   );
 }

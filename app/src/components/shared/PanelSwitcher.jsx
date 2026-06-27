@@ -2,10 +2,10 @@ import { useAuthStore, PANELS } from '../../store/useAuthStore';
 import { useNavigate } from 'react-router-dom';
 
 const panels = [
-  { id: PANELS.CUSTOMER, label: 'العميل', icon: '🛒', path: '/customer' },
-  { id: PANELS.DRIVER, label: 'المندوب', icon: '🚗', path: '/driver' },
-  { id: PANELS.CASHIER, label: 'الكاشير', icon: '💳', path: '/cashier' },
-  { id: PANELS.ADMIN, label: 'الإدارة', icon: '📊', path: '/admin' },
+  { id: PANELS.CUSTOMER, label: 'العميل', icon: '🛒', path: '/Customer' },
+  { id: PANELS.DELIVERY, label: 'التوصيل', icon: '🚗', path: '/Delivery' },
+  { id: PANELS.CASHIER, label: 'الكاشير', icon: '💳', path: '/Cashier' },
+  { id: PANELS.ADMIN, label: 'الإدارة', icon: '📊', path: '/Admin' },
 ];
 
 export default function PanelSwitcher() {

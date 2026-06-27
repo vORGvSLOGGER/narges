@@ -2,12 +2,12 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import AvailableOrdersPage from './pages/AvailableOrdersPage';
 import ActiveDeliveryPage from './pages/ActiveDeliveryPage';
 
-export default function DriverApp() {
+export default function DeliveryApp() {
   return (
     <Routes>
       <Route index element={<AvailableOrdersPage />} />
       <Route path="delivery/:id" element={<ActiveDeliveryPage />} />
-      <Route path="*" element={<Navigate to="/driver" replace />} />
+      <Route path="*" element={<Navigate to="/Delivery" replace />} />
     </Routes>
   );
 }
