@@ -1,0 +1,11 @@
+{
+  "name": "narjis-supermarket",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": ["scraper", "app"],
+  "scripts": {
+    "scrape": "node scraper/scraper.js",
+    "dev": "npm run dev --workspace=app",
+    "build": "npm run build --workspace=app"
+  }
+}

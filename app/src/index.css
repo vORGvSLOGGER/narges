@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', Arial, sans-serif;
+  background-color: #F8F9FA;
+  color: #212121;
+  direction: rtl;
+  text-align: right;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #4CAF50;
+  border-radius: 4px;
+}
+
+/* Hide scrollbar on mobile */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-narjis-light text-white font-semibold py-3 px-6 rounded-xl active:scale-95 transition-transform;
+  }
+  .btn-outline {
+    @apply border-2 border-narjis-light text-narjis-light font-semibold py-3 px-6 rounded-xl active:scale-95 transition-transform;
+  }
+  .card {
+    @apply bg-white rounded-2xl shadow-sm;
+  }
+  .badge-offer {
+    @apply bg-narjis-orange text-white text-xs font-bold px-2 py-0.5 rounded-full;
+  }
+  .section-title {
+    @apply text-narjis-text font-bold text-lg mb-3;
+  }
+}

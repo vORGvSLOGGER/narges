@@ -1,0 +1,61 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowRight, Search, X } from 'lucide-react';
+import { searchProducts } from '../../../data/products';
+import ProductCard from '../components/ProductCard';
+
+export default function SearchPage() {
+  const navigate = useNavigate();
+  const [query, setQuery] = useState('');
+  const results = query.length > 1 ? searchProducts(query) : [];
+
+  return (
+    <div className="min-h-screen bg-narjis-bg">
+      {/* Search Bar */}
+      <div className="sticky top-8 z-40 bg-white px-4 py-3 flex items-center gap-3 shadow-sm">
+        <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narjis-bg flex items-center justify-center">
+          <ArrowRight size={18} />
+        </button>
+        <div className="flex-1 flex items-center gap-2 bg-narjis-bg rounded-xl px-3 py-2.5">
+          <Search size={16} className="text-narjis-text-secondary" />
+          <input
+            autoFocus
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="ابحث عن منتج..."
+            className="flex-1 bg-transparent text-sm focus:outline-none"
+          />
+          {query && (
+            <button onClick={() => setQuery('')}>
+              <X size={16} className="text-narjis-text-secondary" />
+            </button>
+          )}
+        </div>
+      </div>
+
+      <div className="px-4 pt-4">
+        {query.length === 0 && (
+          <div className="text-center py-16">
+            <span className="text-6xl">🔍</span>
+            <p className="mt-3 text-narjis-text-secondary">ابحث عن منتجاتك المفضلة</p>
+          </div>
+        )}
+        {query.length > 1 && results.length === 0 && (
+          <div className="text-center py-16">
+            <span className="text-6xl">😕</span>
+            <p className="mt-3 text-narjis-text font-medium">لا نتائج لـ "{query}"</p>
+            <p className="text-narjis-text-secondary text-sm mt-1">جرب كلمة بحث مختلفة</p>
+          </div>
+        )}
+        {results.length > 0 && (
+          <>
+            <p className="text-sm text-narjis-text-secondary mb-3">{results.length} نتيجة لـ "{query}"</p>
+            <div className="grid grid-cols-2 gap-3">
+              {results.map(p => <ProductCard key={p.id} product={p} />)}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
