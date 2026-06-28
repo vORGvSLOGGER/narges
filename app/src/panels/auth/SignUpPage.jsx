@@ -41,12 +41,12 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-narjis-bg flex flex-col items-center justify-center px-6 py-10">
+    <div className="min-h-screen bg-narges-bg flex flex-col items-center justify-center px-6 py-10">
       <div className="w-full max-w-sm">
         <div className="text-center mb-6">
-          <div className="w-16 h-16 bg-narjis-green rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3">🌷</div>
-          <h1 className="text-2xl font-bold text-narjis-text">إنشاء حساب</h1>
-          <p className="text-narjis-text-secondary text-sm mt-1">انضم إلى نرجس سوبرماركت</p>
+          <div className="w-16 h-16 bg-narges-green rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3">🌷</div>
+          <h1 className="text-2xl font-bold text-narges-text">إنشاء حساب</h1>
+          <p className="text-narges-text-secondary text-sm mt-1">انضم إلى نرجس سوبرماركت</p>
         </div>
 
         <form onSubmit={handleSubmit} className="card p-5 space-y-4">
@@ -61,9 +61,9 @@ export default function SignUpPage() {
           </button>
         </form>
 
-        <p className="text-center text-sm text-narjis-text-secondary mt-4">
+        <p className="text-center text-sm text-narges-text-secondary mt-4">
           لديك حساب؟{' '}
-          <Link to="/login" className="text-narjis-light font-medium">سجّل الدخول</Link>
+          <Link to="/login" className="text-narges-light font-medium">سجّل الدخول</Link>
         </p>
       </div>
     </div>
@@ -73,9 +73,9 @@ export default function SignUpPage() {
 function Field({ icon: Icon, label, type = 'text', value, onChange, placeholder, dir, required }) {
   return (
     <div>
-      <label className="text-xs text-narjis-text-secondary mb-1 block">{label}</label>
-      <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-narjis-light">
-        <Icon size={16} className="text-narjis-text-secondary" />
+      <label className="text-xs text-narges-text-secondary mb-1 block">{label}</label>
+      <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-narges-light">
+        <Icon size={16} className="text-narges-text-secondary" />
         <input
           type={type}
           required={required}

@@ -22,7 +22,7 @@ export default function BottomNav() {
               key={path}
               onClick={() => navigate(path)}
               className={`flex flex-col items-center gap-0.5 px-4 py-1 rounded-xl transition-all ${
-                active ? 'text-narjis-light' : 'text-narjis-text-secondary'
+                active ? 'text-narges-light' : 'text-narges-text-secondary'
               }`}
             >
               <Icon size={22} strokeWidth={active ? 2.5 : 1.8} />

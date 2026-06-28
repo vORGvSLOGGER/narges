@@ -24,24 +24,24 @@ export default function CategoryPage() {
     : allProducts.filter(p => p.subcategoryId === activeSubcat);
 
   return (
-    <div className="min-h-screen bg-narjis-bg pb-20">
+    <div className="min-h-screen bg-narges-bg pb-20">
       {/* Header */}
       <div className="sticky top-8 z-40 bg-white shadow-sm">
         <div className="px-4 py-3 flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narjis-bg flex items-center justify-center">
+          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
             <ArrowRight size={18} />
           </button>
           <div className="flex items-center gap-2 flex-1">
             <span className="text-2xl">{category.icon}</span>
-            <h1 className="text-lg font-bold text-narjis-text">{category.nameAr}</h1>
+            <h1 className="text-lg font-bold text-narges-text">{category.nameAr}</h1>
           </div>
           <button
             onClick={() => navigate('/Customer/cart')}
-            className="relative w-9 h-9 rounded-xl bg-narjis-bg flex items-center justify-center"
+            className="relative w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center"
           >
             <ShoppingCart size={18} />
             {totalItems > 0 && (
-              <span className="absolute -top-1 -left-1 w-5 h-5 bg-narjis-orange text-white text-xs font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -left-1 w-5 h-5 bg-narges-orange text-white text-xs font-bold rounded-full flex items-center justify-center">
                 {totalItems}
               </span>
             )}
@@ -54,7 +54,7 @@ export default function CategoryPage() {
             <button
               onClick={() => setActiveSubcat('all')}
               className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                activeSubcat === 'all' ? 'bg-narjis-light text-white' : 'bg-narjis-bg text-narjis-text'
+                activeSubcat === 'all' ? 'bg-narges-light text-white' : 'bg-narges-bg text-narges-text'
               }`}
             >
               الكل ({allProducts.length})
@@ -64,7 +64,7 @@ export default function CategoryPage() {
                 key={sub.id}
                 onClick={() => setActiveSubcat(sub.id)}
                 className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-                  activeSubcat === sub.id ? 'bg-narjis-light text-white' : 'bg-narjis-bg text-narjis-text'
+                  activeSubcat === sub.id ? 'bg-narges-light text-white' : 'bg-narges-bg text-narges-text'
                 }`}
               >
                 {sub.nameAr}
@@ -77,12 +77,12 @@ export default function CategoryPage() {
       {/* Products Grid */}
       <div className="px-4 pt-4">
         {loading ? (
-          <div className="text-center py-20 text-narjis-text-secondary">
+          <div className="text-center py-20 text-narges-text-secondary">
             <span className="text-4xl block mb-3 animate-pulse">⏳</span>
             <p>جاري التحميل...</p>
           </div>
         ) : displayed.length === 0 ? (
-          <div className="text-center py-20 text-narjis-text-secondary">
+          <div className="text-center py-20 text-narges-text-secondary">
             <span className="text-5xl block mb-3">📦</span>
             <p>لا توجد منتجات في هذا القسم</p>
           </div>

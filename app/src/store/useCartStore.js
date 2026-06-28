@@ -32,6 +32,6 @@ export const useCartStore = create(
       get subtotal() { return get().items.reduce((s, i) => s + i.price * i.qty, 0); },
       get total() { return get().subtotal + (get().items.length > 0 ? 10 : 0); },
     }),
-    { name: 'narjis-cart' }
+    { name: 'narges-cart' }
   )
 );

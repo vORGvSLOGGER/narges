@@ -45,18 +45,18 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply bg-narjis-light text-white font-semibold py-3 px-6 rounded-xl active:scale-95 transition-transform;
+    @apply bg-narges-light text-white font-semibold py-3 px-6 rounded-xl active:scale-95 transition-transform;
   }
   .btn-outline {
-    @apply border-2 border-narjis-light text-narjis-light font-semibold py-3 px-6 rounded-xl active:scale-95 transition-transform;
+    @apply border-2 border-narges-light text-narges-light font-semibold py-3 px-6 rounded-xl active:scale-95 transition-transform;
   }
   .card {
     @apply bg-white rounded-2xl shadow-sm;
   }
   .badge-offer {
-    @apply bg-narjis-orange text-white text-xs font-bold px-2 py-0.5 rounded-full;
+    @apply bg-narges-orange text-white text-xs font-bold px-2 py-0.5 rounded-full;
   }
   .section-title {
-    @apply text-narjis-text font-bold text-lg mb-3;
+    @apply text-narges-text font-bold text-lg mb-3;
   }
 }

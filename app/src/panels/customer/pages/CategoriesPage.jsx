@@ -8,7 +8,7 @@ export default function CategoriesPage() {
   const navigate = useNavigate();
   const { data: categories } = useFetch(fetchCategories, [], []);
   return (
-    <div className="min-h-screen bg-narjis-bg pb-20">
+    <div className="min-h-screen bg-narges-bg pb-20">
       <TopBar />
       <div className="px-4 pt-4">
         <h1 className="section-title text-xl mb-4">جميع الأقسام</h1>
@@ -26,8 +26,8 @@ export default function CategoriesPage() {
                 {cat.icon}
               </div>
               <div className="text-right">
-                <p className="font-semibold text-narjis-text">{cat.nameAr}</p>
-                <p className="text-xs text-narjis-text-secondary mt-0.5">{cat.productCount} منتج</p>
+                <p className="font-semibold text-narges-text">{cat.nameAr}</p>
+                <p className="text-xs text-narges-text-secondary mt-0.5">{cat.productCount} منتج</p>
               </div>
             </button>
           ))}

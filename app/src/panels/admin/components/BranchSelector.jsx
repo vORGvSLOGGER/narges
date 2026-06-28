@@ -27,12 +27,12 @@ export default function BranchSelector() {
               key={b.id}
               onClick={() => { setActiveBranch(b.id); setOpen(false); }}
               className={`w-full flex items-center gap-2 px-3 py-2.5 text-sm text-right transition-colors ${
-                b.id === activeBranchId ? 'bg-green-50 text-narjis-green font-bold' : 'text-narjis-text hover:bg-narjis-bg'
+                b.id === activeBranchId ? 'bg-green-50 text-narges-green font-bold' : 'text-narges-text hover:bg-narges-bg'
               }`}
             >
               <span>{b.city}</span>
               <span className="flex-1 truncate">{b.nameAr}</span>
-              {b.id === activeBranchId && <span className="text-narjis-green text-xs">✓</span>}
+              {b.id === activeBranchId && <span className="text-narges-green text-xs">✓</span>}
             </button>
           ))}
         </div>

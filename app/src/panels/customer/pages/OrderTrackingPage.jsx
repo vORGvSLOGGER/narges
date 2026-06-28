@@ -46,7 +46,7 @@ export default function OrderTrackingPage() {
   if (!order) return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
-        <p className="text-narjis-text-secondary">جاري تحميل الطلب...</p>
+        <p className="text-narges-text-secondary">جاري تحميل الطلب...</p>
       </div>
     </div>
   );
@@ -54,19 +54,19 @@ export default function OrderTrackingPage() {
   const currentStepIdx = STATUS_STEPS.indexOf(order.status);
 
   return (
-    <div className="min-h-screen bg-narjis-bg">
+    <div className="min-h-screen bg-narges-bg">
       {/* Map Placeholder */}
       <div className="relative h-56 bg-gradient-to-br from-green-100 to-blue-100 overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
             <div className="text-6xl mb-2">🗺️</div>
-            <p className="text-narjis-text-secondary text-sm">تتبع طلبك على الخريطة</p>
+            <p className="text-narges-text-secondary text-sm">تتبع طلبك على الخريطة</p>
           </div>
         </div>
         {/* Animated delivery icon */}
         {order.status === 'picked_up' && (
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-bounce">
-            <div className="w-12 h-12 bg-narjis-green rounded-full flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 bg-narges-green rounded-full flex items-center justify-center shadow-lg">
               <span className="text-2xl">🚗</span>
             </div>
           </div>
@@ -78,13 +78,13 @@ export default function OrderTrackingPage() {
         <div className="card p-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-xs text-narjis-text-secondary">طلب رقم</p>
-              <p className="font-bold text-narjis-green">{order.id}</p>
+              <p className="text-xs text-narges-text-secondary">طلب رقم</p>
+              <p className="font-bold text-narges-green">{order.id}</p>
             </div>
             {order.status !== 'delivered' && (
               <div className="text-left">
-                <p className="text-xs text-narjis-text-secondary">الوصول خلال</p>
-                <p className="font-bold text-narjis-orange text-lg">{formatTimeLeft(order.estimatedDeliveryAt)}</p>
+                <p className="text-xs text-narges-text-secondary">الوصول خلال</p>
+                <p className="font-bold text-narges-orange text-lg">{formatTimeLeft(order.estimatedDeliveryAt)}</p>
               </div>
             )}
             {order.status === 'delivered' && (
@@ -103,17 +103,17 @@ export default function OrderTrackingPage() {
               return (
                 <div key={step} className={`flex items-center gap-3 transition-all ${isDone ? 'opacity-100' : 'opacity-30'}`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    isCurrent ? 'bg-narjis-green text-white shadow-md' : isDone ? 'bg-green-100 text-narjis-green' : 'bg-gray-100 text-gray-400'
+                    isCurrent ? 'bg-narges-green text-white shadow-md' : isDone ? 'bg-green-100 text-narges-green' : 'bg-gray-100 text-gray-400'
                   }`}>
                     <StepIcon size={16} />
                   </div>
                   <div className="flex-1">
-                    <p className={`text-sm font-medium ${isCurrent ? 'text-narjis-green' : 'text-narjis-text'}`}>
+                    <p className={`text-sm font-medium ${isCurrent ? 'text-narges-green' : 'text-narges-text'}`}>
                       {STEP_LABELS[step]}
                     </p>
                   </div>
                   {isCurrent && (
-                    <span className="text-xs text-narjis-orange font-medium animate-pulse">جاري...</span>
+                    <span className="text-xs text-narges-orange font-medium animate-pulse">جاري...</span>
                   )}
                   {isDone && idx < currentStepIdx && (
                     <CheckCircle2 size={16} className="text-green-500" />
@@ -129,22 +129,22 @@ export default function OrderTrackingPage() {
           <div className="card p-4">
             <h3 className="font-bold mb-3">المندوب</h3>
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-narjis-green rounded-full flex items-center justify-center text-white text-xl font-bold">
+              <div className="w-12 h-12 bg-narges-green rounded-full flex items-center justify-center text-white text-xl font-bold">
                 {order.driverName[0]}
               </div>
               <div className="flex-1">
                 <p className="font-semibold">{order.driverName}</p>
                 <div className="flex items-center gap-1 mt-0.5">
                   <span className="text-yellow-400">⭐</span>
-                  <span className="text-sm text-narjis-text-secondary">4.8 (234 توصيلة)</span>
+                  <span className="text-sm text-narges-text-secondary">4.8 (234 توصيلة)</span>
                 </div>
               </div>
               <div className="flex gap-2">
-                <button className="w-10 h-10 rounded-xl bg-narjis-bg flex items-center justify-center">
-                  <Phone size={18} className="text-narjis-green" />
+                <button className="w-10 h-10 rounded-xl bg-narges-bg flex items-center justify-center">
+                  <Phone size={18} className="text-narges-green" />
                 </button>
-                <button className="w-10 h-10 rounded-xl bg-narjis-bg flex items-center justify-center">
-                  <MessageCircle size={18} className="text-narjis-green" />
+                <button className="w-10 h-10 rounded-xl bg-narges-bg flex items-center justify-center">
+                  <MessageCircle size={18} className="text-narges-green" />
                 </button>
               </div>
             </div>
@@ -157,13 +157,13 @@ export default function OrderTrackingPage() {
           <div className="space-y-2">
             {order.items.map((item, idx) => (
               <div key={idx} className="flex justify-between text-sm">
-                <span className="text-narjis-text">{item.nameAr} × {item.qty}</span>
+                <span className="text-narges-text">{item.nameAr} × {item.qty}</span>
                 <span className="font-medium">{formatSAR(item.totalPrice)}</span>
               </div>
             ))}
             <div className="border-t pt-2 flex justify-between font-bold">
               <span>الإجمالي</span>
-              <span className="text-narjis-green">{formatSAR(order.total)}</span>
+              <span className="text-narges-green">{formatSAR(order.total)}</span>
             </div>
           </div>
         </div>

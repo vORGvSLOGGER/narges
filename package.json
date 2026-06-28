@@ -1,5 +1,5 @@
 {
-  "name": "narjis-supermarket",
+  "name": "narges-supermarket",
   "version": "1.0.0",
   "private": true,
   "workspaces": ["scraper", "app"],

@@ -5,7 +5,7 @@ import { formatDate } from '../../../utils/formatters';
 import toast from 'react-hot-toast';
 
 const TIER_ICONS = { bronze: '🥉', silver: '🥈', gold: '🥇' };
-const REFERRAL_CODE = 'NARJIS-A7MED';
+const REFERRAL_CODE = 'NARGES-A7MED';
 
 export default function LoyaltyPage() {
   const navigate = useNavigate();
@@ -35,9 +35,9 @@ export default function LoyaltyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-narjis-bg pb-24">
+    <div className="min-h-screen bg-narges-bg pb-24">
       {/* Header */}
-      <div className="bg-narjis-green px-4 pt-12 pb-8">
+      <div className="bg-narges-green px-4 pt-12 pb-8">
         <div className="flex items-center gap-3 mb-6">
           <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
             <ArrowRight size={18} className="text-white" />
@@ -86,16 +86,16 @@ export default function LoyaltyPage() {
           <h3 className="font-bold mb-3">مستويات الولاء</h3>
           <div className="space-y-2">
             {TIERS.map(t => (
-              <div key={t.id} className={`flex items-center gap-3 p-3 rounded-xl ${tier.id === t.id ? 'bg-green-50 border border-narjis-light' : 'bg-narjis-bg'}`}>
+              <div key={t.id} className={`flex items-center gap-3 p-3 rounded-xl ${tier.id === t.id ? 'bg-green-50 border border-narges-light' : 'bg-narges-bg'}`}>
                 <span className="text-xl">{TIER_ICONS[t.id]}</span>
                 <div className="flex-1">
                   <p className="font-medium text-sm">{t.label}</p>
-                  <p className="text-xs text-narjis-text-secondary">
+                  <p className="text-xs text-narges-text-secondary">
                     {t.maxPoints === Infinity ? `${t.minPoints}+ نقطة` : `${t.minPoints} - ${t.maxPoints} نقطة`}
                   </p>
                 </div>
                 {t.discount > 0 && (
-                  <span className="text-xs bg-narjis-orange/10 text-narjis-orange font-bold px-2 py-0.5 rounded-full">
+                  <span className="text-xs bg-narges-orange/10 text-narges-orange font-bold px-2 py-0.5 rounded-full">
                     خصم {t.discount}%
                   </span>
                 )}
@@ -107,20 +107,20 @@ export default function LoyaltyPage() {
         {/* Redeem */}
         <div className="card p-4">
           <div className="flex items-center gap-2 mb-3">
-            <Gift size={18} className="text-narjis-orange" />
+            <Gift size={18} className="text-narges-orange" />
             <h3 className="font-bold">استبدال النقاط</h3>
           </div>
-          <p className="text-sm text-narjis-text-secondary mb-4">كل 100 نقطة = 5 ريال خصم على طلبك القادم</p>
-          <div className="flex items-center justify-between bg-narjis-bg rounded-xl p-3 mb-3">
+          <p className="text-sm text-narges-text-secondary mb-4">كل 100 نقطة = 5 ريال خصم على طلبك القادم</p>
+          <div className="flex items-center justify-between bg-narges-bg rounded-xl p-3 mb-3">
             <span className="text-sm">النقاط القابلة للاستبدال</span>
-            <span className="font-bold text-narjis-green">{redeemableBlocks * 100} نقطة = {redeemableBlocks * 5} ر.س</span>
+            <span className="font-bold text-narges-green">{redeemableBlocks * 100} نقطة = {redeemableBlocks * 5} ر.س</span>
           </div>
           <button
             onClick={handleRedeem}
             disabled={redeemableBlocks < 1}
             className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${
               redeemableBlocks >= 1
-                ? 'bg-narjis-orange text-white active:scale-95'
+                ? 'bg-narges-orange text-white active:scale-95'
                 : 'bg-gray-100 text-gray-400 cursor-not-allowed'
             }`}
           >
@@ -131,15 +131,15 @@ export default function LoyaltyPage() {
         {/* Referral */}
         <div className="card p-4">
           <div className="flex items-center gap-2 mb-3">
-            <Star size={18} className="text-narjis-light" />
+            <Star size={18} className="text-narges-light" />
             <h3 className="font-bold">دعوة الأصدقاء</h3>
           </div>
-          <p className="text-sm text-narjis-text-secondary mb-4">ادع صديقاً واحصل على 50 نقطة لكل منكما عند أول طلب</p>
-          <div className="flex items-center gap-2 bg-narjis-bg rounded-xl p-3">
-            <span className="flex-1 font-mono font-bold text-narjis-green tracking-widest text-center">{REFERRAL_CODE}</span>
+          <p className="text-sm text-narges-text-secondary mb-4">ادع صديقاً واحصل على 50 نقطة لكل منكما عند أول طلب</p>
+          <div className="flex items-center gap-2 bg-narges-bg rounded-xl p-3">
+            <span className="flex-1 font-mono font-bold text-narges-green tracking-widest text-center">{REFERRAL_CODE}</span>
             <button
               onClick={copyReferral}
-              className="bg-narjis-green text-white text-xs px-3 py-1.5 rounded-lg font-medium"
+              className="bg-narges-green text-white text-xs px-3 py-1.5 rounded-lg font-medium"
             >
               نسخ
             </button>
@@ -149,20 +149,20 @@ export default function LoyaltyPage() {
         {/* History */}
         <div className="card p-4">
           <div className="flex items-center gap-2 mb-3">
-            <Clock size={18} className="text-narjis-text-secondary" />
+            <Clock size={18} className="text-narges-text-secondary" />
             <h3 className="font-bold">سجل النقاط</h3>
           </div>
           {history.length === 0 ? (
-            <p className="text-center text-narjis-text-secondary text-sm py-4">لا يوجد سجل بعد</p>
+            <p className="text-center text-narges-text-secondary text-sm py-4">لا يوجد سجل بعد</p>
           ) : (
             <div className="space-y-2">
               {history.map(h => (
                 <div key={h.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                   <div>
                     <p className="text-sm font-medium">{h.description}</p>
-                    <p className="text-xs text-narjis-text-secondary">{formatDate(h.date)}</p>
+                    <p className="text-xs text-narges-text-secondary">{formatDate(h.date)}</p>
                   </div>
-                  <span className={`font-bold text-sm ${h.points > 0 ? 'text-narjis-green' : 'text-red-500'}`}>
+                  <span className={`font-bold text-sm ${h.points > 0 ? 'text-narges-green' : 'text-red-500'}`}>
                     {h.points > 0 ? '+' : ''}{h.points}
                   </span>
                 </div>

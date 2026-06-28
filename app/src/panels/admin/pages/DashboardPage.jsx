@@ -29,7 +29,7 @@ const StatsCard = ({ icon: Icon, label, value, sub, color, bgColor }) => (
   <div className="card p-5">
     <div className="flex items-start justify-between">
       <div>
-        <p className="text-sm text-narjis-text-secondary">{label}</p>
+        <p className="text-sm text-narges-text-secondary">{label}</p>
         <p className="text-2xl font-bold mt-1" style={{ color }}>{value}</p>
         {sub && <p className="text-xs text-green-600 mt-1">↑ {sub}</p>}
       </div>
@@ -50,8 +50,8 @@ export default function DashboardPage() {
   return (
     <div className="p-6 space-y-6 overflow-auto">
       <div>
-        <h1 className="text-2xl font-bold text-narjis-text">لوحة التحكم</h1>
-        <p className="text-narjis-text-secondary text-sm mt-1">مرحباً! إليك ملخص أداء المتجر اليوم.</p>
+        <h1 className="text-2xl font-bold text-narges-text">لوحة التحكم</h1>
+        <p className="text-narges-text-secondary text-sm mt-1">مرحباً! إليك ملخص أداء المتجر اليوم.</p>
       </div>
 
       {/* Stats */}
@@ -100,7 +100,7 @@ export default function DashboardPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-narjis-text-secondary text-xs border-b">
+              <tr className="text-narges-text-secondary text-xs border-b">
                 <th className="text-right pb-2 font-medium">رقم الطلب</th>
                 <th className="text-right pb-2 font-medium">العميل</th>
                 <th className="text-right pb-2 font-medium">الحالة</th>
@@ -110,12 +110,12 @@ export default function DashboardPage() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {recentOrders.map(o => (
-                <tr key={o.id} className="hover:bg-narjis-bg/50 transition-colors">
-                  <td className="py-2.5 font-medium text-narjis-green">{o.id}</td>
+                <tr key={o.id} className="hover:bg-narges-bg/50 transition-colors">
+                  <td className="py-2.5 font-medium text-narges-green">{o.id}</td>
                   <td className="py-2.5">{o.customerName}</td>
                   <td className="py-2.5"><StatusBadge status={o.status} /></td>
                   <td className="py-2.5 text-left font-medium">{formatSAR(o.total)}</td>
-                  <td className="py-2.5 text-left text-narjis-text-secondary text-xs">{formatRelativeTime(o.createdAt)}</td>
+                  <td className="py-2.5 text-left text-narges-text-secondary text-xs">{formatRelativeTime(o.createdAt)}</td>
                 </tr>
               ))}
             </tbody>

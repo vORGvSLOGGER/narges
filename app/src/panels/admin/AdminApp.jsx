@@ -13,7 +13,7 @@ export default function AdminApp() {
   const loadOrders = useOrderStore((s) => s.loadOrders);
   useEffect(() => { loadOrders(); }, [loadOrders]);
   return (
-    <div className="flex min-h-screen bg-narjis-bg">
+    <div className="flex min-h-screen bg-narges-bg">
       <Sidebar />
       <main className="flex-1 overflow-auto">
         <div className="pt-8">
@@ -45,12 +45,12 @@ function DriversPlaceholder() {
           { name: 'سعد الحربي', deliveries: 98, rating: 4.5, status: 'offline' },
         ].map((d, i) => (
           <div key={i} className="card p-4 flex items-center gap-4">
-            <div className="w-14 h-14 bg-narjis-green rounded-full flex items-center justify-center text-white text-2xl font-bold">
+            <div className="w-14 h-14 bg-narges-green rounded-full flex items-center justify-center text-white text-2xl font-bold">
               {d.name[0]}
             </div>
             <div className="flex-1">
               <p className="font-bold">{d.name}</p>
-              <p className="text-sm text-narjis-text-secondary">{d.deliveries} توصيلة • ⭐ {d.rating}</p>
+              <p className="text-sm text-narges-text-secondary">{d.deliveries} توصيلة • ⭐ {d.rating}</p>
             </div>
             <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${d.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
               {d.status === 'active' ? 'متاح' : 'غير متاح'}
@@ -74,7 +74,7 @@ function SettingsPlaceholder() {
           { label: 'الحد الأدنى للطلب', value: '30 ر.س' },
         ].map((s, i) => (
           <div key={i} className="flex items-center justify-between pb-3 border-b border-gray-50">
-            <span className="text-narjis-text-secondary text-sm">{s.label}</span>
+            <span className="text-narges-text-secondary text-sm">{s.label}</span>
             <span className="font-medium">{s.value}</span>
           </div>
         ))}

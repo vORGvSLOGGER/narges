@@ -36,13 +36,13 @@ export default function DriversMapPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">تتبع المناديب</h1>
-          <p className="text-narjis-text-secondary text-sm mt-0.5">{active} من {mockDrivers.length} مناديب متاحين الآن</p>
+          <p className="text-narges-text-secondary text-sm mt-0.5">{active} من {mockDrivers.length} مناديب متاحين الآن</p>
         </div>
         <div className="flex gap-3">
           {Object.entries(STATUS_CONFIG).map(([k, v]) => (
             <div key={k} className="flex items-center gap-1.5">
               <div className="w-2.5 h-2.5 rounded-full" style={{ background: v.dot }} />
-              <span className="text-xs text-narjis-text-secondary">{v.label}</span>
+              <span className="text-xs text-narges-text-secondary">{v.label}</span>
             </div>
           ))}
         </div>
@@ -78,20 +78,20 @@ export default function DriversMapPage() {
           const cfg = STATUS_CONFIG[d.status];
           return (
             <div key={d.id} className="card p-4 flex items-center gap-3">
-              <div className="w-11 h-11 bg-narjis-green rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+              <div className="w-11 h-11 bg-narges-green rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                 {d.name[0]}
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-bold text-sm truncate">{d.name}</p>
                 <div className="flex items-center gap-1 mt-0.5">
                   <Star size={11} className="text-yellow-400 fill-yellow-400" />
-                  <span className="text-xs text-narjis-text-secondary">{d.rating} • {d.ordersToday} اليوم</span>
+                  <span className="text-xs text-narges-text-secondary">{d.rating} • {d.ordersToday} اليوم</span>
                 </div>
               </div>
               <div className="flex flex-col items-end gap-1.5">
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${cfg.color}`}>{cfg.label}</span>
                 <a href={`tel:${d.phone}`}>
-                  <Phone size={14} className="text-narjis-text-secondary" />
+                  <Phone size={14} className="text-narges-text-secondary" />
                 </a>
               </div>
             </div>

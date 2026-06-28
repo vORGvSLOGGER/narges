@@ -15,14 +15,14 @@ export default function SearchPage() {
   );
 
   return (
-    <div className="min-h-screen bg-narjis-bg">
+    <div className="min-h-screen bg-narges-bg">
       {/* Search Bar */}
       <div className="sticky top-8 z-40 bg-white px-4 py-3 flex items-center gap-3 shadow-sm">
-        <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narjis-bg flex items-center justify-center">
+        <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
           <ArrowRight size={18} />
         </button>
-        <div className="flex-1 flex items-center gap-2 bg-narjis-bg rounded-xl px-3 py-2.5">
-          <Search size={16} className="text-narjis-text-secondary" />
+        <div className="flex-1 flex items-center gap-2 bg-narges-bg rounded-xl px-3 py-2.5">
+          <Search size={16} className="text-narges-text-secondary" />
           <input
             autoFocus
             value={query}
@@ -32,7 +32,7 @@ export default function SearchPage() {
           />
           {query && (
             <button onClick={() => setQuery('')}>
-              <X size={16} className="text-narjis-text-secondary" />
+              <X size={16} className="text-narges-text-secondary" />
             </button>
           )}
         </div>
@@ -42,19 +42,19 @@ export default function SearchPage() {
         {query.length === 0 && (
           <div className="text-center py-16">
             <span className="text-6xl">🔍</span>
-            <p className="mt-3 text-narjis-text-secondary">ابحث عن منتجاتك المفضلة</p>
+            <p className="mt-3 text-narges-text-secondary">ابحث عن منتجاتك المفضلة</p>
           </div>
         )}
         {query.length > 1 && results.length === 0 && (
           <div className="text-center py-16">
             <span className="text-6xl">😕</span>
-            <p className="mt-3 text-narjis-text font-medium">لا نتائج لـ "{query}"</p>
-            <p className="text-narjis-text-secondary text-sm mt-1">جرب كلمة بحث مختلفة</p>
+            <p className="mt-3 text-narges-text font-medium">لا نتائج لـ "{query}"</p>
+            <p className="text-narges-text-secondary text-sm mt-1">جرب كلمة بحث مختلفة</p>
           </div>
         )}
         {results.length > 0 && (
           <>
-            <p className="text-sm text-narjis-text-secondary mb-3">{results.length} نتيجة لـ "{query}"</p>
+            <p className="text-sm text-narges-text-secondary mb-3">{results.length} نتيجة لـ "{query}"</p>
             <div className="grid grid-cols-2 gap-3">
               {results.map(p => <ProductCard key={p.id} product={p} />)}
             </div>

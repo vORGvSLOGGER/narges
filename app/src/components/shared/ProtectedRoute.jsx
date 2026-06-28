@@ -13,7 +13,7 @@ export default function ProtectedRoute({ roles, children }) {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-narjis-text-secondary">
+      <div className="min-h-screen flex items-center justify-center text-narges-text-secondary">
         <span className="animate-pulse">جاري التحقق...</span>
       </div>
     );
@@ -27,8 +27,8 @@ export default function ProtectedRoute({ roles, children }) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center gap-3 text-center px-6">
         <span className="text-5xl">🔒</span>
-        <p className="font-bold text-narjis-text">لا تملك صلاحية الوصول لهذه اللوحة</p>
-        <p className="text-sm text-narjis-text-secondary">دورك الحالي: {profile?.role || 'غير محدد'}</p>
+        <p className="font-bold text-narges-text">لا تملك صلاحية الوصول لهذه اللوحة</p>
+        <p className="text-sm text-narges-text-secondary">دورك الحالي: {profile?.role || 'غير محدد'}</p>
         <Navigate to="/Customer" replace />
       </div>
     );

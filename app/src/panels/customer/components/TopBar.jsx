@@ -12,14 +12,14 @@ export default function TopBar({ onSearchClick, onCartClick }) {
       <div className="px-4 py-3 flex items-center justify-between gap-3">
         {/* Logo + Location */}
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 bg-narjis-green rounded-xl flex items-center justify-center">
+          <div className="w-9 h-9 bg-narges-green rounded-xl flex items-center justify-center">
             <span className="text-white font-bold text-lg">ن</span>
           </div>
           <div>
-            <p className="text-xs text-narjis-text-secondary leading-none">التوصيل إلى</p>
+            <p className="text-xs text-narges-text-secondary leading-none">التوصيل إلى</p>
             <div className="flex items-center gap-1">
-              <MapPin size={12} className="text-narjis-light" />
-              <span className="text-sm font-semibold text-narjis-text">حي الروضة، الرياض</span>
+              <MapPin size={12} className="text-narges-light" />
+              <span className="text-sm font-semibold text-narges-text">حي الروضة، الرياض</span>
             </div>
           </div>
         </div>
@@ -28,17 +28,17 @@ export default function TopBar({ onSearchClick, onCartClick }) {
         <div className="flex items-center gap-2">
           <button
             onClick={onSearchClick || (() => navigate('/Customer/search'))}
-            className="w-9 h-9 rounded-xl bg-narjis-bg flex items-center justify-center"
+            className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center"
           >
-            <Search size={18} className="text-narjis-text" />
+            <Search size={18} className="text-narges-text" />
           </button>
           <button
             onClick={onCartClick || (() => navigate('/Customer/cart'))}
-            className="relative w-9 h-9 rounded-xl bg-narjis-bg flex items-center justify-center"
+            className="relative w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center"
           >
-            <ShoppingCart size={18} className="text-narjis-text" />
+            <ShoppingCart size={18} className="text-narges-text" />
             {totalItems > 0 && (
-              <span className="absolute -top-1 -left-1 w-5 h-5 bg-narjis-orange text-white text-xs font-bold rounded-full flex items-center justify-center animate-bounce-in">
+              <span className="absolute -top-1 -left-1 w-5 h-5 bg-narges-orange text-white text-xs font-bold rounded-full flex items-center justify-center animate-bounce-in">
                 {totalItems > 9 ? '9+' : totalItems}
               </span>
             )}

@@ -14,7 +14,7 @@ const navItems = [
 
 export default function Sidebar() {
   return (
-    <aside className="w-56 min-h-screen bg-narjis-green flex flex-col print:hidden">
+    <aside className="w-56 min-h-screen bg-narges-green flex flex-col print:hidden">
       {/* Logo */}
       <div className="px-5 py-6 border-b border-white/10">
         <div className="flex items-center gap-3">
@@ -41,7 +41,7 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-sm font-medium ${
                 isActive
-                  ? 'bg-white text-narjis-green shadow'
+                  ? 'bg-white text-narges-green shadow'
                   : 'text-white/80 hover:bg-white/10 hover:text-white'
               }`
             }

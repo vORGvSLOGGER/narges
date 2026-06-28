@@ -13,7 +13,7 @@ export default function PanelSwitcher() {
   const navigate = useNavigate();
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-narjis-green shadow-lg">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-narges-green shadow-lg">
       <div className="flex items-center justify-center gap-1 px-2 py-1">
         <span className="text-white/60 text-xs ml-2 hidden sm:block">عرض تجريبي:</span>
         {panels.map(p => (
@@ -22,7 +22,7 @@ export default function PanelSwitcher() {
             onClick={() => { setPanel(p.id); navigate(p.path); }}
             className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all
               ${activePanel === p.id
-                ? 'bg-white text-narjis-green shadow'
+                ? 'bg-white text-narges-green shadow'
                 : 'text-white/80 hover:bg-white/10'
               }`}
           >

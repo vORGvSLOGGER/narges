@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        narjis: {
+        narges: {
           green: '#1B5E20',
           'green-mid': '#2E7D32',
           light: '#4CAF50',

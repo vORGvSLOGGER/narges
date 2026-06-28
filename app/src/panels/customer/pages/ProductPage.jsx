@@ -16,13 +16,13 @@ export default function ProductPage() {
   const totalItems = items.reduce((s, i) => s + i.qty, 0);
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center text-narjis-text-secondary">
+    <div className="min-h-screen flex items-center justify-center text-narges-text-secondary">
       <span className="animate-pulse">جاري التحميل...</span>
     </div>
   );
 
   if (!product) return (
-    <div className="min-h-screen flex items-center justify-center text-narjis-text-secondary">
+    <div className="min-h-screen flex items-center justify-center text-narges-text-secondary">
       المنتج غير موجود
     </div>
   );
@@ -49,7 +49,7 @@ export default function ProductPage() {
           <button onClick={() => navigate('/Customer/cart')} className="relative w-10 h-10 rounded-xl bg-white/90 backdrop-blur flex items-center justify-center shadow">
             <ShoppingCart size={18} />
             {totalItems > 0 && (
-              <span className="absolute -top-1 -left-1 w-5 h-5 bg-narjis-orange text-white text-xs font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -left-1 w-5 h-5 bg-narges-orange text-white text-xs font-bold rounded-full flex items-center justify-center">
                 {totalItems}
               </span>
             )}
@@ -66,8 +66,8 @@ export default function ProductPage() {
       {/* Details */}
       <div className="flex-1 p-5 space-y-4">
         <div>
-          <h1 className="text-xl font-bold text-narjis-text">{product.nameAr}</h1>
-          <p className="text-narjis-text-secondary text-sm mt-1">{product.unit}</p>
+          <h1 className="text-xl font-bold text-narges-text">{product.nameAr}</h1>
+          <p className="text-narges-text-secondary text-sm mt-1">{product.unit}</p>
         </div>
 
         {/* Rating */}
@@ -76,7 +76,7 @@ export default function ProductPage() {
             <Star size={14} className="text-yellow-400 fill-yellow-400" />
             <span className="text-sm font-bold">{product.rating}</span>
           </div>
-          <span className="text-sm text-narjis-text-secondary">({product.reviewCount} تقييم)</span>
+          <span className="text-sm text-narges-text-secondary">({product.reviewCount} تقييم)</span>
           <span className={`text-sm font-medium ${product.inStock ? 'text-green-600' : 'text-red-500'}`}>
             {product.inStock ? '✓ متوفر' : 'نفد المخزون'}
           </span>
@@ -84,7 +84,7 @@ export default function ProductPage() {
 
         {/* Price */}
         <div className="flex items-baseline gap-2">
-          <span className="text-3xl font-bold text-narjis-green">{formatSAR(product.price)}</span>
+          <span className="text-3xl font-bold text-narges-green">{formatSAR(product.price)}</span>
           {product.isOffer && (
             <span className="text-lg text-gray-400 line-through">{formatSAR(product.originalPrice)}</span>
           )}
@@ -92,8 +92,8 @@ export default function ProductPage() {
 
         {/* Quantity Picker */}
         <div className="flex items-center gap-4">
-          <span className="font-medium text-narjis-text">الكمية</span>
-          <div className="flex items-center gap-3 bg-narjis-bg rounded-xl p-1">
+          <span className="font-medium text-narges-text">الكمية</span>
+          <div className="flex items-center gap-3 bg-narges-bg rounded-xl p-1">
             <button
               onClick={() => setQty(q => Math.max(1, q - 1))}
               className="w-9 h-9 rounded-lg bg-white shadow-sm flex items-center justify-center active:scale-90 transition-transform"
@@ -103,14 +103,14 @@ export default function ProductPage() {
             <span className="w-8 text-center font-bold text-lg">{qty}</span>
             <button
               onClick={() => setQty(q => q + 1)}
-              className="w-9 h-9 rounded-lg bg-narjis-light shadow-sm flex items-center justify-center active:scale-90 transition-transform"
+              className="w-9 h-9 rounded-lg bg-narges-light shadow-sm flex items-center justify-center active:scale-90 transition-transform"
             >
               <Plus size={16} className="text-white" />
             </button>
           </div>
         </div>
 
-        <p className="text-narjis-text-secondary text-sm leading-relaxed">
+        <p className="text-narges-text-secondary text-sm leading-relaxed">
           منتج فاخر من أفضل المصادر المختارة بعناية لضمان أعلى جودة لعملائنا الكرام. يمكنك الطلب الآن والاستلام خلال 30-45 دقيقة.
         </p>
       </div>

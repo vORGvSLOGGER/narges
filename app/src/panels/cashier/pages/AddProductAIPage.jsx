@@ -129,9 +129,9 @@ export default function AddProductAIPage() {
   };
 
   return (
-    <div className="min-h-screen bg-narjis-bg pb-10">
+    <div className="min-h-screen bg-narges-bg pb-10">
       {/* Header */}
-      <div className="bg-narjis-green px-4 pt-12 pb-5">
+      <div className="bg-narges-green px-4 pt-12 pb-5">
         <div className="flex items-center gap-3">
           <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
             <ArrowRight size={18} className="text-white" />
@@ -149,7 +149,7 @@ export default function AddProductAIPage() {
           onDragOver={e => e.preventDefault()}
           onDrop={handleDrop}
           onClick={() => fileRef.current?.click()}
-          className="relative border-2 border-dashed border-narjis-light rounded-2xl overflow-hidden cursor-pointer active:scale-98 transition-transform bg-white"
+          className="relative border-2 border-dashed border-narges-light rounded-2xl overflow-hidden cursor-pointer active:scale-98 transition-transform bg-white"
           style={{ minHeight: 200 }}
         >
           <input
@@ -165,13 +165,13 @@ export default function AddProductAIPage() {
           ) : (
             <div className="flex flex-col items-center justify-center h-52 gap-3">
               <div className="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center">
-                <Camera size={32} className="text-narjis-light" />
+                <Camera size={32} className="text-narges-light" />
               </div>
               <div className="text-center">
-                <p className="font-bold text-narjis-text">التقط صورة أو ارفع من المعرض</p>
-                <p className="text-sm text-narjis-text-secondary mt-1">PNG، JPG مدعوم</p>
+                <p className="font-bold text-narges-text">التقط صورة أو ارفع من المعرض</p>
+                <p className="text-sm text-narges-text-secondary mt-1">PNG، JPG مدعوم</p>
               </div>
-              <button className="flex items-center gap-2 bg-narjis-light text-white text-sm px-4 py-2 rounded-xl">
+              <button className="flex items-center gap-2 bg-narges-light text-white text-sm px-4 py-2 rounded-xl">
                 <Upload size={14} />
                 اختر صورة
               </button>
@@ -214,32 +214,32 @@ export default function AddProductAIPage() {
           <h3 className="font-bold">بيانات المنتج</h3>
 
           <div>
-            <label className="text-xs text-narjis-text-secondary mb-1 block">اسم المنتج *</label>
+            <label className="text-xs text-narges-text-secondary mb-1 block">اسم المنتج *</label>
             <input
               value={form.nameAr}
               onChange={e => setForm(f => ({ ...f, nameAr: e.target.value }))}
               placeholder="مثال: حليب ألمراعي كامل الدسم"
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light"
+              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs text-narjis-text-secondary mb-1 block">السعر (ر.س) *</label>
+              <label className="text-xs text-narges-text-secondary mb-1 block">السعر (ر.س) *</label>
               <input
                 type="number"
                 value={form.price}
                 onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
                 placeholder="0.00"
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light"
+                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light"
               />
             </div>
             <div>
-              <label className="text-xs text-narjis-text-secondary mb-1 block">الوحدة</label>
+              <label className="text-xs text-narges-text-secondary mb-1 block">الوحدة</label>
               <select
                 value={form.unit}
                 onChange={e => setForm(f => ({ ...f, unit: e.target.value }))}
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light bg-white"
+                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light bg-white"
               >
                 {['قطعة', 'كيلو', 'لتر', 'علبة', 'كرتون', 'باكيت'].map(u => (
                   <option key={u} value={u}>{u}</option>
@@ -250,11 +250,11 @@ export default function AddProductAIPage() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs text-narjis-text-secondary mb-1 block">القسم *</label>
+              <label className="text-xs text-narges-text-secondary mb-1 block">القسم *</label>
               <select
                 value={form.categoryId}
                 onChange={e => setForm(f => ({ ...f, categoryId: e.target.value }))}
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light bg-white"
+                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light bg-white"
               >
                 <option value="">اختر القسم</option>
                 {categories.map(c => (
@@ -263,12 +263,12 @@ export default function AddProductAIPage() {
               </select>
             </div>
             <div>
-              <label className="text-xs text-narjis-text-secondary mb-1 block">الكمية في المخزن</label>
+              <label className="text-xs text-narges-text-secondary mb-1 block">الكمية في المخزن</label>
               <input
                 type="number"
                 value={form.stockQty}
                 onChange={e => setForm(f => ({ ...f, stockQty: e.target.value }))}
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light"
+                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light"
               />
             </div>
           </div>

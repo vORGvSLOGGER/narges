@@ -30,9 +30,9 @@ export default function OrderQueuePage() {
   };
 
   return (
-    <div className="min-h-screen bg-narjis-bg">
+    <div className="min-h-screen bg-narges-bg">
       {/* Header */}
-      <div className="bg-narjis-green px-4 pt-12 pb-5">
+      <div className="bg-narges-green px-4 pt-12 pb-5">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-white text-2xl font-bold">لوحة الكاشير</h1>
@@ -66,7 +66,7 @@ export default function OrderQueuePage() {
         {queueOrders.length === 0 ? (
           <div className="text-center py-16">
             <span className="text-6xl">✅</span>
-            <p className="mt-3 text-narjis-text font-medium">لا توجد طلبات معلقة</p>
+            <p className="mt-3 text-narges-text font-medium">لا توجد طلبات معلقة</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -80,14 +80,14 @@ export default function OrderQueuePage() {
                   {/* Order Header */}
                   <div className="flex items-center justify-between mb-3">
                     <div>
-                      <p className="font-bold text-narjis-green">{order.id}</p>
-                      <p className="text-xs text-narjis-text-secondary">{order.customerName}</p>
+                      <p className="font-bold text-narges-green">{order.id}</p>
+                      <p className="text-xs text-narges-text-secondary">{order.customerName}</p>
                     </div>
                     <div className="text-left">
                       <div className={`text-xs font-bold px-2.5 py-1 rounded-full ${STATUS_COLORS[order.status]?.bg} ${STATUS_COLORS[order.status]?.text}`}>
                         {STATUS_LABELS[order.status]}
                       </div>
-                      <p className="text-xs text-narjis-text-secondary mt-1 text-left">
+                      <p className="text-xs text-narges-text-secondary mt-1 text-left">
                         <Clock size={10} className="inline ml-0.5" />
                         {formatRelativeTime(order.createdAt)}
                       </p>
@@ -98,27 +98,27 @@ export default function OrderQueuePage() {
                   <div className="space-y-1 mb-3">
                     {order.items.slice(0, 3).map((item, i) => (
                       <div key={i} className="flex items-center gap-1 text-xs">
-                        <Package size={10} className="text-narjis-text-secondary flex-shrink-0" />
-                        <span className="text-narjis-text flex-1 truncate">{item.nameAr}</span>
-                        <span className="text-narjis-text-secondary">×{item.qty}</span>
+                        <Package size={10} className="text-narges-text-secondary flex-shrink-0" />
+                        <span className="text-narges-text flex-1 truncate">{item.nameAr}</span>
+                        <span className="text-narges-text-secondary">×{item.qty}</span>
                       </div>
                     ))}
                     {order.items.length > 3 && (
-                      <p className="text-xs text-narjis-text-secondary">+{order.items.length - 3} منتجات أخرى</p>
+                      <p className="text-xs text-narges-text-secondary">+{order.items.length - 3} منتجات أخرى</p>
                     )}
                   </div>
 
                   {/* Footer */}
                   <div className="flex items-center justify-between pt-2 border-t border-black/5">
-                    <span className="text-xs text-narjis-text-secondary">{PAYMENT_LABELS[order.paymentMethod]}</span>
-                    <span className="font-bold text-narjis-green text-sm">{formatSAR(order.total)}</span>
+                    <span className="text-xs text-narges-text-secondary">{PAYMENT_LABELS[order.paymentMethod]}</span>
+                    <span className="font-bold text-narges-green text-sm">{formatSAR(order.total)}</span>
                   </div>
 
                   {/* Advance Button */}
                   {order.status !== 'ready' && (
                     <button
                       onClick={(e) => handleAdvance(e, order)}
-                      className="w-full mt-3 bg-narjis-light text-white text-sm font-medium py-2 rounded-lg active:scale-95 transition-transform"
+                      className="w-full mt-3 bg-narges-light text-white text-sm font-medium py-2 rounded-lg active:scale-95 transition-transform"
                     >
                       تقدم إلى: {STATUS_LABELS[['pending', 'confirmed', 'preparing', 'ready'][['pending', 'confirmed', 'preparing', 'ready'].indexOf(order.status) + 1]] || ''}
                     </button>

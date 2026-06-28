@@ -92,17 +92,17 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-narjis-bg flex flex-col">
+      <div className="min-h-screen bg-narges-bg flex flex-col">
         <div className="bg-white px-4 py-3 flex items-center gap-3 shadow-sm sticky top-8 z-40">
-          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narjis-bg flex items-center justify-center">
+          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
             <ArrowRight size={18} />
           </button>
           <h1 className="text-lg font-bold">سلة التسوق</h1>
         </div>
         <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
           <span className="text-7xl">🛒</span>
-          <h2 className="text-xl font-bold text-narjis-text">السلة فارغة</h2>
-          <p className="text-narjis-text-secondary text-center">أضف منتجات من المتجر لتظهر هنا</p>
+          <h2 className="text-xl font-bold text-narges-text">السلة فارغة</h2>
+          <p className="text-narges-text-secondary text-center">أضف منتجات من المتجر لتظهر هنا</p>
           <button onClick={() => navigate('/Customer')} className="btn-primary px-8">تسوق الآن</button>
         </div>
       </div>
@@ -110,14 +110,14 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-narjis-bg flex flex-col pb-40">
+    <div className="min-h-screen bg-narges-bg flex flex-col pb-40">
       {/* Header */}
       <div className="bg-white px-4 py-3 flex items-center gap-3 shadow-sm sticky top-8 z-40">
-        <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narjis-bg flex items-center justify-center">
+        <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
           <ArrowRight size={18} />
         </button>
         <h1 className="text-lg font-bold flex-1">سلة التسوق</h1>
-        <span className="text-sm text-narjis-text-secondary">{items.length} منتج</span>
+        <span className="text-sm text-narges-text-secondary">{items.length} منتج</span>
       </div>
 
       <div className="px-4 pt-4 space-y-4">
@@ -127,19 +127,19 @@ export default function CartPage() {
             <div key={item.id} className="flex items-center gap-3 p-3">
               <img src={item.image} alt={item.nameAr} className="w-16 h-16 rounded-xl object-cover flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-sm text-narjis-text line-clamp-2">{item.nameAr}</p>
-                <p className="text-narjis-green font-bold mt-1">{formatSAR(item.price)}</p>
+                <p className="font-medium text-sm text-narges-text line-clamp-2">{item.nameAr}</p>
+                <p className="text-narges-green font-bold mt-1">{formatSAR(item.price)}</p>
               </div>
               <div className="flex flex-col items-center gap-2">
                 <button onClick={() => removeItem(item.id)} className="text-red-400 active:scale-90 transition-transform">
                   <Trash2 size={14} />
                 </button>
-                <div className="flex items-center gap-2 bg-narjis-bg rounded-lg p-0.5">
+                <div className="flex items-center gap-2 bg-narges-bg rounded-lg p-0.5">
                   <button onClick={() => updateQty(item.id, item.qty - 1)} className="w-7 h-7 rounded-md bg-white flex items-center justify-center">
                     <Minus size={12} />
                   </button>
                   <span className="w-5 text-center font-bold text-sm">{item.qty}</span>
-                  <button onClick={() => updateQty(item.id, item.qty + 1)} className="w-7 h-7 rounded-md bg-narjis-light flex items-center justify-center">
+                  <button onClick={() => updateQty(item.id, item.qty + 1)} className="w-7 h-7 rounded-md bg-narges-light flex items-center justify-center">
                     <Plus size={12} className="text-white" />
                   </button>
                 </div>
@@ -156,7 +156,7 @@ export default function CartPage() {
           <input
             value={address}
             onChange={e => setAddress(e.target.value)}
-            className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light"
+            className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light"
             placeholder="أدخل عنوانك..."
           />
         </div>
@@ -172,7 +172,7 @@ export default function CartPage() {
                 key={m.id}
                 onClick={() => setPaymentMethod(m.id)}
                 className={`flex items-center gap-2 p-3 rounded-xl border-2 transition-all ${
-                  paymentMethod === m.id ? 'border-narjis-light bg-green-50' : 'border-gray-100 bg-white'
+                  paymentMethod === m.id ? 'border-narges-light bg-green-50' : 'border-gray-100 bg-white'
                 }`}
               >
                 <span>{m.icon}</span>
@@ -186,22 +186,22 @@ export default function CartPage() {
         <div className="card p-4 space-y-2">
           <h3 className="font-bold mb-3">ملخص الطلب</h3>
           <div className="flex justify-between text-sm">
-            <span className="text-narjis-text-secondary">المجموع الفرعي</span>
+            <span className="text-narges-text-secondary">المجموع الفرعي</span>
             <span>{formatSAR(subtotal)}</span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-narjis-text-secondary">رسوم التوصيل</span>
+            <span className="text-narges-text-secondary">رسوم التوصيل</span>
             <span>{formatSAR(deliveryFee)}</span>
           </div>
           {loyaltyDiscount > 0 && (
-            <div className="flex justify-between text-sm text-narjis-orange font-medium">
+            <div className="flex justify-between text-sm text-narges-orange font-medium">
               <span>خصم الولاء 🎁</span>
               <span>- {formatSAR(loyaltyDiscount)}</span>
             </div>
           )}
           <div className="border-t pt-2 flex justify-between font-bold text-base">
             <span>الإجمالي</span>
-            <span className="text-narjis-green">{formatSAR(total)}</span>
+            <span className="text-narges-green">{formatSAR(total)}</span>
           </div>
         </div>
       </div>

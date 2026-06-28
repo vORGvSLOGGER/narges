@@ -26,14 +26,14 @@ export default function HomePage() {
   const tier = useLoyaltyStore(s => TIERS.findLast(t => s.points >= t.minPoints) || TIERS[0]);
 
   return (
-    <div className="min-h-screen bg-narjis-bg pb-20">
+    <div className="min-h-screen bg-narges-bg pb-20">
       <TopBar />
 
       <div className="px-4 pt-3 space-y-5">
         {/* Loyalty Banner */}
         <button
           onClick={() => navigate('/Customer/loyalty')}
-          className="w-full flex items-center justify-between bg-gradient-to-l from-narjis-green to-narjis-green-mid rounded-2xl px-4 py-3"
+          className="w-full flex items-center justify-between bg-gradient-to-l from-narges-green to-narges-green-mid rounded-2xl px-4 py-3"
         >
           <div className="flex items-center gap-2">
             <span className="text-xl">{TIER_ICONS[tier.id]}</span>
@@ -71,7 +71,7 @@ export default function HomePage() {
             <h2 className="section-title mb-0">تسوق حسب القسم</h2>
             <button
               onClick={() => navigate('/Customer/categories')}
-              className="text-narjis-light text-sm font-medium flex items-center gap-0.5"
+              className="text-narges-light text-sm font-medium flex items-center gap-0.5"
             >
               الكل <ChevronLeft size={16} />
             </button>
@@ -89,7 +89,7 @@ export default function HomePage() {
                 >
                   {cat.icon}
                 </div>
-                <span className="text-xs text-narjis-text font-medium text-center leading-tight">{cat.nameAr}</span>
+                <span className="text-xs text-narges-text font-medium text-center leading-tight">{cat.nameAr}</span>
               </button>
             ))}
           </div>
@@ -99,7 +99,7 @@ export default function HomePage() {
         <section>
           <div className="flex items-center justify-between mb-3">
             <h2 className="section-title mb-0">🔥 العروض الحصرية</h2>
-            <button className="text-narjis-light text-sm font-medium flex items-center gap-0.5">
+            <button className="text-narges-light text-sm font-medium flex items-center gap-0.5">
               الكل <ChevronLeft size={16} />
             </button>
           </div>
@@ -116,7 +116,7 @@ export default function HomePage() {
         <section>
           <div className="flex items-center justify-between mb-3">
             <h2 className="section-title mb-0">⭐ الأكثر مبيعاً</h2>
-            <button className="text-narjis-light text-sm font-medium flex items-center gap-0.5">
+            <button className="text-narges-light text-sm font-medium flex items-center gap-0.5">
               الكل <ChevronLeft size={16} />
             </button>
           </div>

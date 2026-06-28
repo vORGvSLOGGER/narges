@@ -41,21 +41,21 @@ export default function ProductCard({ product, size = 'normal' }) {
 
       {/* Info */}
       <div className="p-2.5 flex flex-col gap-1 flex-1">
-        <p className={`font-medium text-narjis-text leading-tight line-clamp-2 ${isSmall ? 'text-xs' : 'text-sm'}`}>
+        <p className={`font-medium text-narges-text leading-tight line-clamp-2 ${isSmall ? 'text-xs' : 'text-sm'}`}>
           {product.nameAr}
         </p>
-        <p className="text-xs text-narjis-text-secondary">{product.unit}</p>
+        <p className="text-xs text-narges-text-secondary">{product.unit}</p>
 
         {/* Rating */}
         <div className="flex items-center gap-1">
           <Star size={11} className="text-yellow-400 fill-yellow-400" />
-          <span className="text-xs text-narjis-text-secondary">{product.rating}</span>
+          <span className="text-xs text-narges-text-secondary">{product.rating}</span>
         </div>
 
         {/* Price + Add */}
         <div className="flex items-center justify-between mt-auto pt-1">
           <div>
-            <span className={`font-bold text-narjis-green ${isSmall ? 'text-sm' : 'text-base'}`}>
+            <span className={`font-bold text-narges-green ${isSmall ? 'text-sm' : 'text-base'}`}>
               {formatSAR(product.price)}
             </span>
             {product.isOffer && (
@@ -66,7 +66,7 @@ export default function ProductCard({ product, size = 'normal' }) {
           </div>
           <button
             onClick={handleAdd}
-            className="w-7 h-7 bg-narjis-light rounded-lg flex items-center justify-center active:scale-90 transition-transform"
+            className="w-7 h-7 bg-narges-light rounded-lg flex items-center justify-center active:scale-90 transition-transform"
           >
             <Plus size={16} className="text-white" strokeWidth={2.5} />
           </button>

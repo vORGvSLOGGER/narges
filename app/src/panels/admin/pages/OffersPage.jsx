@@ -38,11 +38,11 @@ export default function OffersPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">إدارة العروض</h1>
-          <p className="text-narjis-text-secondary text-sm mt-0.5">
+          <p className="text-narges-text-secondary text-sm mt-0.5">
             {offers.filter(o => o.status === 'pending').length} عرض بانتظار الاعتماد
           </p>
         </div>
-        <div className="flex items-center gap-2 bg-green-50 text-narjis-green px-3 py-2 rounded-xl text-sm font-medium">
+        <div className="flex items-center gap-2 bg-green-50 text-narges-green px-3 py-2 rounded-xl text-sm font-medium">
           <Tag size={16} />
           <span>{offers.filter(o => o.status === 'approved').length} عرض نشط</span>
         </div>
@@ -55,7 +55,7 @@ export default function OffersPage() {
             key={t.id}
             onClick={() => setFilter(t.id)}
             className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-              filter === t.id ? 'bg-narjis-green text-white' : 'bg-white text-narjis-text-secondary border border-gray-100'
+              filter === t.id ? 'bg-narges-green text-white' : 'bg-white text-narges-text-secondary border border-gray-100'
             }`}
           >
             {t.label}
@@ -78,28 +78,28 @@ export default function OffersPage() {
                       {cfg.label}
                     </span>
                   </div>
-                  <p className="text-xs text-narjis-text-secondary">اقترحه: {offer.proposedBy}</p>
+                  <p className="text-xs text-narges-text-secondary">اقترحه: {offer.proposedBy}</p>
                   {offer.notes && (
-                    <p className="text-xs text-narjis-text-secondary mt-1">ملاحظة: {offer.notes}</p>
+                    <p className="text-xs text-narges-text-secondary mt-1">ملاحظة: {offer.notes}</p>
                   )}
                 </div>
                 <div className="text-left flex-shrink-0">
-                  <div className="bg-narjis-orange/10 text-narjis-orange font-bold text-lg px-3 py-1 rounded-xl text-center">
+                  <div className="bg-narges-orange/10 text-narges-orange font-bold text-lg px-3 py-1 rounded-xl text-center">
                     {offer.discountPct}%
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-sm bg-narjis-bg rounded-xl p-3 mb-3">
+              <div className="flex items-center justify-between text-sm bg-narges-bg rounded-xl p-3 mb-3">
                 <div>
-                  <span className="text-narjis-text-secondary">السعر الأصلي: </span>
-                  <span className="line-through text-narjis-text-secondary">{offer.originalPrice} ر.س</span>
+                  <span className="text-narges-text-secondary">السعر الأصلي: </span>
+                  <span className="line-through text-narges-text-secondary">{offer.originalPrice} ر.س</span>
                 </div>
                 <div>
-                  <span className="text-narjis-text-secondary">بعد الخصم: </span>
-                  <span className="font-bold text-narjis-green">{offer.newPrice.toFixed(2)} ر.س</span>
+                  <span className="text-narges-text-secondary">بعد الخصم: </span>
+                  <span className="font-bold text-narges-green">{offer.newPrice.toFixed(2)} ر.س</span>
                 </div>
-                <div className="text-xs text-narjis-text-secondary">
+                <div className="text-xs text-narges-text-secondary">
                   حتى: {new Date(offer.validUntil).toLocaleDateString('ar-SA')}
                 </div>
               </div>
@@ -108,7 +108,7 @@ export default function OffersPage() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleApprove(offer.id, offer.productName)}
-                    className="flex-1 flex items-center justify-center gap-1.5 bg-narjis-green text-white py-2 rounded-xl text-sm font-bold"
+                    className="flex-1 flex items-center justify-center gap-1.5 bg-narges-green text-white py-2 rounded-xl text-sm font-bold"
                   >
                     <CheckCircle2 size={16} />
                     اعتماد
@@ -129,7 +129,7 @@ export default function OffersPage() {
         {filtered.length === 0 && (
           <div className="text-center py-16">
             <span className="text-5xl">🏷️</span>
-            <p className="mt-3 font-medium text-narjis-text">لا توجد عروض في هذا القسم</p>
+            <p className="mt-3 font-medium text-narges-text">لا توجد عروض في هذا القسم</p>
           </div>
         )}
       </div>

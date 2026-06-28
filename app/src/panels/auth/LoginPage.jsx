@@ -34,19 +34,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-narjis-bg flex flex-col items-center justify-center px-6">
+    <div className="min-h-screen bg-narges-bg flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-narjis-green rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3">🌷</div>
-          <h1 className="text-2xl font-bold text-narjis-text">نرجس سوبرماركت</h1>
-          <p className="text-narjis-text-secondary text-sm mt-1">سجّل الدخول للمتابعة</p>
+          <div className="w-16 h-16 bg-narges-green rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3">🌷</div>
+          <h1 className="text-2xl font-bold text-narges-text">نرجس سوبرماركت</h1>
+          <p className="text-narges-text-secondary text-sm mt-1">سجّل الدخول للمتابعة</p>
         </div>
 
         <form onSubmit={handleSubmit} className="card p-5 space-y-4">
           <div>
-            <label className="text-xs text-narjis-text-secondary mb-1 block">البريد الإلكتروني</label>
-            <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-narjis-light">
-              <Mail size={16} className="text-narjis-text-secondary" />
+            <label className="text-xs text-narges-text-secondary mb-1 block">البريد الإلكتروني</label>
+            <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-narges-light">
+              <Mail size={16} className="text-narges-text-secondary" />
               <input
                 type="email"
                 required
@@ -60,9 +60,9 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="text-xs text-narjis-text-secondary mb-1 block">كلمة المرور</label>
-            <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-narjis-light">
-              <Lock size={16} className="text-narjis-text-secondary" />
+            <label className="text-xs text-narges-text-secondary mb-1 block">كلمة المرور</label>
+            <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-narges-light">
+              <Lock size={16} className="text-narges-text-secondary" />
               <input
                 type="password"
                 required
@@ -81,11 +81,11 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <p className="text-center text-sm text-narjis-text-secondary mt-4">
+        <p className="text-center text-sm text-narges-text-secondary mt-4">
           ليس لديك حساب؟{' '}
-          <Link to="/signup" className="text-narjis-light font-medium">أنشئ حساباً</Link>
+          <Link to="/signup" className="text-narges-light font-medium">أنشئ حساباً</Link>
         </p>
-        <button onClick={() => navigate('/Customer')} className="w-full text-center text-xs text-narjis-text-secondary mt-3">
+        <button onClick={() => navigate('/Customer')} className="w-full text-center text-xs text-narges-text-secondary mt-3">
           المتابعة كزائر
         </button>
       </div>

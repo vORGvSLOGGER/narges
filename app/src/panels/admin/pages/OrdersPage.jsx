@@ -27,7 +27,7 @@ export default function OrdersPage() {
             key={s}
             onClick={() => setFilter(s)}
             className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-              filter === s ? 'bg-narjis-green text-white' : 'bg-white text-narjis-text shadow-sm'
+              filter === s ? 'bg-narges-green text-white' : 'bg-white text-narges-text shadow-sm'
             }`}
           >
             {STATUS_LABELS_LOCAL[s]}
@@ -40,8 +40,8 @@ export default function OrdersPage() {
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-narjis-bg">
-              <tr className="text-narjis-text-secondary text-xs">
+            <thead className="bg-narges-bg">
+              <tr className="text-narges-text-secondary text-xs">
                 <th className="text-right px-4 py-3 font-medium">رقم الطلب</th>
                 <th className="text-right px-4 py-3 font-medium">العميل</th>
                 <th className="text-right px-4 py-3 font-medium">الحالة</th>
@@ -53,22 +53,22 @@ export default function OrdersPage() {
             </thead>
             <tbody className="divide-y divide-gray-50">
               {filtered.map(o => (
-                <tr key={o.id} className="hover:bg-narjis-bg/30 transition-colors">
-                  <td className="px-4 py-3 font-bold text-narjis-green">{o.id}</td>
+                <tr key={o.id} className="hover:bg-narges-bg/30 transition-colors">
+                  <td className="px-4 py-3 font-bold text-narges-green">{o.id}</td>
                   <td className="px-4 py-3">
                     <p className="font-medium">{o.customerName}</p>
-                    <p className="text-xs text-narjis-text-secondary">{o.deliveryAddress.district}</p>
+                    <p className="text-xs text-narges-text-secondary">{o.deliveryAddress.district}</p>
                   </td>
                   <td className="px-4 py-3"><StatusBadge status={o.status} /></td>
-                  <td className="px-4 py-3 text-xs text-narjis-text-secondary">{PAYMENT_LABELS[o.paymentMethod]}</td>
-                  <td className="px-4 py-3 text-left font-bold text-narjis-green">{formatSAR(o.total)}</td>
-                  <td className="px-4 py-3 text-left text-xs text-narjis-text-secondary">{formatRelativeTime(o.createdAt)}</td>
+                  <td className="px-4 py-3 text-xs text-narges-text-secondary">{PAYMENT_LABELS[o.paymentMethod]}</td>
+                  <td className="px-4 py-3 text-left font-bold text-narges-green">{formatSAR(o.total)}</td>
+                  <td className="px-4 py-3 text-left text-xs text-narges-text-secondary">{formatRelativeTime(o.createdAt)}</td>
                   <td className="px-4 py-3 text-center">
                     <button
                       onClick={() => navigate(`/cashier/order/${o.id}`)}
-                      className="w-8 h-8 rounded-lg bg-narjis-bg flex items-center justify-center mx-auto hover:bg-narjis-lighter/20 transition-colors"
+                      className="w-8 h-8 rounded-lg bg-narges-bg flex items-center justify-center mx-auto hover:bg-narges-lighter/20 transition-colors"
                     >
-                      <Eye size={14} className="text-narjis-green" />
+                      <Eye size={14} className="text-narges-green" />
                     </button>
                   </td>
                 </tr>

@@ -51,6 +51,6 @@ export const useLoyaltyStore = create(
 
       clearPendingDiscount: () => set({ pendingDiscount: 0 }),
     }),
-    { name: 'narjis-loyalty' }
+    { name: 'narges-loyalty' }
   )
 );

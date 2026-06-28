@@ -87,7 +87,7 @@ export default function ProductsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">المنتجات</h1>
-          <p className="text-narjis-text-secondary text-sm">{loading ? 'جاري التحميل...' : `${products.length} منتج في المتجر`}</p>
+          <p className="text-narges-text-secondary text-sm">{loading ? 'جاري التحميل...' : `${products.length} منتج في المتجر`}</p>
         </div>
         <button onClick={openNew} className="btn-primary flex items-center gap-2">
           <Plus size={18} />
@@ -97,7 +97,7 @@ export default function ProductsPage() {
 
       <div className="flex flex-wrap gap-3">
         <div className="flex items-center gap-2 bg-white rounded-xl px-3 py-2 shadow-sm flex-1 min-w-48">
-          <Search size={16} className="text-narjis-text-secondary" />
+          <Search size={16} className="text-narges-text-secondary" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="بحث عن منتج..." className="flex-1 bg-transparent text-sm focus:outline-none" />
         </div>
         <select value={filterCat} onChange={(e) => setFilterCat(e.target.value)} className="bg-white rounded-xl px-3 py-2 shadow-sm text-sm focus:outline-none border-none">
@@ -109,8 +109,8 @@ export default function ProductsPage() {
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-narjis-bg">
-              <tr className="text-narjis-text-secondary text-xs">
+            <thead className="bg-narges-bg">
+              <tr className="text-narges-text-secondary text-xs">
                 <th className="text-right px-4 py-3 font-medium">المنتج</th>
                 <th className="text-right px-4 py-3 font-medium">القسم</th>
                 <th className="text-right px-4 py-3 font-medium">السعر</th>
@@ -123,27 +123,27 @@ export default function ProductsPage() {
               {filtered.map((p) => {
                 const cat = cats.find((c) => c.id === p.categoryId);
                 return (
-                  <tr key={p.id} className="hover:bg-narjis-bg/30 transition-colors">
+                  <tr key={p.id} className="hover:bg-narges-bg/30 transition-colors">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
                         <img src={p.image} alt={p.nameAr} className="w-10 h-10 rounded-lg object-cover" />
                         <div>
                           <p className="font-medium">{p.nameAr}</p>
-                          <p className="text-xs text-narjis-text-secondary">{p.unit}</p>
+                          <p className="text-xs text-narges-text-secondary">{p.unit}</p>
                         </div>
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <span className="text-xs bg-narjis-bg px-2 py-1 rounded-lg">{cat?.icon} {cat?.nameAr}</span>
+                      <span className="text-xs bg-narges-bg px-2 py-1 rounded-lg">{cat?.icon} {cat?.nameAr}</span>
                     </td>
                     <td className="px-4 py-3">
                       <div>
-                        <p className="font-bold text-narjis-green">{formatSAR(p.price)}</p>
+                        <p className="font-bold text-narges-green">{formatSAR(p.price)}</p>
                         {p.isOffer && <p className="text-xs text-gray-400 line-through">{formatSAR(p.originalPrice)}</p>}
                       </div>
                     </td>
                     <td className="px-4 py-3">
-                      <span className={`text-sm font-medium ${p.stockQty < 10 ? 'text-red-500' : 'text-narjis-text'}`}>{p.stockQty}</span>
+                      <span className={`text-sm font-medium ${p.stockQty < 10 ? 'text-red-500' : 'text-narges-text'}`}>{p.stockQty}</span>
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-1">
@@ -169,7 +169,7 @@ export default function ProductsPage() {
             </tbody>
           </table>
           {!loading && filtered.length === 0 && (
-            <p className="text-center text-narjis-text-secondary py-10 text-sm">لا توجد منتجات مطابقة</p>
+            <p className="text-center text-narges-text-secondary py-10 text-sm">لا توجد منتجات مطابقة</p>
           )}
         </div>
       </div>
@@ -182,47 +182,47 @@ export default function ProductsPage() {
             </div>
             <div className="p-5 space-y-4">
               <div>
-                <label className="text-sm font-medium text-narjis-text-secondary block mb-1">اسم المنتج (عربي)</label>
-                <input value={form.nameAr} onChange={set('nameAr')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light" placeholder="مثال: حليب المراعي 2 لتر" />
+                <label className="text-sm font-medium text-narges-text-secondary block mb-1">اسم المنتج (عربي)</label>
+                <input value={form.nameAr} onChange={set('nameAr')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" placeholder="مثال: حليب المراعي 2 لتر" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-sm font-medium text-narjis-text-secondary block mb-1">السعر (ر.س)</label>
-                  <input type="number" value={form.price} onChange={set('price')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light" />
+                  <label className="text-sm font-medium text-narges-text-secondary block mb-1">السعر (ر.س)</label>
+                  <input type="number" value={form.price} onChange={set('price')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-narjis-text-secondary block mb-1">سعر قبل الخصم</label>
-                  <input type="number" value={form.originalPrice} onChange={set('originalPrice')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light" />
+                  <label className="text-sm font-medium text-narges-text-secondary block mb-1">سعر قبل الخصم</label>
+                  <input type="number" value={form.originalPrice} onChange={set('originalPrice')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" />
                 </div>
               </div>
               <div>
-                <label className="text-sm font-medium text-narjis-text-secondary block mb-1">القسم</label>
-                <select value={form.categoryId} onChange={set('categoryId')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light">
+                <label className="text-sm font-medium text-narges-text-secondary block mb-1">القسم</label>
+                <select value={form.categoryId} onChange={set('categoryId')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light">
                   <option value="" disabled>اختر القسم</option>
                   {cats.map((c) => <option key={c.id} value={c.id}>{c.nameAr}</option>)}
                 </select>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-sm font-medium text-narjis-text-secondary block mb-1">الوحدة</label>
-                  <input value={form.unit} onChange={set('unit')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light" placeholder="كيلو / قطعة / علبة" />
+                  <label className="text-sm font-medium text-narges-text-secondary block mb-1">الوحدة</label>
+                  <input value={form.unit} onChange={set('unit')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" placeholder="كيلو / قطعة / علبة" />
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-narjis-text-secondary block mb-1">الكمية</label>
-                  <input type="number" value={form.stockQty} onChange={set('stockQty')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light" />
+                  <label className="text-sm font-medium text-narges-text-secondary block mb-1">الكمية</label>
+                  <input type="number" value={form.stockQty} onChange={set('stockQty')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" />
                 </div>
               </div>
               <div>
-                <label className="text-sm font-medium text-narjis-text-secondary block mb-1">رابط الصورة (اختياري)</label>
-                <input value={form.image} onChange={set('image')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narjis-light" placeholder="https://..." />
+                <label className="text-sm font-medium text-narges-text-secondary block mb-1">رابط الصورة (اختياري)</label>
+                <input value={form.image} onChange={set('image')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" placeholder="https://..." />
               </div>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={form.isOffer} onChange={set('isOffer')} className="w-4 h-4 rounded accent-narjis-light" />
+                  <input type="checkbox" checked={form.isOffer} onChange={set('isOffer')} className="w-4 h-4 rounded accent-narges-light" />
                   <span className="text-sm">عرض خاص</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={form.isFeatured} onChange={set('isFeatured')} className="w-4 h-4 rounded accent-narjis-light" />
+                  <input type="checkbox" checked={form.isFeatured} onChange={set('isFeatured')} className="w-4 h-4 rounded accent-narges-light" />
                   <span className="text-sm">منتج مميز</span>
                 </label>
               </div>

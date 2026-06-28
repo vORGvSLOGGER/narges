@@ -40,7 +40,7 @@ export default function ChatWidget({ customerName = 'العميل' }) {
       {/* Floating Button */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 left-4 z-50 w-14 h-14 bg-narjis-green rounded-full shadow-lg flex items-center justify-center active:scale-90 transition-transform"
+        className="fixed bottom-6 left-4 z-50 w-14 h-14 bg-narges-green rounded-full shadow-lg flex items-center justify-center active:scale-90 transition-transform"
       >
         <MessageCircle size={24} className="text-white" />
         {messages.filter(m => m.from === 'customer').length > 0 && (
@@ -58,7 +58,7 @@ export default function ChatWidget({ customerName = 'العميل' }) {
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-narjis-green rounded-full flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-8 h-8 bg-narges-green rounded-full flex items-center justify-center text-white font-bold text-sm">
                   {customerName[0]}
                 </div>
                 <div>
@@ -66,7 +66,7 @@ export default function ChatWidget({ customerName = 'العميل' }) {
                   <p className="text-xs text-green-500">متصل الآن</p>
                 </div>
               </div>
-              <button onClick={() => setOpen(false)} className="w-8 h-8 rounded-full bg-narjis-bg flex items-center justify-center">
+              <button onClick={() => setOpen(false)} className="w-8 h-8 rounded-full bg-narges-bg flex items-center justify-center">
                 <X size={16} />
               </button>
             </div>
@@ -77,11 +77,11 @@ export default function ChatWidget({ customerName = 'العميل' }) {
                 <div key={msg.id} className={`flex ${msg.from === 'driver' ? 'justify-start' : 'justify-end'}`}>
                   <div className={`max-w-[75%] px-3 py-2 rounded-2xl text-sm ${
                     msg.from === 'driver'
-                      ? 'bg-narjis-bg text-narjis-text rounded-tr-sm'
-                      : 'bg-narjis-green text-white rounded-tl-sm'
+                      ? 'bg-narges-bg text-narges-text rounded-tr-sm'
+                      : 'bg-narges-green text-white rounded-tl-sm'
                   }`}>
                     <p>{msg.text}</p>
-                    <p className={`text-xs mt-0.5 ${msg.from === 'driver' ? 'text-narjis-text-secondary' : 'text-white/60'}`}>
+                    <p className={`text-xs mt-0.5 ${msg.from === 'driver' ? 'text-narges-text-secondary' : 'text-white/60'}`}>
                       {formatTime(msg.time)}
                     </p>
                   </div>
@@ -97,7 +97,7 @@ export default function ChatWidget({ customerName = 'العميل' }) {
                   <button
                     key={r}
                     onClick={() => setInput(r)}
-                    className="flex-shrink-0 text-xs bg-narjis-bg text-narjis-text px-3 py-1.5 rounded-full border border-gray-100"
+                    className="flex-shrink-0 text-xs bg-narges-bg text-narges-text px-3 py-1.5 rounded-full border border-gray-100"
                   >
                     {r}
                   </button>
@@ -112,11 +112,11 @@ export default function ChatWidget({ customerName = 'العميل' }) {
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && sendMessage()}
                 placeholder="اكتب رسالة..."
-                className="flex-1 bg-narjis-bg rounded-xl px-4 py-2.5 text-sm focus:outline-none"
+                className="flex-1 bg-narges-bg rounded-xl px-4 py-2.5 text-sm focus:outline-none"
               />
               <button
                 onClick={sendMessage}
-                className="w-10 h-10 bg-narjis-green rounded-xl flex items-center justify-center active:scale-90 transition-transform"
+                className="w-10 h-10 bg-narges-green rounded-xl flex items-center justify-center active:scale-90 transition-transform"
               >
                 <Send size={18} className="text-white" style={{ transform: 'scaleX(-1)' }} />
               </button>

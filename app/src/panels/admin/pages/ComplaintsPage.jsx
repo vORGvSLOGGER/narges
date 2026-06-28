@@ -38,7 +38,7 @@ export default function ComplaintsPage() {
     <div className="p-6 space-y-4">
       <div>
         <h1 className="text-2xl font-bold">نظام الشكاوي</h1>
-        <p className="text-narjis-text-secondary text-sm mt-0.5">
+        <p className="text-narges-text-secondary text-sm mt-0.5">
           {counts.new} جديدة · {counts.in_progress} قيد المعالجة · {counts.resolved} محلولة
         </p>
       </div>
@@ -47,15 +47,15 @@ export default function ComplaintsPage() {
       <div className="grid grid-cols-3 gap-3">
         <div className="card p-3 text-center border-r-4 border-red-400">
           <p className="text-2xl font-bold text-red-500">{counts.new}</p>
-          <p className="text-xs text-narjis-text-secondary mt-0.5">جديدة</p>
+          <p className="text-xs text-narges-text-secondary mt-0.5">جديدة</p>
         </div>
         <div className="card p-3 text-center border-r-4 border-yellow-400">
           <p className="text-2xl font-bold text-yellow-600">{counts.in_progress}</p>
-          <p className="text-xs text-narjis-text-secondary mt-0.5">قيد المعالجة</p>
+          <p className="text-xs text-narges-text-secondary mt-0.5">قيد المعالجة</p>
         </div>
         <div className="card p-3 text-center border-r-4 border-green-400">
           <p className="text-2xl font-bold text-green-600">{counts.resolved}</p>
-          <p className="text-xs text-narjis-text-secondary mt-0.5">محلولة</p>
+          <p className="text-xs text-narges-text-secondary mt-0.5">محلولة</p>
         </div>
       </div>
 
@@ -67,7 +67,7 @@ export default function ComplaintsPage() {
               key={s}
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                statusFilter === s ? 'bg-narjis-green text-white' : 'bg-white text-narjis-text-secondary border border-gray-100'
+                statusFilter === s ? 'bg-narges-green text-white' : 'bg-white text-narges-text-secondary border border-gray-100'
               }`}
             >
               {STATUS_LABELS_MAP[s]}
@@ -77,7 +77,7 @@ export default function ComplaintsPage() {
         <select
           value={branchFilter}
           onChange={e => setBranchFilter(e.target.value)}
-          className="border border-gray-200 rounded-xl px-3 py-1.5 text-xs bg-white focus:outline-none focus:border-narjis-light"
+          className="border border-gray-200 rounded-xl px-3 py-1.5 text-xs bg-white focus:outline-none focus:border-narges-light"
         >
           <option value="all">جميع الفروع</option>
           {branches.map(b => <option key={b.id} value={b.id}>{b.nameAr}</option>)}
@@ -103,16 +103,16 @@ export default function ComplaintsPage() {
                     <div className="flex items-center gap-2 flex-wrap mb-1">
                       <span className="font-bold text-sm">{c.id}</span>
                       <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${cfg.color}`}>{cfg.label}</span>
-                      <span className="text-xs bg-narjis-bg text-narjis-text-secondary px-2 py-0.5 rounded-full">
+                      <span className="text-xs bg-narges-bg text-narges-text-secondary px-2 py-0.5 rounded-full">
                         {COMPLAINT_TYPES[c.type]}
                       </span>
                     </div>
-                    <p className="text-sm font-medium text-narjis-text">{c.customerName}</p>
-                    <p className="text-xs text-narjis-text-secondary mt-0.5 line-clamp-1">{c.description}</p>
+                    <p className="text-sm font-medium text-narges-text">{c.customerName}</p>
+                    <p className="text-xs text-narges-text-secondary mt-0.5 line-clamp-1">{c.description}</p>
                   </div>
                   <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                    <span className="text-xs text-narjis-text-secondary">{formatDate(c.createdAt)}</span>
-                    <span className="text-xs text-narjis-text-secondary">{branch?.nameAr}</span>
+                    <span className="text-xs text-narges-text-secondary">{formatDate(c.createdAt)}</span>
+                    <span className="text-xs text-narges-text-secondary">{branch?.nameAr}</span>
                     {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                   </div>
                 </div>
@@ -120,13 +120,13 @@ export default function ComplaintsPage() {
 
               {/* Expanded Details */}
               {isExpanded && (
-                <div className="border-t border-gray-50 p-4 space-y-3 bg-narjis-bg">
+                <div className="border-t border-gray-50 p-4 space-y-3 bg-narges-bg">
                   <div>
-                    <p className="text-xs font-bold text-narjis-text-secondary mb-1">وصف الشكوى:</p>
-                    <p className="text-sm text-narjis-text">{c.description}</p>
+                    <p className="text-xs font-bold text-narges-text-secondary mb-1">وصف الشكوى:</p>
+                    <p className="text-sm text-narges-text">{c.description}</p>
                   </div>
 
-                  <div className="flex items-center gap-3 text-xs text-narjis-text-secondary">
+                  <div className="flex items-center gap-3 text-xs text-narges-text-secondary">
                     <span>📱 {c.customerPhone}</span>
                     <span>🧾 {c.orderId}</span>
                   </div>
@@ -144,7 +144,7 @@ export default function ComplaintsPage() {
                         value={resolutionInputs[c.id] || ''}
                         onChange={e => setResolutionInputs(p => ({ ...p, [c.id]: e.target.value }))}
                         placeholder="اكتب ملاحظة أو إجراء المعالجة..."
-                        className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm resize-none focus:outline-none focus:border-narjis-light"
+                        className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm resize-none focus:outline-none focus:border-narges-light"
                         rows={2}
                       />
                       <div className="flex gap-2">
@@ -158,7 +158,7 @@ export default function ComplaintsPage() {
                         )}
                         <button
                           onClick={() => handleStatusChange(c.id, 'resolved')}
-                          className="flex-1 flex items-center justify-center gap-1.5 bg-narjis-green text-white text-sm py-2 rounded-xl font-medium"
+                          className="flex-1 flex items-center justify-center gap-1.5 bg-narges-green text-white text-sm py-2 rounded-xl font-medium"
                         >
                           <CheckCircle2 size={14} />
                           تم الحل
@@ -175,7 +175,7 @@ export default function ComplaintsPage() {
         {filtered.length === 0 && (
           <div className="text-center py-16">
             <span className="text-5xl">✅</span>
-            <p className="mt-3 font-medium text-narjis-text">لا توجد شكاوي في هذا القسم</p>
+            <p className="mt-3 font-medium text-narges-text">لا توجد شكاوي في هذا القسم</p>
           </div>
         )}
       </div>
