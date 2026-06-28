@@ -17,8 +17,11 @@ export default function App() {
     initAuth();
   }, [initAuth]);
 
+  // basename مشتق من قاعدة Vite (يدعم نشر GitHub Pages تحت /narges/ وVercel تحت /).
+  const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/';
+
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Toaster position="top-center" />
       <PanelSwitcher />
       <div className="pt-8">
