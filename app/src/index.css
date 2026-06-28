@@ -10,8 +10,8 @@
 body {
   margin: 0;
   font-family: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', Arial, sans-serif;
-  background-color: #F8F9FA;
-  color: #212121;
+  background-color: #F7F8FA;
+  color: #16191D;
   direction: rtl;
   text-align: right;
 }
@@ -30,7 +30,7 @@ body {
   background: #f1f1f1;
 }
 ::-webkit-scrollbar-thumb {
-  background: #4CAF50;
+  background: #2E7D32;
   border-radius: 4px;
 }
 
@@ -45,16 +45,16 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply bg-narges-light text-white font-semibold py-3 px-6 rounded-xl active:scale-95 transition-transform;
+    @apply bg-narges-green text-white font-bold py-3.5 px-6 rounded-2xl shadow-narges-green active:scale-95 transition-transform;
   }
   .btn-outline {
-    @apply border-2 border-narges-light text-narges-light font-semibold py-3 px-6 rounded-xl active:scale-95 transition-transform;
+    @apply border border-narges-border bg-narges-surface text-narges-text font-bold py-3.5 px-6 rounded-2xl active:scale-95 transition-transform;
   }
   .card {
-    @apply bg-white rounded-2xl shadow-sm;
+    @apply bg-white rounded-2xl border border-narges-border shadow-narges-sm;
   }
   .badge-offer {
-    @apply bg-narges-orange text-white text-xs font-bold px-2 py-0.5 rounded-full;
+    @apply bg-narges-orange text-white text-xs font-bold px-2.5 py-1 rounded-full;
   }
   .section-title {
     @apply text-narges-text font-bold text-lg mb-3;

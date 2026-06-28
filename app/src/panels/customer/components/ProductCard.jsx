@@ -18,57 +18,58 @@ export default function ProductCard({ product, size = 'normal' }) {
     });
   };
 
+  const off = product.isOffer && product.originalPrice
+    ? Math.round((1 - product.price / product.originalPrice) * 100)
+    : 0;
+
   return (
     <div
-      onClick={() => navigate(`/customer/product/${product.id}`)}
-      className={`card cursor-pointer overflow-hidden flex flex-col ${isSmall ? 'w-36' : 'w-full'}`}
+      onClick={() => navigate(`/Customer/product/${product.id}`)}
+      className={`bg-narges-surface border border-narges-border rounded-[20px] shadow-narges-sm cursor-pointer overflow-hidden flex flex-col p-2.5 ${isSmall ? 'w-40' : 'w-full'}`}
     >
       {/* Image */}
-      <div className={`relative bg-gray-50 ${isSmall ? 'h-28' : 'h-36'}`}>
+      <div className="relative">
         <img
           src={product.image}
           alt={product.nameAr}
-          className="w-full h-full object-cover"
+          className={`w-full object-cover rounded-2xl ${isSmall ? 'h-[104px]' : 'h-[120px]'}`}
           loading="lazy"
           onError={e => { e.target.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=300&q=80'; }}
         />
-        {product.isOffer && (
-          <span className="absolute top-2 right-2 badge-offer">
-            خصم {Math.round((1 - product.price / product.originalPrice) * 100)}%
+        {off > 0 && (
+          <span dir="ltr" className="absolute top-2 right-2 bg-narges-orange text-white text-[11px] font-bold px-2 py-1 rounded-full">
+            -{off}%
           </span>
         )}
       </div>
 
       {/* Info */}
-      <div className="p-2.5 flex flex-col gap-1 flex-1">
-        <p className={`font-medium text-narges-text leading-tight line-clamp-2 ${isSmall ? 'text-xs' : 'text-sm'}`}>
+      <div className="flex flex-col gap-1 flex-1 pt-2">
+        <p className="font-bold text-narges-text text-[13px] leading-snug line-clamp-2 min-h-[37px]">
           {product.nameAr}
         </p>
-        <p className="text-xs text-narges-text-secondary">{product.unit}</p>
-
-        {/* Rating */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5 text-[11px] text-narges-text-secondary">
+          <span>{product.unit}</span>
+          <span>·</span>
           <Star size={11} className="text-yellow-400 fill-yellow-400" />
-          <span className="text-xs text-narges-text-secondary">{product.rating}</span>
+          <span>{product.rating}</span>
         </div>
 
         {/* Price + Add */}
-        <div className="flex items-center justify-between mt-auto pt-1">
-          <div>
-            <span className={`font-bold text-narges-green ${isSmall ? 'text-sm' : 'text-base'}`}>
-              {formatSAR(product.price)}
-            </span>
-            {product.isOffer && (
-              <span className="text-xs text-gray-400 line-through block leading-none">
+        <div className="flex items-end justify-between mt-auto pt-1.5">
+          <div className="leading-tight">
+            <span className="font-bold text-narges-green text-[15px]">{formatSAR(product.price)}</span>
+            {off > 0 && (
+              <span className="text-[11px] text-narges-muted line-through block leading-none mt-0.5">
                 {formatSAR(product.originalPrice)}
               </span>
             )}
           </div>
           <button
             onClick={handleAdd}
-            className="w-7 h-7 bg-narges-light rounded-lg flex items-center justify-center active:scale-90 transition-transform"
+            className="w-[34px] h-[34px] bg-narges-green rounded-xl flex items-center justify-center shadow-narges-green active:scale-90 transition-transform shrink-0"
           >
-            <Plus size={16} className="text-white" strokeWidth={2.5} />
+            <Plus size={20} className="text-white" strokeWidth={2.5} />
           </button>
         </div>
       </div>
