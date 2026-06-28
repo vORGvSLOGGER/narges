@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { useOrderStore } from '../../store/useOrderStore';
 import Sidebar from './components/Sidebar';
 import DashboardPage from './pages/DashboardPage';
 import ProductsPage from './pages/ProductsPage';
@@ -8,6 +10,8 @@ import OffersPage from './pages/OffersPage';
 import ComplaintsPage from './pages/ComplaintsPage';
 
 export default function AdminApp() {
+  const loadOrders = useOrderStore((s) => s.loadOrders);
+  useEffect(() => { loadOrders(); }, [loadOrders]);
   return (
     <div className="flex min-h-screen bg-narjis-bg">
       <Sidebar />

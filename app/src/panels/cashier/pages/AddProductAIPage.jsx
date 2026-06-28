@@ -4,6 +4,7 @@ import { ArrowRight, Camera, Upload, Loader2, CheckCircle2, AlertCircle } from '
 import { categories } from '../../../data/categories';
 import { buildGeminiContext } from '../../../data/productCatalog';
 import toast from 'react-hot-toast';
+import { createProduct } from '../../../lib/api';
 
 const GEMINI_KEY = import.meta.env.VITE_GEMINI_KEY;
 
@@ -61,6 +62,7 @@ export default function AddProductAIPage() {
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [form, setForm] = useState({ nameAr: '', unit: 'قطعة', price: '', categoryId: '', stockQty: '50' });
+  const [saving, setSaving] = useState(false);
 
   const handleFile = (file) => {
     if (!file?.type.startsWith('image/')) return;
@@ -98,13 +100,32 @@ export default function AddProductAIPage() {
     handleFile(e.dataTransfer.files[0]);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!form.nameAr || !form.price || !form.categoryId) {
       toast.error('يرجى إكمال جميع الحقول');
       return;
     }
-    toast.success(`تم إضافة "${form.nameAr}" بنجاح!`);
-    navigate('/Cashier');
+    setSaving(true);
+    try {
+      await createProduct({
+        nameAr: form.nameAr,
+        price: Number(form.price),
+        originalPrice: Number(form.price),
+        categoryId: form.categoryId,
+        unit: form.unit,
+        stockQty: Number(form.stockQty) || 0,
+        inStock: true,
+        image: preview && preview.startsWith('http')
+          ? preview
+          : 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=300&q=80',
+      });
+      toast.success(`تم إضافة "${form.nameAr}" للمخزن!`);
+      navigate('/Cashier');
+    } catch (e) {
+      toast.error('تعذّر الحفظ: ' + e.message);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -254,9 +275,10 @@ export default function AddProductAIPage() {
 
           <button
             onClick={handleSave}
-            className="w-full btn-primary mt-2"
+            disabled={saving}
+            className="w-full btn-primary mt-2 disabled:opacity-60"
           >
-            حفظ المنتج في المخزن
+            {saving ? 'جارٍ الحفظ...' : 'حفظ المنتج في المخزن'}
           </button>
         </div>
       </div>

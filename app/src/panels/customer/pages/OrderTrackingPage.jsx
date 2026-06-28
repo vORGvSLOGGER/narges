@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Phone, MessageCircle, CheckCircle2, Clock, Package, Truck, Home } from 'lucide-react';
 import { useOrderStore } from '../../../store/useOrderStore';
+import { isSupabaseConfigured } from '../../../lib/supabase';
 import { STATUS_LABELS } from '../../../data/mockOrders';
 import { formatSAR, formatTimeLeft } from '../../../utils/formatters';
 
@@ -12,17 +13,25 @@ const STEP_LABELS = { confirmed: 'تأكيد الطلب', preparing: 'جاري �
 export default function OrderTrackingPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getOrderById, updateOrderStatus } = useOrderStore();
+  const { getOrderById, updateOrderStatus, loadOrderById } = useOrderStore();
   const [order, setOrder] = useState(null);
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
-    setOrder(getOrderById(id));
+    const local = getOrderById(id);
+    if (local) { setOrder(local); return; }
+    // غير موجود محلياً (مثلاً بعد تحديث الصفحة) → نجلبه من القاعدة
+    loadOrderById(id).then((o) => o && setOrder(o));
   }, [id, tick]);
 
-  // Auto-advance status for demo
+  // متابعة الحالة: مع Supabase نُحدّث من القاعدة (الكاشير/المندوب يتحكمون)؛
+  // بدونها نُحاكي التقدّم محلياً للعرض.
   useEffect(() => {
     const interval = setInterval(() => {
+      if (isSupabaseConfigured) {
+        loadOrderById(id).then((o) => o && setOrder(o));
+        return;
+      }
       const current = getOrderById(id);
       if (!current || current.status === 'delivered') return;
       const idx = STATUS_STEPS.indexOf(current.status);
@@ -30,7 +39,7 @@ export default function OrderTrackingPage() {
         updateOrderStatus(id, STATUS_STEPS[idx + 1]);
         setTick(t => t + 1);
       }
-    }, 7000);
+    }, isSupabaseConfigured ? 10000 : 7000);
     return () => clearInterval(interval);
   }, [id]);
 

@@ -47,10 +47,11 @@ export default function CartPage() {
     const orderItems = items.map(i => ({ productId: i.id, nameAr: i.nameAr, qty: i.qty, unitPrice: i.price, totalPrice: i.price * i.qty }));
 
     setPlacing(true);
+    let createdId = null;
     try {
       // الحفظ في Supabase (عند التهيئة وتسجيل الدخول)
       if (isSupabaseConfigured && user) {
-        await createOrder({
+        const dbOrder = await createOrder({
           customerName,
           customerPhone,
           address: { street: address, district: 'حي الروضة', city: 'الرياض' },
@@ -61,6 +62,7 @@ export default function CartPage() {
           total,
           paymentMethod,
         }, user.id);
+        createdId = dbOrder?.id || null;
       }
     } catch (err) {
       toast.error('تعذّر حفظ الطلب: ' + err.message);
@@ -68,8 +70,9 @@ export default function CartPage() {
       return;
     }
 
-    // سجل محلي لتتبّع الطلب في الواجهة
+    // سجل محلي لتتبّع الطلب في الواجهة — نستخدم نفس مُعرّف القاعدة عند توفّره
     const order = addOrder({
+      ...(createdId ? { id: createdId } : {}),
       customerName,
       customerPhone,
       deliveryAddress: { street: address, district: 'حي الروضة', city: 'الرياض' },
