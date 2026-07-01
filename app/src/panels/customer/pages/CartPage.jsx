@@ -93,7 +93,7 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-narges-bg flex flex-col">
-        <div className="bg-white px-4 py-3 flex items-center gap-3 shadow-sm sticky top-8 z-40">
+        <div className="bg-narges-surface px-4 py-3 flex items-center gap-3 shadow-sm sticky top-8 z-40">
           <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
             <ArrowRight size={18} />
           </button>
@@ -112,7 +112,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-narges-bg flex flex-col pb-40">
       {/* Header */}
-      <div className="bg-white px-4 py-3 flex items-center gap-3 shadow-sm sticky top-8 z-40">
+      <div className="bg-narges-surface px-4 py-3 flex items-center gap-3 shadow-sm sticky top-8 z-40">
         <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
           <ArrowRight size={18} />
         </button>
@@ -122,7 +122,7 @@ export default function CartPage() {
 
       <div className="px-4 pt-4 space-y-4">
         {/* Items */}
-        <div className="card divide-y divide-gray-50">
+        <div className="card divide-y divide-narges-border">
           {items.map(item => (
             <div key={item.id} className="flex items-center gap-3 p-3">
               <img src={item.image} alt={item.nameAr} className="w-16 h-16 rounded-xl object-cover flex-shrink-0" />
@@ -135,7 +135,7 @@ export default function CartPage() {
                   <Trash2 size={14} />
                 </button>
                 <div className="flex items-center gap-2 bg-narges-bg rounded-lg p-0.5">
-                  <button onClick={() => updateQty(item.id, item.qty - 1)} className="w-7 h-7 rounded-md bg-white flex items-center justify-center">
+                  <button onClick={() => updateQty(item.id, item.qty - 1)} className="w-7 h-7 rounded-md bg-narges-surface flex items-center justify-center">
                     <Minus size={12} />
                   </button>
                   <span className="w-5 text-center font-bold text-sm">{item.qty}</span>
@@ -156,7 +156,7 @@ export default function CartPage() {
           <input
             value={address}
             onChange={e => setAddress(e.target.value)}
-            className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light"
+            className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light"
             placeholder="أدخل عنوانك..."
           />
         </div>
@@ -172,7 +172,7 @@ export default function CartPage() {
                 key={m.id}
                 onClick={() => setPaymentMethod(m.id)}
                 className={`flex items-center gap-2 p-3 rounded-xl border-2 transition-all ${
-                  paymentMethod === m.id ? 'border-narges-light bg-green-50' : 'border-gray-100 bg-white'
+                  paymentMethod === m.id ? 'border-narges-light bg-green-50' : 'border-narges-border bg-narges-surface'
                 }`}
               >
                 <span>{m.icon}</span>
@@ -207,7 +207,7 @@ export default function CartPage() {
       </div>
 
       {/* Confirm Button */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-lg">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-narges-surface border-t shadow-lg">
         <button onClick={handleConfirmOrder} disabled={placing} className="w-full btn-primary text-lg disabled:opacity-60">
           {placing ? 'جارٍ تأكيد الطلب...' : `تأكيد الطلب — ${formatSAR(total)}`}
         </button>

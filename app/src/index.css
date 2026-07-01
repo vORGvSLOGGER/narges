@@ -2,6 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* الوضع الفاتح */
+  --n-green: 46 125 50;      /* #2E7D32 */
+  --n-orange: 255 122 0;     /* #FF7A00 */
+  --n-bg: 247 248 250;       /* #F7F8FA */
+  --n-surface: 255 255 255;  /* #FFFFFF */
+  --n-surface2: 241 243 246; /* #F1F3F6 */
+  --n-border: 236 238 241;   /* #ECEEF1 */
+  --n-text: 22 25 29;        /* #16191D */
+  --n-text2: 91 100 112;     /* #5B6470 */
+  --n-muted: 154 163 174;    /* #9AA3AE */
+}
+
+html.dark {
+  /* الوضع الداكن */
+  --n-green: 76 175 80;      /* #4CAF50 أفتح للتباين على الداكن */
+  --n-orange: 255 138 40;    /* #FF8A28 */
+  --n-bg: 14 16 20;          /* #0E1014 */
+  --n-surface: 26 30 36;     /* #1A1E24 بطاقات */
+  --n-surface2: 36 41 48;    /* #242930 */
+  --n-border: 45 51 59;      /* #2D333B */
+  --n-text: 240 243 247;     /* #F0F3F7 */
+  --n-text2: 168 177 188;    /* #A8B1BC */
+  --n-muted: 120 130 142;    /* #78828E */
+}
+
+/* حدّ افتراضي متوافق مع الثيم لأي عنصر يستخدم border بدون لون صريح */
+@layer base {
+  *, ::before, ::after { border-color: rgb(var(--n-border)); }
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -10,8 +41,8 @@
 body {
   margin: 0;
   font-family: 'IBM Plex Sans Arabic', 'Noto Sans Arabic', Arial, sans-serif;
-  background-color: #F7F8FA;
-  color: #16191D;
+  background-color: rgb(var(--n-bg));
+  color: rgb(var(--n-text));
   direction: rtl;
   text-align: right;
 }
@@ -27,10 +58,10 @@ body {
   height: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: rgb(var(--n-surface2));
 }
 ::-webkit-scrollbar-thumb {
-  background: #2E7D32;
+  background: rgb(var(--n-green));
   border-radius: 4px;
 }
 

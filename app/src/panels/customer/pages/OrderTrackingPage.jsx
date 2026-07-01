@@ -103,7 +103,7 @@ export default function OrderTrackingPage() {
               return (
                 <div key={step} className={`flex items-center gap-3 transition-all ${isDone ? 'opacity-100' : 'opacity-30'}`}>
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    isCurrent ? 'bg-narges-green text-white shadow-md' : isDone ? 'bg-green-100 text-narges-green' : 'bg-gray-100 text-gray-400'
+                    isCurrent ? 'bg-narges-green text-white shadow-md' : isDone ? 'bg-green-100 text-narges-green' : 'bg-narges-surface2 text-narges-muted'
                   }`}>
                     <StepIcon size={16} />
                   </div>

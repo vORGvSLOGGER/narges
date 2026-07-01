@@ -74,7 +74,7 @@ function Field({ icon: Icon, label, type = 'text', value, onChange, placeholder,
   return (
     <div>
       <label className="text-xs text-narges-text-secondary mb-1 block">{label}</label>
-      <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-narges-light">
+      <div className="flex items-center gap-2 border border-narges-border rounded-xl px-3 py-2.5 focus-within:border-narges-light">
         <Icon size={16} className="text-narges-text-secondary" />
         <input
           type={type}

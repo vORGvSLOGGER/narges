@@ -133,7 +133,7 @@ export default function AddProductAIPage() {
       {/* Header */}
       <div className="bg-narges-green px-4 pt-12 pb-5">
         <div className="flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
+          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-surface/20 flex items-center justify-center">
             <ArrowRight size={18} className="text-white" />
           </button>
           <div>
@@ -149,7 +149,7 @@ export default function AddProductAIPage() {
           onDragOver={e => e.preventDefault()}
           onDrop={handleDrop}
           onClick={() => fileRef.current?.click()}
-          className="relative border-2 border-dashed border-narges-light rounded-2xl overflow-hidden cursor-pointer active:scale-98 transition-transform bg-white"
+          className="relative border-2 border-dashed border-narges-light rounded-2xl overflow-hidden cursor-pointer active:scale-98 transition-transform bg-narges-surface"
           style={{ minHeight: 200 }}
         >
           <input
@@ -219,7 +219,7 @@ export default function AddProductAIPage() {
               value={form.nameAr}
               onChange={e => setForm(f => ({ ...f, nameAr: e.target.value }))}
               placeholder="مثال: حليب ألمراعي كامل الدسم"
-              className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light"
+              className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light"
             />
           </div>
 
@@ -231,7 +231,7 @@ export default function AddProductAIPage() {
                 value={form.price}
                 onChange={e => setForm(f => ({ ...f, price: e.target.value }))}
                 placeholder="0.00"
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light"
+                className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light"
               />
             </div>
             <div>
@@ -239,7 +239,7 @@ export default function AddProductAIPage() {
               <select
                 value={form.unit}
                 onChange={e => setForm(f => ({ ...f, unit: e.target.value }))}
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light bg-white"
+                className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light bg-narges-surface"
               >
                 {['قطعة', 'كيلو', 'لتر', 'علبة', 'كرتون', 'باكيت'].map(u => (
                   <option key={u} value={u}>{u}</option>
@@ -254,7 +254,7 @@ export default function AddProductAIPage() {
               <select
                 value={form.categoryId}
                 onChange={e => setForm(f => ({ ...f, categoryId: e.target.value }))}
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light bg-white"
+                className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light bg-narges-surface"
               >
                 <option value="">اختر القسم</option>
                 {categories.map(c => (
@@ -268,7 +268,7 @@ export default function AddProductAIPage() {
                 type="number"
                 value={form.stockQty}
                 onChange={e => setForm(f => ({ ...f, stockQty: e.target.value }))}
-                className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light"
+                className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light"
               />
             </div>
           </div>

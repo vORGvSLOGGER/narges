@@ -108,7 +108,7 @@ export default function DashboardPage() {
                 <th className="text-left pb-2 font-medium">الوقت</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-narges-border">
               {recentOrders.map(o => (
                 <tr key={o.id} className="hover:bg-narges-bg/50 transition-colors">
                   <td className="py-2.5 font-medium text-narges-green">{o.id}</td>

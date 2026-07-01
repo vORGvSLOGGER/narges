@@ -11,7 +11,7 @@ export default function BranchSelector() {
     <div className="relative px-3 py-2 border-b border-white/10">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between bg-white/10 rounded-xl px-3 py-2 text-sm"
+        className="w-full flex items-center justify-between bg-narges-surface/10 rounded-xl px-3 py-2 text-sm"
       >
         <div className="flex items-center gap-2">
           <span className="text-white text-xs">🏪</span>
@@ -21,7 +21,7 @@ export default function BranchSelector() {
       </button>
 
       {open && (
-        <div className="absolute left-3 right-3 top-full mt-1 bg-white rounded-xl shadow-xl overflow-hidden z-50">
+        <div className="absolute left-3 right-3 top-full mt-1 bg-narges-surface rounded-xl shadow-xl overflow-hidden z-50">
           {branches.map(b => (
             <button
               key={b.id}

@@ -15,7 +15,7 @@ L.Icon.Default.mergeOptions({
 const STATUS_CONFIG = {
   active: { label: 'متاح', color: 'bg-green-100 text-green-700', dot: '#4CAF50' },
   delivering: { label: 'يوصّل', color: 'bg-blue-100 text-blue-700', dot: '#2196F3' },
-  offline: { label: 'غير متاح', color: 'bg-gray-100 text-gray-500', dot: '#9E9E9E' },
+  offline: { label: 'غير متاح', color: 'bg-narges-surface2 text-narges-text-secondary', dot: '#9E9E9E' },
 };
 
 function makeDriverIcon(status) {
@@ -60,7 +60,7 @@ export default function DriversMapPage() {
               <Popup>
                 <div className="text-right" dir="rtl" style={{ minWidth: 160 }}>
                   <p className="font-bold">{d.name}</p>
-                  <p className="text-xs text-gray-500">{d.vehicle}</p>
+                  <p className="text-xs text-narges-text-secondary">{d.vehicle}</p>
                   <p className="text-xs mt-1">⭐ {d.rating} • {d.ordersToday} توصيلة اليوم</p>
                   <p className="text-xs font-medium mt-1" style={{ color: STATUS_CONFIG[d.status]?.dot }}>
                     {STATUS_CONFIG[d.status]?.label}

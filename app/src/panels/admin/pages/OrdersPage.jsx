@@ -27,7 +27,7 @@ export default function OrdersPage() {
             key={s}
             onClick={() => setFilter(s)}
             className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-              filter === s ? 'bg-narges-green text-white' : 'bg-white text-narges-text shadow-sm'
+              filter === s ? 'bg-narges-green text-white' : 'bg-narges-surface text-narges-text shadow-sm'
             }`}
           >
             {STATUS_LABELS_LOCAL[s]}
@@ -51,7 +51,7 @@ export default function OrdersPage() {
                 <th className="text-center px-4 py-3 font-medium">عرض</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-narges-border">
               {filtered.map(o => (
                 <tr key={o.id} className="hover:bg-narges-bg/30 transition-colors">
                   <td className="px-4 py-3 font-bold text-narges-green">{o.id}</td>

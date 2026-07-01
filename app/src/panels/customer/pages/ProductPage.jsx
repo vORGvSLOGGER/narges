@@ -36,17 +36,17 @@ export default function ProductPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-narges-surface flex flex-col">
       {/* Image */}
-      <div className="relative h-72 bg-gray-50">
+      <div className="relative h-72 bg-narges-bg">
         <img src={product.image} alt={product.nameAr} className="w-full h-full object-cover" />
 
         {/* Nav */}
         <div className="absolute top-12 left-0 right-0 flex items-center justify-between px-4">
-          <button onClick={() => navigate(-1)} className="w-10 h-10 rounded-xl bg-white/90 backdrop-blur flex items-center justify-center shadow">
+          <button onClick={() => navigate(-1)} className="w-10 h-10 rounded-xl bg-narges-surface/90 backdrop-blur flex items-center justify-center shadow">
             <ArrowRight size={20} />
           </button>
-          <button onClick={() => navigate('/Customer/cart')} className="relative w-10 h-10 rounded-xl bg-white/90 backdrop-blur flex items-center justify-center shadow">
+          <button onClick={() => navigate('/Customer/cart')} className="relative w-10 h-10 rounded-xl bg-narges-surface/90 backdrop-blur flex items-center justify-center shadow">
             <ShoppingCart size={18} />
             {totalItems > 0 && (
               <span className="absolute -top-1 -left-1 w-5 h-5 bg-narges-orange text-white text-xs font-bold rounded-full flex items-center justify-center">
@@ -86,7 +86,7 @@ export default function ProductPage() {
         <div className="flex items-baseline gap-2">
           <span className="text-3xl font-bold text-narges-green">{formatSAR(product.price)}</span>
           {product.isOffer && (
-            <span className="text-lg text-gray-400 line-through">{formatSAR(product.originalPrice)}</span>
+            <span className="text-lg text-narges-muted line-through">{formatSAR(product.originalPrice)}</span>
           )}
         </div>
 
@@ -96,7 +96,7 @@ export default function ProductPage() {
           <div className="flex items-center gap-3 bg-narges-bg rounded-xl p-1">
             <button
               onClick={() => setQty(q => Math.max(1, q - 1))}
-              className="w-9 h-9 rounded-lg bg-white shadow-sm flex items-center justify-center active:scale-90 transition-transform"
+              className="w-9 h-9 rounded-lg bg-narges-surface shadow-sm flex items-center justify-center active:scale-90 transition-transform"
             >
               <Minus size={16} />
             </button>
@@ -116,7 +116,7 @@ export default function ProductPage() {
       </div>
 
       {/* Add to Cart Button */}
-      <div className="p-4 pb-8 border-t bg-white">
+      <div className="p-4 pb-8 border-t bg-narges-surface">
         <button
           onClick={handleAddToCart}
           disabled={!product.inStock}

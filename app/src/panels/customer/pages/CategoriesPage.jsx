@@ -17,7 +17,7 @@ export default function CategoriesPage() {
             <button
               key={cat.id}
               onClick={() => navigate(`/Customer/category/${cat.id}`)}
-              className="flex items-center gap-3 bg-white rounded-2xl p-4 shadow-sm active:scale-95 transition-transform"
+              className="flex items-center gap-3 bg-narges-surface rounded-2xl p-4 shadow-sm active:scale-95 transition-transform"
             >
               <div
                 className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl flex-shrink-0"

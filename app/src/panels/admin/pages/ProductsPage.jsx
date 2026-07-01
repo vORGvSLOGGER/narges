@@ -96,11 +96,11 @@ export default function ProductsPage() {
       </div>
 
       <div className="flex flex-wrap gap-3">
-        <div className="flex items-center gap-2 bg-white rounded-xl px-3 py-2 shadow-sm flex-1 min-w-48">
+        <div className="flex items-center gap-2 bg-narges-surface rounded-xl px-3 py-2 shadow-sm flex-1 min-w-48">
           <Search size={16} className="text-narges-text-secondary" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="بحث عن منتج..." className="flex-1 bg-transparent text-sm focus:outline-none" />
         </div>
-        <select value={filterCat} onChange={(e) => setFilterCat(e.target.value)} className="bg-white rounded-xl px-3 py-2 shadow-sm text-sm focus:outline-none border-none">
+        <select value={filterCat} onChange={(e) => setFilterCat(e.target.value)} className="bg-narges-surface rounded-xl px-3 py-2 shadow-sm text-sm focus:outline-none border-none">
           <option value="all">جميع الأقسام</option>
           {cats.map((c) => <option key={c.id} value={c.id}>{c.nameAr}</option>)}
         </select>
@@ -119,7 +119,7 @@ export default function ProductsPage() {
                 <th className="text-center px-4 py-3 font-medium">إجراءات</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-narges-border">
               {filtered.map((p) => {
                 const cat = cats.find((c) => c.id === p.categoryId);
                 return (
@@ -139,7 +139,7 @@ export default function ProductsPage() {
                     <td className="px-4 py-3">
                       <div>
                         <p className="font-bold text-narges-green">{formatSAR(p.price)}</p>
-                        {p.isOffer && <p className="text-xs text-gray-400 line-through">{formatSAR(p.originalPrice)}</p>}
+                        {p.isOffer && <p className="text-xs text-narges-muted line-through">{formatSAR(p.originalPrice)}</p>}
                       </div>
                     </td>
                     <td className="px-4 py-3">
@@ -176,28 +176,28 @@ export default function ProductsPage() {
 
       {showModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+          <div className="bg-narges-surface rounded-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="p-5 border-b">
               <h2 className="font-bold text-lg">{editId ? 'تعديل المنتج' : 'إضافة منتج جديد'}</h2>
             </div>
             <div className="p-5 space-y-4">
               <div>
                 <label className="text-sm font-medium text-narges-text-secondary block mb-1">اسم المنتج (عربي)</label>
-                <input value={form.nameAr} onChange={set('nameAr')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" placeholder="مثال: حليب المراعي 2 لتر" />
+                <input value={form.nameAr} onChange={set('nameAr')} className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" placeholder="مثال: حليب المراعي 2 لتر" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-sm font-medium text-narges-text-secondary block mb-1">السعر (ر.س)</label>
-                  <input type="number" value={form.price} onChange={set('price')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" />
+                  <input type="number" value={form.price} onChange={set('price')} className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" />
                 </div>
                 <div>
                   <label className="text-sm font-medium text-narges-text-secondary block mb-1">سعر قبل الخصم</label>
-                  <input type="number" value={form.originalPrice} onChange={set('originalPrice')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" />
+                  <input type="number" value={form.originalPrice} onChange={set('originalPrice')} className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" />
                 </div>
               </div>
               <div>
                 <label className="text-sm font-medium text-narges-text-secondary block mb-1">القسم</label>
-                <select value={form.categoryId} onChange={set('categoryId')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light">
+                <select value={form.categoryId} onChange={set('categoryId')} className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light">
                   <option value="" disabled>اختر القسم</option>
                   {cats.map((c) => <option key={c.id} value={c.id}>{c.nameAr}</option>)}
                 </select>
@@ -205,16 +205,16 @@ export default function ProductsPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-sm font-medium text-narges-text-secondary block mb-1">الوحدة</label>
-                  <input value={form.unit} onChange={set('unit')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" placeholder="كيلو / قطعة / علبة" />
+                  <input value={form.unit} onChange={set('unit')} className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" placeholder="كيلو / قطعة / علبة" />
                 </div>
                 <div>
                   <label className="text-sm font-medium text-narges-text-secondary block mb-1">الكمية</label>
-                  <input type="number" value={form.stockQty} onChange={set('stockQty')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" />
+                  <input type="number" value={form.stockQty} onChange={set('stockQty')} className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" />
                 </div>
               </div>
               <div>
                 <label className="text-sm font-medium text-narges-text-secondary block mb-1">رابط الصورة (اختياري)</label>
-                <input value={form.image} onChange={set('image')} className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" placeholder="https://..." />
+                <input value={form.image} onChange={set('image')} className="w-full border border-narges-border rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-narges-light" placeholder="https://..." />
               </div>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">

@@ -22,9 +22,9 @@ export default function ProcessOrderPage() {
   };
 
   return (
-    <div className="min-h-screen bg-narges-bg print:bg-white">
+    <div className="min-h-screen bg-narges-bg print:bg-narges-surface">
       {/* Header - hidden on print */}
-      <div className="bg-white px-4 py-3 flex items-center gap-3 shadow-sm sticky top-8 z-40 print:hidden">
+      <div className="bg-narges-surface px-4 py-3 flex items-center gap-3 shadow-sm sticky top-8 z-40 print:hidden">
         <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
           <ArrowRight size={18} />
         </button>
@@ -72,7 +72,7 @@ export default function ProcessOrderPage() {
                 <th className="text-left pb-2 font-medium">الإجمالي</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
+            <tbody className="divide-y divide-narges-border">
               {order.items.map((item, i) => (
                 <tr key={i}>
                   <td className="py-2 text-narges-text">{item.nameAr}</td>

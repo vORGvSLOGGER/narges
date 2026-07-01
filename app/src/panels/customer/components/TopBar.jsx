@@ -8,7 +8,7 @@ export default function TopBar({ onSearchClick, onCartClick }) {
   const navigate = useNavigate();
 
   return (
-    <div className="sticky top-8 z-40 bg-white shadow-sm">
+    <div className="sticky top-8 z-40 bg-narges-surface shadow-sm">
       <div className="px-4 py-3 flex items-center justify-between gap-3">
         {/* Logo + Location */}
         <div className="flex items-center gap-2">

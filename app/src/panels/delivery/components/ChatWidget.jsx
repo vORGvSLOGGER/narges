@@ -54,7 +54,7 @@ export default function ChatWidget({ customerName = 'العميل' }) {
       {open && (
         <div className="fixed inset-0 z-50 flex flex-col justify-end">
           <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
-          <div className="relative bg-white rounded-t-3xl max-h-[70vh] flex flex-col">
+          <div className="relative bg-narges-surface rounded-t-3xl max-h-[70vh] flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b">
               <div className="flex items-center gap-2">
@@ -97,7 +97,7 @@ export default function ChatWidget({ customerName = 'العميل' }) {
                   <button
                     key={r}
                     onClick={() => setInput(r)}
-                    className="flex-shrink-0 text-xs bg-narges-bg text-narges-text px-3 py-1.5 rounded-full border border-gray-100"
+                    className="flex-shrink-0 text-xs bg-narges-bg text-narges-text px-3 py-1.5 rounded-full border border-narges-border"
                   >
                     {r}
                   </button>

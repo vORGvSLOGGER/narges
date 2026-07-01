@@ -18,7 +18,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="px-5 py-6 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 bg-narges-surface/20 rounded-xl flex items-center justify-center">
             <span className="text-white font-bold text-xl">ن</span>
           </div>
           <div>
@@ -41,8 +41,8 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all text-sm font-medium ${
                 isActive
-                  ? 'bg-white text-narges-green shadow'
-                  : 'text-white/80 hover:bg-white/10 hover:text-white'
+                  ? 'bg-narges-surface text-narges-green shadow'
+                  : 'text-white/80 hover:bg-narges-surface/10 hover:text-white'
               }`
             }
           >
@@ -55,7 +55,7 @@ export default function Sidebar() {
       {/* User */}
       <div className="px-4 py-4 border-t border-white/10">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+          <div className="w-8 h-8 bg-narges-surface/20 rounded-lg flex items-center justify-center text-white font-bold text-sm">
             م
           </div>
           <div className="flex-1">

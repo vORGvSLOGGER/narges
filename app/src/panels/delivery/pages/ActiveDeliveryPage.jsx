@@ -30,7 +30,7 @@ export default function ActiveDeliveryPage() {
   return (
     <div className="min-h-screen bg-narges-bg flex flex-col">
       {/* Live Map */}
-      <div className="relative h-64 bg-gray-100">
+      <div className="relative h-64 bg-narges-surface2">
         <Suspense fallback={
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50">
             <div className="text-center">
@@ -48,13 +48,13 @@ export default function ActiveDeliveryPage() {
         </Suspense>
 
         {/* Status Pill */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-white rounded-xl px-4 py-1.5 shadow-lg text-sm font-medium text-narges-green z-10">
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-narges-surface rounded-xl px-4 py-1.5 shadow-lg text-sm font-medium text-narges-green z-10">
           {step === 'to_store' ? '📍 توجه إلى المتجر' : '🏠 توجه إلى العميل'}
         </div>
       </div>
 
       {/* Order Info */}
-      <div className="bg-white rounded-t-3xl -mt-4 p-5 space-y-4 shadow-lg flex-1">
+      <div className="bg-narges-surface rounded-t-3xl -mt-4 p-5 space-y-4 shadow-lg flex-1">
         {/* Customer */}
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-narges-green rounded-full flex items-center justify-center text-white text-xl font-bold">
@@ -84,7 +84,7 @@ export default function ActiveDeliveryPage() {
         {/* Steps */}
         <div className="flex items-center gap-3">
           <div className={`flex-1 h-1.5 rounded-full ${step === 'to_store' ? 'bg-narges-green' : 'bg-narges-lighter'}`} />
-          <div className={`flex-1 h-1.5 rounded-full ${step === 'to_customer' ? 'bg-narges-green' : 'bg-gray-200'}`} />
+          <div className={`flex-1 h-1.5 rounded-full ${step === 'to_customer' ? 'bg-narges-green' : 'bg-narges-surface2'}`} />
         </div>
 
         {/* Action Button */}

@@ -39,14 +39,14 @@ export default function LoyaltyPage() {
       {/* Header */}
       <div className="bg-narges-green px-4 pt-12 pb-8">
         <div className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
+          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-surface/20 flex items-center justify-center">
             <ArrowRight size={18} className="text-white" />
           </button>
           <h1 className="text-white font-bold text-xl">نظام الولاء</h1>
         </div>
 
         {/* Tier Card */}
-        <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-5">
+        <div className="bg-narges-surface/15 backdrop-blur-sm rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-white/70 text-sm">مستواك الحالي</p>
@@ -63,9 +63,9 @@ export default function LoyaltyPage() {
 
           {nextTier && (
             <>
-              <div className="h-2 bg-white/20 rounded-full overflow-hidden mb-2">
+              <div className="h-2 bg-narges-surface/20 rounded-full overflow-hidden mb-2">
                 <div
-                  className="h-full bg-white rounded-full transition-all duration-700"
+                  className="h-full bg-narges-surface rounded-full transition-all duration-700"
                   style={{ width: `${progressPct}%` }}
                 />
               </div>
@@ -121,7 +121,7 @@ export default function LoyaltyPage() {
             className={`w-full py-3 rounded-xl font-bold text-sm transition-all ${
               redeemableBlocks >= 1
                 ? 'bg-narges-orange text-white active:scale-95'
-                : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-narges-surface2 text-narges-muted cursor-not-allowed'
             }`}
           >
             استبدل 100 نقطة ← خصم 5 ر.س
@@ -157,7 +157,7 @@ export default function LoyaltyPage() {
           ) : (
             <div className="space-y-2">
               {history.map(h => (
-                <div key={h.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                <div key={h.id} className="flex items-center justify-between py-2 border-b border-narges-border last:border-0">
                   <div>
                     <p className="text-sm font-medium">{h.description}</p>
                     <p className="text-xs text-narges-text-secondary">{formatDate(h.date)}</p>

@@ -52,7 +52,7 @@ function DriversPlaceholder() {
               <p className="font-bold">{d.name}</p>
               <p className="text-sm text-narges-text-secondary">{d.deliveries} توصيلة • ⭐ {d.rating}</p>
             </div>
-            <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${d.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+            <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${d.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-narges-surface2 text-narges-text-secondary'}`}>
               {d.status === 'active' ? 'متاح' : 'غير متاح'}
             </span>
           </div>
@@ -73,7 +73,7 @@ function SettingsPlaceholder() {
           { label: 'رسوم التوصيل الأساسية', value: '10 ر.س' },
           { label: 'الحد الأدنى للطلب', value: '30 ر.س' },
         ].map((s, i) => (
-          <div key={i} className="flex items-center justify-between pb-3 border-b border-gray-50">
+          <div key={i} className="flex items-center justify-between pb-3 border-b border-narges-border">
             <span className="text-narges-text-secondary text-sm">{s.label}</span>
             <span className="font-medium">{s.value}</span>
           </div>

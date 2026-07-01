@@ -67,7 +67,7 @@ export default function ComplaintsPage() {
               key={s}
               onClick={() => setStatusFilter(s)}
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                statusFilter === s ? 'bg-narges-green text-white' : 'bg-white text-narges-text-secondary border border-gray-100'
+                statusFilter === s ? 'bg-narges-green text-white' : 'bg-narges-surface text-narges-text-secondary border border-narges-border'
               }`}
             >
               {STATUS_LABELS_MAP[s]}
@@ -77,7 +77,7 @@ export default function ComplaintsPage() {
         <select
           value={branchFilter}
           onChange={e => setBranchFilter(e.target.value)}
-          className="border border-gray-200 rounded-xl px-3 py-1.5 text-xs bg-white focus:outline-none focus:border-narges-light"
+          className="border border-narges-border rounded-xl px-3 py-1.5 text-xs bg-narges-surface focus:outline-none focus:border-narges-light"
         >
           <option value="all">جميع الفروع</option>
           {branches.map(b => <option key={b.id} value={b.id}>{b.nameAr}</option>)}
@@ -120,7 +120,7 @@ export default function ComplaintsPage() {
 
               {/* Expanded Details */}
               {isExpanded && (
-                <div className="border-t border-gray-50 p-4 space-y-3 bg-narges-bg">
+                <div className="border-t border-narges-border p-4 space-y-3 bg-narges-bg">
                   <div>
                     <p className="text-xs font-bold text-narges-text-secondary mb-1">وصف الشكوى:</p>
                     <p className="text-sm text-narges-text">{c.description}</p>
@@ -144,7 +144,7 @@ export default function ComplaintsPage() {
                         value={resolutionInputs[c.id] || ''}
                         onChange={e => setResolutionInputs(p => ({ ...p, [c.id]: e.target.value }))}
                         placeholder="اكتب ملاحظة أو إجراء المعالجة..."
-                        className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm resize-none focus:outline-none focus:border-narges-light"
+                        className="w-full border border-narges-border rounded-xl px-3 py-2 text-sm resize-none focus:outline-none focus:border-narges-light"
                         rows={2}
                       />
                       <div className="flex gap-2">

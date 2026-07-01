@@ -40,7 +40,7 @@ export default function OrderQueuePage() {
           </div>
           <button
             onClick={() => navigate('/Cashier/add-product-ai')}
-            className="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-2 rounded-xl transition-all"
+            className="flex items-center gap-1.5 bg-narges-surface/20 hover:bg-narges-surface/30 text-white text-xs px-3 py-2 rounded-xl transition-all"
           >
             <Camera size={14} />
             <span>إضافة منتج</span>
@@ -52,7 +52,7 @@ export default function OrderQueuePage() {
           {CASHIER_STATUSES.map(s => {
             const colors = STATUS_COLORS[s];
             return (
-              <div key={s} className="bg-white/20 rounded-xl p-2 text-center">
+              <div key={s} className="bg-narges-surface/20 rounded-xl p-2 text-center">
                 <p className="text-white font-bold text-xl">{counts[s]}</p>
                 <p className="text-white/70 text-xs">{STATUS_LABELS[s]}</p>
               </div>

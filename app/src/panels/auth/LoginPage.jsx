@@ -45,7 +45,7 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className="card p-5 space-y-4">
           <div>
             <label className="text-xs text-narges-text-secondary mb-1 block">البريد الإلكتروني</label>
-            <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-narges-light">
+            <div className="flex items-center gap-2 border border-narges-border rounded-xl px-3 py-2.5 focus-within:border-narges-light">
               <Mail size={16} className="text-narges-text-secondary" />
               <input
                 type="email"
@@ -61,7 +61,7 @@ export default function LoginPage() {
 
           <div>
             <label className="text-xs text-narges-text-secondary mb-1 block">كلمة المرور</label>
-            <div className="flex items-center gap-2 border border-gray-200 rounded-xl px-3 py-2.5 focus-within:border-narges-light">
+            <div className="flex items-center gap-2 border border-narges-border rounded-xl px-3 py-2.5 focus-within:border-narges-light">
               <Lock size={16} className="text-narges-text-secondary" />
               <input
                 type="password"

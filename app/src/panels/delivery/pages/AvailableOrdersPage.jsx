@@ -36,16 +36,16 @@ export default function AvailableOrdersPage() {
         </div>
 
         {/* Online Toggle */}
-        <div className={`rounded-2xl p-4 flex items-center justify-between ${driverOnline ? 'bg-white/20' : 'bg-white/10'}`}>
+        <div className={`rounded-2xl p-4 flex items-center justify-between ${driverOnline ? 'bg-narges-surface/20' : 'bg-narges-surface/10'}`}>
           <div>
             <p className="text-white font-semibold">{driverOnline ? '🟢 متاح للتوصيل' : '🔴 غير متاح'}</p>
             <p className="text-white/70 text-xs mt-0.5">{driverOnline ? `${pendingOrders.length} طلب في الانتظار` : 'سيتوقف وصول الطلبات'}</p>
           </div>
           <button
             onClick={() => setDriverOnline(!driverOnline)}
-            className={`relative w-14 h-7 rounded-full transition-all duration-300 ${driverOnline ? 'bg-narges-light' : 'bg-white/30'}`}
+            className={`relative w-14 h-7 rounded-full transition-all duration-300 ${driverOnline ? 'bg-narges-light' : 'bg-narges-surface/30'}`}
           >
-            <span className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all duration-300 ${driverOnline ? 'right-1' : 'left-1'}`} />
+            <span className={`absolute top-1 w-5 h-5 rounded-full bg-narges-surface shadow transition-all duration-300 ${driverOnline ? 'right-1' : 'left-1'}`} />
           </button>
         </div>
       </div>

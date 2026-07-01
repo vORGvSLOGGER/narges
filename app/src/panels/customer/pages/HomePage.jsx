@@ -43,8 +43,8 @@ export default function HomePage() {
           className="w-full text-right rounded-3xl p-5 text-white relative overflow-hidden shadow-narges-green"
           style={{ background: 'linear-gradient(135deg,#1B5E20,#2E7D32 45%,#66BB6A)' }}
         >
-          <div className="absolute -top-8 -left-5 w-32 h-32 rounded-full bg-white/10" />
-          <div className="absolute -bottom-10 left-10 w-24 h-24 rounded-full bg-white/[0.07]" />
+          <div className="absolute -top-8 -left-5 w-32 h-32 rounded-full bg-narges-surface/10" />
+          <div className="absolute -bottom-10 left-10 w-24 h-24 rounded-full bg-narges-surface/[0.07]" />
           <div className="relative flex items-start justify-between">
             <div>
               <p className="text-white/90 text-xs">رصيد نقاط الولاء</p>
@@ -52,13 +52,13 @@ export default function HomePage() {
                 {points.toLocaleString('en-US')} <span className="text-sm font-semibold">نقطة</span>
               </p>
             </div>
-            <span className="bg-white/[0.18] border border-white/30 px-3 py-1.5 rounded-full text-[13px] font-bold whitespace-nowrap">
+            <span className="bg-narges-surface/[0.18] border border-white/30 px-3 py-1.5 rounded-full text-[13px] font-bold whitespace-nowrap">
               {TIER_ICONS[tier.id]} عضوية {tier.label}
             </span>
           </div>
           <div className="relative mt-4">
-            <div className="h-2 bg-white/25 rounded-full overflow-hidden">
-              <div className="h-full bg-white rounded-full" style={{ width: `${pct}%` }} />
+            <div className="h-2 bg-narges-surface/25 rounded-full overflow-hidden">
+              <div className="h-full bg-narges-surface rounded-full" style={{ width: `${pct}%` }} />
             </div>
             <div className="flex justify-between text-[11px] mt-1.5 text-white/95">
               <span>{nextTier ? `${remaining} نقطة تفصلك عن ${nextTier.label}` : 'أعلى مستوى 🎉'}</span>
@@ -76,7 +76,7 @@ export default function HomePage() {
               style={{ background: b.grad }}
             >
               <span className="absolute -top-4 -left-2 text-[80px] opacity-[0.16] leading-none">{b.emoji}</span>
-              <span className="relative inline-block bg-white/25 text-[11px] font-bold px-2.5 py-1 rounded-full">{b.badge}</span>
+              <span className="relative inline-block bg-narges-surface/25 text-[11px] font-bold px-2.5 py-1 rounded-full">{b.badge}</span>
               <p className="relative font-bold text-[19px] mt-2.5 leading-snug">{b.title}<br />{b.sub}</p>
             </div>
           ))}

@@ -55,7 +55,7 @@ export default function OffersPage() {
             key={t.id}
             onClick={() => setFilter(t.id)}
             className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-              filter === t.id ? 'bg-narges-green text-white' : 'bg-white text-narges-text-secondary border border-gray-100'
+              filter === t.id ? 'bg-narges-green text-white' : 'bg-narges-surface text-narges-text-secondary border border-narges-border'
             }`}
           >
             {t.label}
