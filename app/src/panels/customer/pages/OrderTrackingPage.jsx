@@ -1,5 +1,6 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import confetti from 'canvas-confetti';
 import { Phone, MessageCircle, CheckCircle2, Clock, Package, Truck, Home } from 'lucide-react';
 import { useOrderStore } from '../../../store/useOrderStore';
 import { isSupabaseConfigured } from '../../../lib/supabase';
@@ -13,6 +14,16 @@ const STEP_LABELS = { confirmed: 'تأكيد الطلب', preparing: 'جاري �
 export default function OrderTrackingPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // احتفال عند وصول المستخدم بعد تأكيد طلب جديد
+  useEffect(() => {
+    if (location.state?.placed) {
+      confetti({ particleCount: 110, spread: 75, origin: { y: 0.3 } });
+      setTimeout(() => confetti({ particleCount: 70, spread: 110, origin: { y: 0.4 } }), 350);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const { getOrderById, updateOrderStatus, loadOrderById } = useOrderStore();
   const [order, setOrder] = useState(null);
   const [tick, setTick] = useState(0);
@@ -29,6 +40,8 @@ export default function OrderTrackingPage() {
   useEffect(() => {
     const interval = setInterval(() => {
       if (isSupabaseConfigured) {
+        const cur = getOrderById(id);
+        if (cur && (cur.status === 'delivered' || cur.status === 'cancelled')) return;
         loadOrderById(id).then((o) => o && setOrder(o));
         return;
       }
@@ -84,7 +97,7 @@ export default function OrderTrackingPage() {
             {order.status !== 'delivered' && (
               <div className="text-left">
                 <p className="text-xs text-narges-text-secondary">الوصول خلال</p>
-                <p className="font-bold text-narges-orange text-lg">{formatTimeLeft(order.estimatedDeliveryAt)}</p>
+                <p className="font-bold text-narges-orange text-lg">{(order.estimatedDeliveryAt ? formatTimeLeft(order.estimatedDeliveryAt) : '30-45 دقيقة')}</p>
               </div>
             )}
             {order.status === 'delivered' && (

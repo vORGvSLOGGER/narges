@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MapPin, Package, DollarSign, ChevronLeft } from 'lucide-react';
+import { MapPin, Package, DollarSign, ChevronLeft, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useOrderStore } from '../../../store/useOrderStore';
 import { useAuthStore } from '../../../store/useAuthStore';
@@ -8,7 +8,7 @@ import { STATUS_LABELS } from '../../../data/mockOrders';
 
 export default function AvailableOrdersPage() {
   const navigate = useNavigate();
-  const { driverOnline, setDriverOnline } = useAuthStore();
+  const { driverOnline, setDriverOnline, signOut } = useAuthStore();
   const { getPendingOrders, updateOrderStatus, assignDriver } = useOrderStore();
   const pendingOrders = getPendingOrders();
   const [acceptedId, setAcceptedId] = useState(null);
@@ -29,23 +29,32 @@ export default function AvailableOrdersPage() {
             <h1 className="text-white font-bold text-xl">مرحباً، خالد 👋</h1>
             <p className="text-white/70 text-sm mt-0.5">مندوب توصيل نرجس</p>
           </div>
-          <div className="text-left">
-            <p className="text-white/70 text-xs">الأرباح اليوم</p>
-            <p className="text-white font-bold text-xl">{formatSAR(187)}</p>
+          <div className="flex items-center gap-3">
+            <div className="text-left">
+              <p className="text-white/70 text-xs">الأرباح اليوم</p>
+              <p className="text-white font-bold text-xl">{formatSAR(187)}</p>
+            </div>
+            <button
+              onClick={async () => { await signOut(); navigate('/login', { replace: true }); }}
+              title="تسجيل الخروج"
+              className="w-8 h-8 rounded-xl bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-all"
+            >
+              <LogOut size={14} />
+            </button>
           </div>
         </div>
 
         {/* Online Toggle */}
-        <div className={`rounded-2xl p-4 flex items-center justify-between ${driverOnline ? 'bg-narges-surface/20' : 'bg-narges-surface/10'}`}>
+        <div className={`rounded-2xl p-4 flex items-center justify-between ${driverOnline ? 'bg-white/20' : 'bg-white/10'}`}>
           <div>
             <p className="text-white font-semibold">{driverOnline ? '🟢 متاح للتوصيل' : '🔴 غير متاح'}</p>
             <p className="text-white/70 text-xs mt-0.5">{driverOnline ? `${pendingOrders.length} طلب في الانتظار` : 'سيتوقف وصول الطلبات'}</p>
           </div>
           <button
             onClick={() => setDriverOnline(!driverOnline)}
-            className={`relative w-14 h-7 rounded-full transition-all duration-300 ${driverOnline ? 'bg-narges-light' : 'bg-narges-surface/30'}`}
+            className={`relative w-14 h-7 rounded-full transition-all duration-300 ${driverOnline ? 'bg-narges-light' : 'bg-white/30'}`}
           >
-            <span className={`absolute top-1 w-5 h-5 rounded-full bg-narges-surface shadow transition-all duration-300 ${driverOnline ? 'right-1' : 'left-1'}`} />
+            <span className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all duration-300 ${driverOnline ? 'right-1' : 'left-1'}`} />
           </button>
         </div>
       </div>

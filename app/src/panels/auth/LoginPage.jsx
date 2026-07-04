@@ -23,9 +23,12 @@ export default function LoginPage() {
     }
     setLoading(true);
     try {
-      await signIn({ email, password });
+      const { profile } = await signIn({ email, password });
       toast.success('تم تسجيل الدخول');
-      navigate(from, { replace: true });
+      // توجيه الموظفين للوحاتهم مباشرة، والعملاء لوجهتهم السابقة
+      const role = profile?.role;
+      const dest = role === 'admin' ? '/Admin' : role === 'cashier' ? '/Cashier' : role === 'delivery' ? '/Delivery' : from;
+      navigate(dest, { replace: true });
     } catch (err) {
       toast.error(err.message === 'Invalid login credentials' ? 'بيانات الدخول غير صحيحة' : err.message);
     } finally {

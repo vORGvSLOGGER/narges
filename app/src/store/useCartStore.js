@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export const useCartStore = create(
   persist(
@@ -27,11 +27,7 @@ export const useCartStore = create(
       },
 
       clearCart: () => set({ items: [] }),
-
-      get totalItems() { return get().items.reduce((s, i) => s + i.qty, 0); },
-      get subtotal() { return get().items.reduce((s, i) => s + i.price * i.qty, 0); },
-      get total() { return get().subtotal + (get().items.length > 0 ? 10 : 0); },
     }),
-    { name: 'narges-cart' }
+    { name: 'narges-cart', storage: createJSONStorage(() => localStorage) }
   )
 );

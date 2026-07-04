@@ -24,7 +24,7 @@ export default function ProcessOrderPage() {
   return (
     <div className="min-h-screen bg-narges-bg print:bg-narges-surface">
       {/* Header - hidden on print */}
-      <div className="bg-narges-surface px-4 py-3 flex items-center gap-3 shadow-sm sticky top-8 z-40 print:hidden">
+      <div className="bg-narges-surface px-4 py-3 flex items-center gap-3 shadow-sm sticky top-0 z-40 print:hidden">
         <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
           <ArrowRight size={18} />
         </button>

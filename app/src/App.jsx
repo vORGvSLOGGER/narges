@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import PanelSwitcher from './components/shared/PanelSwitcher';
 import ProtectedRoute from './components/shared/ProtectedRoute';
 import CustomerApp from './panels/customer/CustomerApp';
 import DeliveryApp from './panels/delivery/DeliveryApp';
@@ -17,46 +16,40 @@ export default function App() {
     initAuth();
   }, [initAuth]);
 
-  // basename مشتق من قاعدة Vite (يدعم نشر GitHub Pages تحت /narges/ وVercel تحت /).
-  const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/';
-
   return (
-    <BrowserRouter basename={basename}>
+    <BrowserRouter>
       <Toaster position="top-center" />
-      <PanelSwitcher />
-      <div className="pt-8">
-        <Routes>
-          <Route path="/" element={<Navigate to="/Customer" replace />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/Customer/*" element={<CustomerApp />} />
-          <Route
-            path="/Delivery/*"
-            element={
-              <ProtectedRoute roles={['delivery', 'admin']}>
-                <DeliveryApp />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/Cashier/*"
-            element={
-              <ProtectedRoute roles={['cashier', 'admin']}>
-                <CashierApp />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/Admin/*"
-            element={
-              <ProtectedRoute roles={['admin']}>
-                <AdminApp />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<Navigate to="/Customer" replace />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<Navigate to="/Customer" replace />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/Customer/*" element={<CustomerApp />} />
+        <Route
+          path="/Delivery/*"
+          element={
+            <ProtectedRoute roles={['delivery', 'admin']}>
+              <DeliveryApp />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Cashier/*"
+          element={
+            <ProtectedRoute roles={['cashier', 'admin']}>
+              <CashierApp />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/Admin/*"
+          element={
+            <ProtectedRoute roles={['admin']}>
+              <AdminApp />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/Customer" replace />} />
+      </Routes>
     </BrowserRouter>
   );
 }

@@ -1,5 +1,6 @@
 import { Home, Grid3X3, ShoppingCart, ClipboardList, User } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useCartStore } from '../../../store/useCartStore';
 
 const navItems = [
   { icon: Home, label: 'الرئيسية', path: '/Customer' },
@@ -12,6 +13,7 @@ const navItems = [
 export default function BottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
+  const cartCount = useCartStore((s) => s.items.reduce((n, i) => n + i.qty, 0));
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 bg-narges-surface border-t border-narges-border safe-area-pb">
@@ -26,7 +28,14 @@ export default function BottomNav() {
                 active ? 'text-narges-green' : 'text-narges-muted'
               }`}
             >
-              <Icon size={20} strokeWidth={active ? 2.5 : 1.8} />
+              <span className="relative">
+                <Icon size={20} strokeWidth={active ? 2.5 : 1.8} />
+                {path === '/Customer/cart' && cartCount > 0 && (
+                  <span className="absolute -top-1.5 -left-2 min-w-[16px] h-4 px-1 bg-narges-orange text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                    {cartCount > 9 ? '9+' : cartCount}
+                  </span>
+                )}
+              </span>
               <span className={`text-[10px] ${active ? 'font-bold' : 'font-medium'}`}>{label}</span>
             </button>
           );

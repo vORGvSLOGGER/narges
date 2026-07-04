@@ -1,11 +1,14 @@
-import { Plus, Star } from 'lucide-react';
+import { Plus, Star, Heart } from 'lucide-react';
 import { useCartStore } from '../../../store/useCartStore';
+import { useFavoritesStore } from '../../../store/useFavoritesStore';
 import { useNavigate } from 'react-router-dom';
 import { formatSAR } from '../../../utils/formatters';
 import toast from 'react-hot-toast';
 
 export default function ProductCard({ product, size = 'normal' }) {
   const addItem = useCartStore(s => s.addItem);
+  const isFav = useFavoritesStore(s => s.ids.includes(product.id));
+  const toggleFav = useFavoritesStore(s => s.toggle);
   const navigate = useNavigate();
   const isSmall = size === 'small';
 
@@ -41,6 +44,12 @@ export default function ProductCard({ product, size = 'normal' }) {
             -{off}%
           </span>
         )}
+        <button
+          onClick={(e) => { e.stopPropagation(); toggleFav(product.id); }}
+          className="absolute top-2 left-2 w-7 h-7 rounded-full bg-black/25 backdrop-blur-sm flex items-center justify-center active:scale-90 transition-transform"
+        >
+          <Heart size={14} className={isFav ? 'text-red-500 fill-red-500' : 'text-white'} />
+        </button>
       </div>
 
       {/* Info */}

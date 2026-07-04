@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  color-scheme: light;
   /* الوضع الفاتح */
   --n-green: 46 125 50;      /* #2E7D32 */
   --n-orange: 255 122 0;     /* #FF7A00 */
@@ -16,6 +17,7 @@
 }
 
 html.dark {
+  color-scheme: dark;
   /* الوضع الداكن */
   --n-green: 76 175 80;      /* #4CAF50 أفتح للتباين على الداكن */
   --n-orange: 255 138 40;    /* #FF8A28 */
@@ -52,6 +54,10 @@ body {
   min-height: 100vh;
 }
 
+input, textarea, select {
+  background-color: transparent;
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 4px;
@@ -82,7 +88,7 @@ body {
     @apply border border-narges-border bg-narges-surface text-narges-text font-bold py-3.5 px-6 rounded-2xl active:scale-95 transition-transform;
   }
   .card {
-    @apply bg-white rounded-2xl border border-narges-border shadow-narges-sm;
+    @apply bg-narges-surface rounded-2xl border border-narges-border shadow-narges-sm;
   }
   .badge-offer {
     @apply bg-narges-orange text-white text-xs font-bold px-2.5 py-1 rounded-full;

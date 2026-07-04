@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 const TIERS = [
   { id: 'bronze', label: 'برونزي', minPoints: 0, maxPoints: 499, color: '#CD7F32', discount: 0 },
@@ -51,6 +51,6 @@ export const useLoyaltyStore = create(
 
       clearPendingDiscount: () => set({ pendingDiscount: 0 }),
     }),
-    { name: 'narges-loyalty' }
+    { name: 'narges-loyalty', storage: createJSONStorage(() => localStorage) }
   )
 );

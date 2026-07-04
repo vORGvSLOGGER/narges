@@ -133,7 +133,7 @@ export default function AddProductAIPage() {
       {/* Header */}
       <div className="bg-narges-green px-4 pt-12 pb-5">
         <div className="flex items-center gap-3">
-          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-surface/20 flex items-center justify-center">
+          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
             <ArrowRight size={18} className="text-white" />
           </button>
           <div>

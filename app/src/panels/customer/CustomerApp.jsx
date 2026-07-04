@@ -7,6 +7,9 @@ import CartPage from './pages/CartPage';
 import OrderTrackingPage from './pages/OrderTrackingPage';
 import SearchPage from './pages/SearchPage';
 import LoyaltyPage from './pages/LoyaltyPage';
+import OrdersPage from './pages/OrdersPage';
+import ProfilePage from './pages/ProfilePage';
+import FavoritesPage from './pages/FavoritesPage';
 
 export default function CustomerApp() {
   return (
@@ -19,6 +22,9 @@ export default function CustomerApp() {
       <Route path="tracking/:id" element={<OrderTrackingPage />} />
       <Route path="search" element={<SearchPage />} />
       <Route path="loyalty" element={<LoyaltyPage />} />
+      <Route path="orders" element={<OrdersPage />} />
+      <Route path="profile" element={<ProfilePage />} />
+      <Route path="favorites" element={<FavoritesPage />} />
       <Route path="*" element={<Navigate to="/Customer" replace />} />
     </Routes>
   );

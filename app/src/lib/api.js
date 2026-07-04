@@ -146,6 +146,7 @@ export async function createOrder(orderData, customerId) {
       payment_method: orderData.paymentMethod ?? 'cash',
       payment_status: 'pending',
       notes: orderData.notes ?? '',
+      estimated_delivery_at: new Date(Date.now() + 40 * 60000).toISOString(),
     })
     .select()
     .single();

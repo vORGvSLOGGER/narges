@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { Clock, Package, Camera } from 'lucide-react';
+import { Clock, Package, Camera, LogOut } from 'lucide-react';
+import { useAuthStore } from '../../../store/useAuthStore';
 import { useOrderStore } from '../../../store/useOrderStore';
 import { formatRelativeTime, formatSAR } from '../../../utils/formatters';
 import { STATUS_LABELS, STATUS_COLORS, PAYMENT_LABELS } from '../../../data/mockOrders';
@@ -15,6 +16,7 @@ const STATUS_BG = {
 export default function OrderQueuePage() {
   const navigate = useNavigate();
   const { orders, updateOrderStatus } = useOrderStore();
+  const signOut = useAuthStore((st) => st.signOut);
   const queueOrders = orders.filter(o => CASHIER_STATUSES.includes(o.status));
 
   const counts = CASHIER_STATUSES.reduce((acc, s) => {
@@ -38,13 +40,22 @@ export default function OrderQueuePage() {
             <h1 className="text-white text-2xl font-bold">لوحة الكاشير</h1>
             <p className="text-white/70 text-sm mt-1">سوبرماركت نرجس — فرع الرياض</p>
           </div>
-          <button
-            onClick={() => navigate('/Cashier/add-product-ai')}
-            className="flex items-center gap-1.5 bg-narges-surface/20 hover:bg-narges-surface/30 text-white text-xs px-3 py-2 rounded-xl transition-all"
-          >
-            <Camera size={14} />
-            <span>إضافة منتج</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => navigate('/Cashier/add-product-ai')}
+              className="flex items-center gap-1.5 bg-white/20 hover:bg-white/30 text-white text-xs px-3 py-2 rounded-xl transition-all"
+            >
+              <Camera size={14} />
+              <span>إضافة منتج</span>
+            </button>
+            <button
+              onClick={async () => { await signOut(); navigate('/login', { replace: true }); }}
+              title="تسجيل الخروج"
+              className="w-8 h-8 rounded-xl bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-all"
+            >
+              <LogOut size={14} />
+            </button>
+          </div>
         </div>
 
         {/* Status Summary */}
@@ -52,7 +63,7 @@ export default function OrderQueuePage() {
           {CASHIER_STATUSES.map(s => {
             const colors = STATUS_COLORS[s];
             return (
-              <div key={s} className="bg-narges-surface/20 rounded-xl p-2 text-center">
+              <div key={s} className="bg-white/20 rounded-xl p-2 text-center">
                 <p className="text-white font-bold text-xl">{counts[s]}</p>
                 <p className="text-white/70 text-xs">{STATUS_LABELS[s]}</p>
               </div>

@@ -39,14 +39,14 @@ export default function LoyaltyPage() {
       {/* Header */}
       <div className="bg-narges-green px-4 pt-12 pb-8">
         <div className="flex items-center gap-3 mb-6">
-          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-surface/20 flex items-center justify-center">
+          <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
             <ArrowRight size={18} className="text-white" />
           </button>
           <h1 className="text-white font-bold text-xl">نظام الولاء</h1>
         </div>
 
         {/* Tier Card */}
-        <div className="bg-narges-surface/15 backdrop-blur-sm rounded-2xl p-5">
+        <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-5">
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-white/70 text-sm">مستواك الحالي</p>
@@ -63,7 +63,7 @@ export default function LoyaltyPage() {
 
           {nextTier && (
             <>
-              <div className="h-2 bg-narges-surface/20 rounded-full overflow-hidden mb-2">
+              <div className="h-2 bg-white/20 rounded-full overflow-hidden mb-2">
                 <div
                   className="h-full bg-narges-surface rounded-full transition-all duration-700"
                   style={{ width: `${progressPct}%` }}

@@ -28,7 +28,10 @@ export default function CartPage() {
   const [placing, setPlacing] = useState(false);
 
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
-  const deliveryFee = items.length > 0 ? 10 : 0;
+  // توصيل مجاني للطلبات من 75 ر.س وأكثر
+  const FREE_DELIVERY_AT = 75;
+  const freeDelivery = subtotal >= FREE_DELIVERY_AT;
+  const deliveryFee = items.length > 0 && !freeDelivery ? 10 : 0;
   const loyaltyDiscount = pendingDiscount;
   const total = Math.max(0, subtotal + deliveryFee - loyaltyDiscount);
 
@@ -87,13 +90,13 @@ export default function CartPage() {
     clearPendingDiscount();
     clearCart();
     setPlacing(false);
-    navigate(`/Customer/tracking/${order.id}`, { replace: true });
+    navigate(`/Customer/tracking/${order.id}`, { replace: true, state: { placed: true } });
   };
 
   if (items.length === 0) {
     return (
       <div className="min-h-screen bg-narges-bg flex flex-col">
-        <div className="bg-narges-surface px-4 py-3 flex items-center gap-3 shadow-sm sticky top-8 z-40">
+        <div className="bg-narges-surface px-4 py-3 flex items-center gap-3 shadow-sm sticky top-0 z-40">
           <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
             <ArrowRight size={18} />
           </button>
@@ -112,7 +115,7 @@ export default function CartPage() {
   return (
     <div className="min-h-screen bg-narges-bg flex flex-col pb-40">
       {/* Header */}
-      <div className="bg-narges-surface px-4 py-3 flex items-center gap-3 shadow-sm sticky top-8 z-40">
+      <div className="bg-narges-surface px-4 py-3 flex items-center gap-3 shadow-sm sticky top-0 z-40">
         <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
           <ArrowRight size={18} />
         </button>
@@ -148,6 +151,27 @@ export default function CartPage() {
           ))}
         </div>
 
+        {/* Free delivery progress */}
+        <div className={`card p-4 ${freeDelivery ? 'border-narges-green/40' : ''}`}>
+          {freeDelivery ? (
+            <p className="text-sm font-bold text-narges-green flex items-center gap-2">
+              🎉 مبروك! التوصيل مجاني على هذا الطلب
+            </p>
+          ) : (
+            <>
+              <p className="text-sm font-semibold text-narges-text flex items-center gap-2">
+                🚚 أضف <span className="text-narges-orange font-bold">{formatSAR(FREE_DELIVERY_AT - subtotal)}</span> للتوصيل المجاني
+              </p>
+              <div className="h-2 bg-narges-surface2 rounded-full overflow-hidden mt-2.5">
+                <div
+                  className="h-full rounded-full transition-all duration-700"
+                  style={{ width: `${Math.min(100, (subtotal / FREE_DELIVERY_AT) * 100)}%`, background: 'linear-gradient(90deg,#FF7A00,#FF9D3D)' }}
+                />
+              </div>
+            </>
+          )}
+        </div>
+
         {/* Address */}
         <div className="card p-4">
           <h3 className="font-bold mb-3 flex items-center gap-2">
@@ -172,7 +196,7 @@ export default function CartPage() {
                 key={m.id}
                 onClick={() => setPaymentMethod(m.id)}
                 className={`flex items-center gap-2 p-3 rounded-xl border-2 transition-all ${
-                  paymentMethod === m.id ? 'border-narges-light bg-green-50' : 'border-narges-border bg-narges-surface'
+                  paymentMethod === m.id ? 'border-narges-green bg-narges-green/10' : 'border-narges-border bg-narges-surface'
                 }`}
               >
                 <span>{m.icon}</span>
@@ -191,7 +215,9 @@ export default function CartPage() {
           </div>
           <div className="flex justify-between text-sm">
             <span className="text-narges-text-secondary">رسوم التوصيل</span>
-            <span>{formatSAR(deliveryFee)}</span>
+            {deliveryFee === 0 && items.length > 0
+              ? <span className="text-narges-green font-bold">مجاني 🎉</span>
+              : <span>{formatSAR(deliveryFee)}</span>}
           </div>
           {loyaltyDiscount > 0 && (
             <div className="flex justify-between text-sm text-narges-orange font-medium">

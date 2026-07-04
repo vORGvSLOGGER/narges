@@ -1,17 +1,8 @@
 import { create } from 'zustand';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
-export const PANELS = {
-  CUSTOMER: 'customer',
-  DELIVERY: 'delivery',
-  CASHIER: 'cashier',
-  ADMIN: 'admin',
-};
-
 export const useAuthStore = create((set, get) => ({
-  // ---- تبديل اللوحات (أداة تطوير، يبقى كما هو) ----
-  activePanel: PANELS.CUSTOMER,
-  setPanel: (panel) => set({ activePanel: panel }),
+  // حالة المندوب (متاح/غير متاح)
   driverOnline: false,
   setDriverOnline: (val) => set({ driverOnline: val }),
 
@@ -39,7 +30,7 @@ export const useAuthStore = create((set, get) => ({
   _applySession: async (session) => {
     if (!session) {
       set({ session: null, user: null, profile: null, authLoading: false });
-      return;
+      return null;
     }
     set({ session, user: session.user });
     const { data: profile } = await supabase
@@ -48,6 +39,7 @@ export const useAuthStore = create((set, get) => ({
       .eq('id', session.user.id)
       .maybeSingle();
     set({ profile: profile || null, authLoading: false });
+    return profile || null;
   },
 
   signUp: async ({ email, password, fullName, phone }) => {
@@ -61,11 +53,13 @@ export const useAuthStore = create((set, get) => ({
     return data;
   },
 
+  // يُرجع الملف الشخصي حتى نوجّه المستخدم حسب دوره مباشرة
   signIn: async ({ email, password }) => {
     if (!isSupabaseConfigured) throw new Error('Supabase غير مهيأ');
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
-    return data;
+    const profile = await get()._applySession(data.session);
+    return { ...data, profile };
   },
 
   signOut: async () => {
