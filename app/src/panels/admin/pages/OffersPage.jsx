@@ -1,36 +1,60 @@
-import { useState } from 'react';
-import { CheckCircle2, XCircle, Clock, Tag } from 'lucide-react';
-import { useOffersStore } from '../../../store/useOffersStore';
-import { formatDate } from '../../../utils/formatters';
+import { useState, useEffect, useCallback } from 'react';
+import { Search, Tag, Flame, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { fetchProducts, updateProduct } from '../../../lib/api';
+import { formatSAR } from '../../../utils/formatters';
 
-const STATUS_CONFIG = {
-  pending: { label: 'بانتظار الاعتماد', color: 'bg-yellow-100 text-yellow-700', icon: Clock },
-  approved: { label: 'معتمد', color: 'bg-green-100 text-green-700', icon: CheckCircle2 },
-  rejected: { label: 'مرفوض', color: 'bg-red-100 text-red-700', icon: XCircle },
-};
-
-const FILTER_TABS = [
-  { id: 'all', label: 'الكل' },
-  { id: 'pending', label: 'بانتظار الاعتماد' },
-  { id: 'approved', label: 'المعتمدة' },
-  { id: 'rejected', label: 'المرفوضة' },
-];
+const PRESETS = [10, 15, 20, 25, 30, 50];
 
 export default function OffersPage() {
-  const { offers, updateOfferStatus } = useOffersStore();
-  const [filter, setFilter] = useState('all');
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [busyId, setBusyId] = useState(null);
 
-  const filtered = filter === 'all' ? offers : offers.filter(o => o.status === filter);
+  const reload = useCallback(async () => {
+    setLoading(true);
+    setProducts(await fetchProducts());
+    setLoading(false);
+  }, []);
+  useEffect(() => { reload(); }, [reload]);
 
-  const handleApprove = (id, name) => {
-    updateOfferStatus(id, 'approved');
-    toast.success(`تم اعتماد عرض "${name}"`);
+  const onOffer = products.filter((p) => p.isOffer);
+  const list = (search
+    ? products.filter((p) => p.nameAr.includes(search))
+    : onOffer.length
+      ? [...onOffer, ...products.filter((p) => !p.isOffer)]
+      : products
+  ).slice(0, 40);
+
+  // تفعيل خصم بنسبة مئوية على منتج — يظهر فوراً للعملاء
+  const applyDiscount = async (p, pct) => {
+    setBusyId(p.id);
+    try {
+      const base = p.isOffer ? p.originalPrice : p.price;
+      const newPrice = Math.round(base * (1 - pct / 100) * 4) / 4; // تقريب لربع ريال
+      await updateProduct(p.id, { price: newPrice, originalPrice: base, isOffer: true });
+      setProducts((ps) => ps.map((x) => (x.id === p.id ? { ...x, price: newPrice, originalPrice: base, isOffer: true } : x)));
+      toast.success(`عرض ${pct}% على «${p.nameAr}» 🔥`);
+    } catch (e) {
+      toast.error('تعذّر التفعيل: ' + e.message);
+    } finally {
+      setBusyId(null);
+    }
   };
 
-  const handleReject = (id, name) => {
-    updateOfferStatus(id, 'rejected');
-    toast.error(`تم رفض عرض "${name}"`);
+  // إنهاء العرض وإرجاع السعر الأصلي
+  const endOffer = async (p) => {
+    setBusyId(p.id);
+    try {
+      await updateProduct(p.id, { price: p.originalPrice, isOffer: false });
+      setProducts((ps) => ps.map((x) => (x.id === p.id ? { ...x, price: p.originalPrice, isOffer: false } : x)));
+      toast.success('انتهى العرض ورجع السعر الأصلي');
+    } catch (e) {
+      toast.error(e.message);
+    } finally {
+      setBusyId(null);
+    }
   };
 
   return (
@@ -38,101 +62,58 @@ export default function OffersPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">إدارة العروض</h1>
-          <p className="text-narges-text-secondary text-sm mt-0.5">
-            {offers.filter(o => o.status === 'pending').length} عرض بانتظار الاعتماد
-          </p>
+          <p className="text-narges-text-secondary text-sm mt-0.5">فعّل خصماً على أي منتج — يظهر للعملاء فوراً مع شارة الخصم</p>
         </div>
-        <div className="flex items-center gap-2 bg-green-50 text-narges-green px-3 py-2 rounded-xl text-sm font-medium">
-          <Tag size={16} />
-          <span>{offers.filter(o => o.status === 'approved').length} عرض نشط</span>
+        <div className="flex items-center gap-2 bg-narges-orange/10 text-narges-orange px-3 py-2 rounded-xl text-sm font-bold">
+          <Flame size={16} /> {onOffer.length} عرض نشط
         </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="flex gap-2 overflow-x-auto no-scrollbar">
-        {FILTER_TABS.map(t => (
-          <button
-            key={t.id}
-            onClick={() => setFilter(t.id)}
-            className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
-              filter === t.id ? 'bg-narges-green text-white' : 'bg-narges-surface text-narges-text-secondary border border-narges-border'
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="flex items-center gap-2 bg-narges-surface border border-narges-border rounded-xl px-3 py-2 max-w-md">
+        <Search size={16} className="text-narges-text-secondary" />
+        <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="ابحث عن منتج لتفعيل عرض عليه..." className="flex-1 bg-transparent text-sm focus:outline-none" />
       </div>
 
-      {/* Offers List */}
-      <div className="space-y-3">
-        {filtered.map(offer => {
-          const cfg = STATUS_CONFIG[offer.status];
-          const StatusIcon = cfg.icon;
-          return (
-            <div key={offer.id} className="card p-4">
-              <div className="flex items-start justify-between gap-3 mb-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <p className="font-bold">{offer.productName}</p>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${cfg.color}`}>
-                      {cfg.label}
-                    </span>
+      {loading ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          {[1, 2, 3, 4].map((i) => <div key={i} className="h-24 rounded-2xl skeleton" />)}
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          {list.map((p) => {
+            const pct = p.isOffer && p.originalPrice > 0 ? Math.round((1 - p.price / p.originalPrice) * 100) : 0;
+            return (
+              <div key={p.id} className={`card p-3.5 flex items-center gap-3 anim-fade-up ${p.isOffer ? 'border-narges-orange/40' : ''}`}>
+                <img src={p.image} alt={p.nameAr} className="w-14 h-14 rounded-xl object-cover shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="font-bold text-sm truncate">{p.nameAr}</p>
+                  <p className="text-xs text-narges-text-secondary mt-0.5">
+                    <span className="font-bold text-narges-green">{formatSAR(p.price)}</span>
+                    {p.isOffer && <span className="line-through mr-2 text-narges-muted">{formatSAR(p.originalPrice)}</span>}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {p.isOffer ? (
+                      <>
+                        <span className="badge-offer">-{pct}% نشط</span>
+                        <button disabled={busyId === p.id} onClick={() => endOffer(p)} className="flex items-center gap-1 text-[11px] font-bold bg-narges-surface2 text-narges-text px-2.5 py-1 rounded-full disabled:opacity-50">
+                          <X size={11} /> إنهاء العرض
+                        </button>
+                      </>
+                    ) : (
+                      PRESETS.map((d) => (
+                        <button key={d} disabled={busyId === p.id} onClick={() => applyDiscount(p, d)} className="text-[11px] font-bold bg-narges-green/10 text-narges-green hover:bg-narges-green hover:text-white px-2.5 py-1 rounded-full transition-colors disabled:opacity-50">
+                          -{d}%
+                        </button>
+                      ))
+                    )}
                   </div>
-                  <p className="text-xs text-narges-text-secondary">اقترحه: {offer.proposedBy}</p>
-                  {offer.notes && (
-                    <p className="text-xs text-narges-text-secondary mt-1">ملاحظة: {offer.notes}</p>
-                  )}
                 </div>
-                <div className="text-left flex-shrink-0">
-                  <div className="bg-narges-orange/10 text-narges-orange font-bold text-lg px-3 py-1 rounded-xl text-center">
-                    {offer.discountPct}%
-                  </div>
-                </div>
+                {p.isOffer && <Tag size={18} className="text-narges-orange shrink-0" />}
               </div>
-
-              <div className="flex items-center justify-between text-sm bg-narges-bg rounded-xl p-3 mb-3">
-                <div>
-                  <span className="text-narges-text-secondary">السعر الأصلي: </span>
-                  <span className="line-through text-narges-text-secondary">{offer.originalPrice} ر.س</span>
-                </div>
-                <div>
-                  <span className="text-narges-text-secondary">بعد الخصم: </span>
-                  <span className="font-bold text-narges-green">{offer.newPrice.toFixed(2)} ر.س</span>
-                </div>
-                <div className="text-xs text-narges-text-secondary">
-                  حتى: {new Date(offer.validUntil).toLocaleDateString('ar-SA')}
-                </div>
-              </div>
-
-              {offer.status === 'pending' && (
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleApprove(offer.id, offer.productName)}
-                    className="flex-1 flex items-center justify-center gap-1.5 bg-narges-green text-white py-2 rounded-xl text-sm font-bold"
-                  >
-                    <CheckCircle2 size={16} />
-                    اعتماد
-                  </button>
-                  <button
-                    onClick={() => handleReject(offer.id, offer.productName)}
-                    className="flex-1 flex items-center justify-center gap-1.5 bg-red-50 text-red-600 py-2 rounded-xl text-sm font-bold border border-red-100"
-                  >
-                    <XCircle size={16} />
-                    رفض
-                  </button>
-                </div>
-              )}
-            </div>
-          );
-        })}
-
-        {filtered.length === 0 && (
-          <div className="text-center py-16">
-            <span className="text-5xl">🏷️</span>
-            <p className="mt-3 font-medium text-narges-text">لا توجد عروض في هذا القسم</p>
-          </div>
-        )}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

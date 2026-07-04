@@ -13,7 +13,7 @@ export default function FavoritesPage() {
   const favorites = (all || []).filter((p) => ids.includes(p.id));
 
   return (
-    <div className="min-h-screen bg-narges-bg pb-24">
+    <div className="min-h-screen bg-narges-bg anim-fade-up pb-24">
       <div className="sticky top-0 z-40 bg-narges-surface shadow-narges-sm px-4 py-3 flex items-center gap-2">
         <Heart size={18} className="text-red-500 fill-red-500" />
         <h1 className="text-lg font-bold flex-1">المفضلة</h1>
@@ -23,7 +23,7 @@ export default function FavoritesPage() {
       <div className="px-4 pt-4">
         {loading && ids.length > 0 && favorites.length === 0 ? (
           <div className="grid grid-cols-2 gap-3">
-            {[1, 2, 3, 4].map((i) => <div key={i} className="card h-56 animate-pulse" />)}
+            {[1, 2, 3, 4].map((i) => <div key={i} className="rounded-2xl skeleton h-56" />)}
           </div>
         ) : favorites.length === 0 ? (
           <div className="flex flex-col items-center justify-center gap-3 py-24 text-center">

@@ -54,7 +54,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-narges-bg pb-24">
+    <div className="min-h-screen bg-narges-bg anim-fade-up pb-24">
       {/* Header card */}
       <div
         className="px-4 pt-8 pb-10 text-white"

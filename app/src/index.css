@@ -82,7 +82,7 @@ input, textarea, select {
 
 @layer components {
   .btn-primary {
-    @apply bg-narges-green text-white font-bold py-3.5 px-6 rounded-2xl shadow-narges-green active:scale-95 transition-transform;
+    @apply bg-narges-green text-white font-bold py-3.5 px-6 rounded-2xl shadow-narges-green active:scale-95 hover:brightness-110 transition-all;
   }
   .btn-outline {
     @apply border border-narges-border bg-narges-surface text-narges-text font-bold py-3.5 px-6 rounded-2xl active:scale-95 transition-transform;
@@ -96,4 +96,50 @@ input, textarea, select {
   .section-title {
     @apply text-narges-text font-bold text-lg mb-3;
   }
+}
+
+/* ===== طبقة الأنيميشن ===== */
+@keyframes nFadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes nShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@keyframes nFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-6px) rotate(-3deg); }
+}
+@keyframes nPop {
+  0%   { transform: scale(0.6); opacity: 0; }
+  70%  { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.anim-fade-up { animation: nFadeUp 0.45s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+.anim-d1 { animation-delay: 0.05s; } .anim-d2 { animation-delay: 0.12s; }
+.anim-d3 { animation-delay: 0.19s; } .anim-d4 { animation-delay: 0.26s; }
+.anim-d5 { animation-delay: 0.33s; } .anim-d6 { animation-delay: 0.4s; }
+.anim-float { animation: nFloat 3.2s ease-in-out infinite; }
+.anim-pop { animation: nPop 0.35s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+
+/* هيكل تحميل لامع بدل النبض */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--n-surface2)) 25%,
+    rgb(var(--n-border)) 37%,
+    rgb(var(--n-surface2)) 63%
+  );
+  background-size: 400% 100%;
+  animation: nShimmer 1.4s ease infinite;
+}
+
+/* تفاعل موحّد للبطاقات القابلة للنقر */
+.card-press { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.card-press:active { transform: scale(0.97); }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade-up, .anim-float, .anim-pop, .skeleton { animation: none; }
 }

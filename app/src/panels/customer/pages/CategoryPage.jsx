@@ -24,7 +24,7 @@ export default function CategoryPage() {
     : allProducts.filter(p => p.subcategoryId === activeSubcat);
 
   return (
-    <div className="min-h-screen bg-narges-bg pb-20">
+    <div className="min-h-screen bg-narges-bg anim-fade-up pb-20">
       {/* Header */}
       <div className="sticky top-0 z-40 bg-narges-surface shadow-sm">
         <div className="px-4 py-3 flex items-center gap-3">

@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Trash2, Plus, Minus, Tag } from 'lucide-react';
+import { ArrowRight, Trash2, Plus, Minus, Tag, TicketPercent, X } from 'lucide-react';
 import { useState } from 'react';
 import { useCartStore } from '../../../store/useCartStore';
 import { useOrderStore } from '../../../store/useOrderStore';
 import { useLoyaltyStore } from '../../../store/useLoyaltyStore';
 import { useAuthStore } from '../../../store/useAuthStore';
-import { createOrder } from '../../../lib/api';
+import { createOrder, validateCoupon } from '../../../lib/api';
+import { useSettingsStore } from '../../../store/useSettingsStore';
 import { isSupabaseConfigured } from '../../../lib/supabase';
 import { formatSAR } from '../../../utils/formatters';
 import toast from 'react-hot-toast';
@@ -26,14 +27,33 @@ export default function CartPage() {
   const [paymentMethod, setPaymentMethod] = useState('cash');
   const [address, setAddress] = useState('حي الروضة، شارع الأمير محمد، مبنى 12');
   const [placing, setPlacing] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
+  const [coupon, setCoupon] = useState(null); // { code, discount }
+  const [couponBusy, setCouponBusy] = useState(false);
+  const delivery = useSettingsStore((s) => s.settings.delivery);
 
   const subtotal = items.reduce((s, i) => s + i.price * i.qty, 0);
-  // توصيل مجاني للطلبات من 75 ر.س وأكثر
-  const FREE_DELIVERY_AT = 75;
+  // رسوم وعتبة التوصيل المجاني من إعدادات الأدمن
+  const FREE_DELIVERY_AT = delivery.freeAt;
   const freeDelivery = subtotal >= FREE_DELIVERY_AT;
-  const deliveryFee = items.length > 0 && !freeDelivery ? 10 : 0;
+  const deliveryFee = items.length > 0 && !freeDelivery ? delivery.fee : 0;
+  const couponDiscount = coupon ? Math.min(coupon.discount, subtotal) : 0;
+
+  const applyCoupon = async () => {
+    setCouponBusy(true);
+    try {
+      const c = await validateCoupon(couponCode, subtotal);
+      setCoupon({ code: c.code, discount: c.discount });
+      toast.success(`قسيمة ${c.code} مفعّلة 🎟️`);
+    } catch (err) {
+      setCoupon(null);
+      toast.error(err.message);
+    } finally {
+      setCouponBusy(false);
+    }
+  };
   const loyaltyDiscount = pendingDiscount;
-  const total = Math.max(0, subtotal + deliveryFee - loyaltyDiscount);
+  const total = Math.max(0, subtotal + deliveryFee - loyaltyDiscount - couponDiscount);
 
   const handleConfirmOrder = async () => {
     if (!items.length || placing) return;
@@ -61,9 +81,10 @@ export default function CartPage() {
           items: orderItems,
           subtotal,
           deliveryFee,
-          discount: loyaltyDiscount,
+          discount: loyaltyDiscount + couponDiscount,
           total,
           paymentMethod,
+          notes: coupon ? `قسيمة: ${coupon.code}` : '',
         }, user.id);
         createdId = dbOrder?.id || null;
       }
@@ -206,6 +227,38 @@ export default function CartPage() {
           </div>
         </div>
 
+        {/* Coupon */}
+        <div className="card p-4">
+          <h3 className="font-bold mb-3 flex items-center gap-2">
+            <TicketPercent size={17} className="text-narges-orange" /> قسيمة خصم
+          </h3>
+          {coupon ? (
+            <div className="flex items-center justify-between bg-narges-green/10 border border-narges-green/30 rounded-xl px-3 py-2.5 anim-pop">
+              <span className="text-sm font-bold text-narges-green">🎟️ {coupon.code} — خصم {formatSAR(couponDiscount)}</span>
+              <button onClick={() => { setCoupon(null); setCouponCode(''); }} className="text-narges-text-secondary">
+                <X size={16} />
+              </button>
+            </div>
+          ) : (
+            <div className="flex gap-2">
+              <input
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                placeholder="أدخل رمز القسيمة"
+                dir="ltr"
+                className="flex-1 border border-narges-border rounded-xl px-3 py-2.5 text-sm text-center font-bold tracking-widest focus:outline-none focus:border-narges-light"
+              />
+              <button
+                onClick={applyCoupon}
+                disabled={couponBusy || !couponCode.trim()}
+                className="btn-primary py-2.5 px-5 text-sm disabled:opacity-50"
+              >
+                {couponBusy ? '...' : 'تطبيق'}
+              </button>
+            </div>
+          )}
+        </div>
+
         {/* Summary */}
         <div className="card p-4 space-y-2">
           <h3 className="font-bold mb-3">ملخص الطلب</h3>
@@ -219,6 +272,12 @@ export default function CartPage() {
               ? <span className="text-narges-green font-bold">مجاني 🎉</span>
               : <span>{formatSAR(deliveryFee)}</span>}
           </div>
+          {couponDiscount > 0 && (
+            <div className="flex justify-between text-sm text-narges-green font-medium">
+              <span>خصم قسيمة {coupon.code} 🎟️</span>
+              <span>- {formatSAR(couponDiscount)}</span>
+            </div>
+          )}
           {loyaltyDiscount > 0 && (
             <div className="flex justify-between text-sm text-narges-orange font-medium">
               <span>خصم الولاء 🎁</span>

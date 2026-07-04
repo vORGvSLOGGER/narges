@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingBag, Truck, Settings, Tag, MessageSquareWarning, LogOut } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingBag, Truck, Settings, Tag, TicketPercent, MessageSquareWarning, LogOut } from 'lucide-react';
 import { useAuthStore } from '../../../store/useAuthStore';
 import BranchSelector from './BranchSelector';
 
@@ -9,6 +9,7 @@ const navItems = [
   { icon: Package, label: 'المنتجات', path: '/Admin/products' },
   { icon: Truck, label: 'تتبع المناديب', path: '/Admin/drivers-map' },
   { icon: Tag, label: 'العروض', path: '/Admin/offers' },
+  { icon: TicketPercent, label: 'القسائم', path: '/Admin/coupons' },
   { icon: MessageSquareWarning, label: 'الشكاوي', path: '/Admin/complaints' },
   { icon: Settings, label: 'الإعدادات', path: '/Admin/settings' },
 ];

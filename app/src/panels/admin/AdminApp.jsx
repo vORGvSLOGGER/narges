@@ -8,6 +8,8 @@ import OrdersPage from './pages/OrdersPage';
 import DriversMapPage from './pages/DriversMapPage';
 import OffersPage from './pages/OffersPage';
 import ComplaintsPage from './pages/ComplaintsPage';
+import CouponsPage from './pages/CouponsPage';
+import SettingsPage from './pages/SettingsPage';
 
 export default function AdminApp() {
   const loadOrders = useOrderStore((s) => s.loadOrders);
@@ -22,8 +24,9 @@ export default function AdminApp() {
             <Route path="orders" element={<OrdersPage />} />
             <Route path="drivers-map" element={<DriversMapPage />} />
             <Route path="offers" element={<OffersPage />} />
+            <Route path="coupons" element={<CouponsPage />} />
             <Route path="complaints" element={<ComplaintsPage />} />
-            <Route path="settings" element={<SettingsPlaceholder />} />
+            <Route path="settings" element={<SettingsPage />} />
             <Route path="*" element={<Navigate to="/Admin" replace />} />
           </Routes>
       </main>
@@ -31,25 +34,3 @@ export default function AdminApp() {
   );
 }
 
-
-function SettingsPlaceholder() {
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">الإعدادات</h1>
-      <div className="card p-6 space-y-4 max-w-lg">
-        {[
-          { label: 'اسم المتجر', value: 'نرجس سوبرماركت' },
-          { label: 'رقم الاتصال', value: '0112345678' },
-          { label: 'رسوم التوصيل الأساسية', value: '10 ر.س' },
-          { label: 'الحد الأدنى للطلب', value: '30 ر.س' },
-        ].map((s, i) => (
-          <div key={i} className="flex items-center justify-between pb-3 border-b border-narges-border">
-            <span className="text-narges-text-secondary text-sm">{s.label}</span>
-            <span className="font-medium">{s.value}</span>
-          </div>
-        ))}
-        <button className="btn-primary w-full mt-4">حفظ الإعدادات</button>
-      </div>
-    </div>
-  );
-}

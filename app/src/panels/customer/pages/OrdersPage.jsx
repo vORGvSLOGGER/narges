@@ -54,7 +54,7 @@ export default function OrdersPage() {
   const needLogin = isSupabaseConfigured && !session;
 
   return (
-    <div className="min-h-screen bg-narges-bg pb-24">
+    <div className="min-h-screen bg-narges-bg anim-fade-up pb-24">
       <div className="sticky top-0 z-40 bg-narges-surface shadow-narges-sm px-4 py-3">
         <h1 className="text-lg font-bold">طلباتي</h1>
       </div>
@@ -72,7 +72,7 @@ export default function OrdersPage() {
         ) : loading && orders.length === 0 ? (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="card p-4 animate-pulse h-28" />
+              <div key={i} className="rounded-2xl skeleton h-28" />
             ))}
           </div>
         ) : orders.length === 0 ? (

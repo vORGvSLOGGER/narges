@@ -9,6 +9,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const signIn = useAuthStore((s) => s.signIn);
+  const resendConfirmation = useAuthStore((s) => s.resendConfirmation);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -30,7 +31,14 @@ export default function LoginPage() {
       const dest = role === 'admin' ? '/Admin' : role === 'cashier' ? '/Cashier' : role === 'delivery' ? '/Delivery' : from;
       navigate(dest, { replace: true });
     } catch (err) {
-      toast.error(err.message === 'Invalid login credentials' ? 'بيانات الدخول غير صحيحة' : err.message);
+      if (err.message === 'Invalid login credentials') {
+        toast.error('بيانات الدخول غير صحيحة');
+      } else if (err.message === 'Email not confirmed') {
+        toast.error('فعّل بريدك أولاً — أعدنا إرسال رابط التفعيل');
+        resendConfirmation(email).catch(() => {});
+      } else {
+        toast.error(err.message);
+      }
     } finally {
       setLoading(false);
     }

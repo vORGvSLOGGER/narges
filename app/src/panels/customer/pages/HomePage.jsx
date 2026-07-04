@@ -41,7 +41,7 @@ export default function HomePage() {
         {/* بطاقة الولاء */}
         <button
           onClick={() => navigate('/Customer/loyalty')}
-          className="w-full text-right rounded-3xl p-5 text-white relative overflow-hidden shadow-narges-green"
+          className="anim-fade-up w-full text-right rounded-3xl p-5 text-white relative overflow-hidden shadow-narges-green"
           style={{ background: 'linear-gradient(135deg,#1B5E20,#2E7D32 45%,#66BB6A)' }}
         >
           <div className="absolute -top-8 -left-5 w-32 h-32 rounded-full bg-white/10" />
@@ -69,14 +69,14 @@ export default function HomePage() {
         </button>
 
         {/* بطاقات العروض */}
-        <div className="flex gap-3 overflow-x-auto no-scrollbar -mx-1 px-1">
+        <div className="anim-fade-up anim-d1 flex gap-3 overflow-x-auto no-scrollbar -mx-1 px-1">
           {promos.map(b => (
             <div
               key={b.id}
               className="flex-shrink-0 w-60 rounded-[20px] p-4 text-white relative overflow-hidden"
               style={{ background: b.grad }}
             >
-              <span className="absolute -top-4 -left-2 text-[80px] opacity-[0.16] leading-none">{b.emoji}</span>
+              <span className="anim-float absolute -top-4 -left-2 text-[80px] opacity-[0.16] leading-none">{b.emoji}</span>
               <span className="relative inline-block bg-white/25 text-[11px] font-bold px-2.5 py-1 rounded-full">{b.badge}</span>
               <p className="relative font-bold text-[19px] mt-2.5 leading-snug">{b.title}<br />{b.sub}</p>
             </div>
@@ -84,10 +84,10 @@ export default function HomePage() {
         </div>
 
         {/* عروض الفلاش (عدّاد تنازلي) */}
-        <FlashDeals products={offers} />
+        <div className="anim-fade-up anim-d2"><FlashDeals products={offers} /></div>
 
         {/* الأقسام */}
-        <section>
+        <section className="anim-fade-up anim-d3">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-bold text-narges-text">تسوّق حسب القسم</h2>
             <button onClick={() => navigate('/Customer/categories')} className="text-narges-green text-xs font-bold flex items-center gap-0.5">
@@ -111,14 +111,14 @@ export default function HomePage() {
         </section>
 
         {/* العروض الحصرية */}
-        <section>
+        <section className="anim-fade-up anim-d4">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-bold text-narges-text">🔥 العروض الحصرية</h2>
             <button className="text-narges-green text-xs font-bold flex items-center gap-0.5">عرض الكل <ChevronLeft size={15} /></button>
           </div>
           <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1 -mx-1 px-1">
             {loadingOffers && offers.length === 0
-              ? [1, 2, 3].map(i => <div key={i} className="flex-shrink-0 w-40 h-56 card animate-pulse" />)
+              ? [1, 2, 3].map(i => <div key={i} className="flex-shrink-0 w-40 h-56 rounded-[20px] skeleton" />)
               : offers.map(p => (
                   <div key={p.id} className="flex-shrink-0 w-40">
                     <ProductCard product={p} size="small" />
@@ -128,14 +128,14 @@ export default function HomePage() {
         </section>
 
         {/* الأكثر مبيعاً */}
-        <section>
+        <section className="anim-fade-up anim-d5">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-bold text-narges-text">⭐ الأكثر مبيعاً</h2>
             <button className="text-narges-green text-xs font-bold flex items-center gap-0.5">عرض الكل <ChevronLeft size={15} /></button>
           </div>
           <div className="grid grid-cols-2 gap-3">
             {loadingFeatured && featured.length === 0
-              ? [1, 2, 3, 4].map(i => <div key={i} className="h-60 card animate-pulse" />)
+              ? [1, 2, 3, 4].map(i => <div key={i} className="h-60 rounded-[20px] skeleton" />)
               : featured.map(p => <ProductCard key={p.id} product={p} />)}
           </div>
         </section>

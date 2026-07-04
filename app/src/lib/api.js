@@ -1,4 +1,5 @@
 import { supabase, isSupabaseConfigured } from './supabase';
+import { useSettingsStore } from '../store/useSettingsStore';
 import { categories as mockCategories } from '../data/categories';
 import {
   products as mockProducts,
@@ -146,7 +147,7 @@ export async function createOrder(orderData, customerId) {
       payment_method: orderData.paymentMethod ?? 'cash',
       payment_status: 'pending',
       notes: orderData.notes ?? '',
-      estimated_delivery_at: new Date(Date.now() + 40 * 60000).toISOString(),
+      estimated_delivery_at: new Date(Date.now() + (useSettingsStore.getState().settings.delivery.etaMinutes || 40) * 60000).toISOString(),
     })
     .select()
     .single();
@@ -284,4 +285,82 @@ export async function deleteProduct(id) {
   const { error } = await supabase.from('products').delete().eq('id', id);
   if (error) throw error;
   return { id };
+}
+
+// ============ القسائم (Coupons) ============
+function mapCoupon(row) {
+  return {
+    id: row.id,
+    code: row.code,
+    type: row.type,
+    value: Number(row.value),
+    minSubtotal: Number(row.min_subtotal ?? 0),
+    maxUses: row.max_uses,
+    usedCount: row.used_count ?? 0,
+    expiresAt: row.expires_at,
+    active: row.active,
+    createdAt: row.created_at,
+  };
+}
+
+export async function fetchCoupons() {
+  if (!isSupabaseConfigured) return [];
+  const { data, error } = await supabase.from('coupons').select('*').order('created_at', { ascending: false });
+  if (error) { console.warn('[api] fetchCoupons:', error.message); return []; }
+  return data.map(mapCoupon);
+}
+
+export async function createCoupon(c) {
+  const row = {
+    code: (c.code || '').trim().toUpperCase(),
+    type: c.type || 'percent',
+    value: c.value,
+    min_subtotal: c.minSubtotal ?? 0,
+    max_uses: c.maxUses || null,
+    expires_at: c.expiresAt || null,
+    active: c.active !== false,
+  };
+  if (!isSupabaseConfigured) return { ...mapCoupon({ ...row, id: `c-${Date.now()}`, used_count: 0 }), simulated: true };
+  const { data, error } = await supabase.from('coupons').insert(row).select().single();
+  if (error) throw error;
+  return mapCoupon(data);
+}
+
+export async function updateCoupon(id, patch) {
+  const row = {};
+  if (patch.code !== undefined) row.code = patch.code.trim().toUpperCase();
+  if (patch.type !== undefined) row.type = patch.type;
+  if (patch.value !== undefined) row.value = patch.value;
+  if (patch.minSubtotal !== undefined) row.min_subtotal = patch.minSubtotal;
+  if (patch.maxUses !== undefined) row.max_uses = patch.maxUses || null;
+  if (patch.expiresAt !== undefined) row.expires_at = patch.expiresAt || null;
+  if (patch.active !== undefined) row.active = patch.active;
+  if (!isSupabaseConfigured) return { id, ...patch, simulated: true };
+  const { data, error } = await supabase.from('coupons').update(row).eq('id', id).select().single();
+  if (error) throw error;
+  return mapCoupon(data);
+}
+
+export async function deleteCoupon(id) {
+  if (!isSupabaseConfigured) return { id, simulated: true };
+  const { error } = await supabase.from('coupons').delete().eq('id', id);
+  if (error) throw error;
+  return { id };
+}
+
+// تحقق من قسيمة للعميل عند الدفع — يرجع مبلغ الخصم أو يرمي سبب الرفض بالعربي
+export async function validateCoupon(code, subtotal) {
+  const clean = (code || '').trim().toUpperCase();
+  if (!clean) throw new Error('أدخل رمز القسيمة');
+  if (!isSupabaseConfigured) throw new Error('القسائم غير متاحة حالياً');
+  const { data, error } = await supabase.from('coupons').select('*').eq('code', clean).maybeSingle();
+  if (error) throw new Error('تعذّر التحقق من القسيمة');
+  if (!data) throw new Error('قسيمة غير موجودة');
+  const c = mapCoupon(data);
+  if (!c.active) throw new Error('هذه القسيمة موقوفة');
+  if (c.expiresAt && new Date(c.expiresAt) < new Date()) throw new Error('انتهت صلاحية القسيمة');
+  if (c.maxUses && c.usedCount >= c.maxUses) throw new Error('استُنفدت مرات استخدام القسيمة');
+  if (subtotal < c.minSubtotal) throw new Error(`الحد الأدنى للقسيمة ${c.minSubtotal} ر.س`);
+  const discount = c.type === 'percent' ? (subtotal * c.value) / 100 : c.value;
+  return { ...c, discount: Math.min(discount, subtotal) };
 }

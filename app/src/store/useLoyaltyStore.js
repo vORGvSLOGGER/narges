@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { useSettingsStore } from './useSettingsStore';
 
 const TIERS = [
   { id: 'bronze', label: 'برونزي', minPoints: 0, maxPoints: 499, color: '#CD7F32', discount: 0 },
@@ -23,10 +24,9 @@ export const useLoyaltyStore = create(
       ],
       pendingDiscount: 0,
 
-      get tier() { return getTier(get().points); },
-
       addPoints: (orderTotal) => {
-        const earned = Math.floor(orderTotal);
+        const rate = useSettingsStore.getState().settings.loyalty.earnPerSar || 1;
+        const earned = Math.floor(orderTotal * rate);
         set(s => ({
           points: s.points + earned,
           history: [
@@ -37,7 +37,8 @@ export const useLoyaltyStore = create(
       },
 
       redeemPoints: (pointsToRedeem) => {
-        const discount = (pointsToRedeem / 100) * 5;
+        const per100 = useSettingsStore.getState().settings.loyalty.redeemPer100 || 5;
+        const discount = (pointsToRedeem / 100) * per100;
         set(s => ({
           points: s.points - pointsToRedeem,
           pendingDiscount: discount,

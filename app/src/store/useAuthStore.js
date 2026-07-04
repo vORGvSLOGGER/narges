@@ -47,7 +47,10 @@ export const useAuthStore = create((set, get) => ({
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName, phone } },
+      options: {
+        data: { full_name: fullName, phone },
+        emailRedirectTo: typeof window !== 'undefined' ? `${window.location.origin}/login` : undefined,
+      },
     });
     if (error) throw error;
     return data;
@@ -60,6 +63,17 @@ export const useAuthStore = create((set, get) => ({
     if (error) throw error;
     const profile = await get()._applySession(data.session);
     return { ...data, profile };
+  },
+
+  // إعادة إرسال رابط تفعيل البريد
+  resendConfirmation: async (email) => {
+    if (!isSupabaseConfigured) throw new Error('Supabase غير مهيأ');
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
+      options: { emailRedirectTo: `${window.location.origin}/login` },
+    });
+    if (error) throw error;
   },
 
   signOut: async () => {

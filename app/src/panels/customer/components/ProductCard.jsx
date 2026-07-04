@@ -28,7 +28,7 @@ export default function ProductCard({ product, size = 'normal' }) {
   return (
     <div
       onClick={() => navigate(`/Customer/product/${product.id}`)}
-      className={`bg-narges-surface border border-narges-border rounded-[20px] shadow-narges-sm cursor-pointer overflow-hidden flex flex-col p-2.5 ${isSmall ? 'w-40' : 'w-full'}`}
+      className={`anim-fade-up card-press bg-narges-surface border border-narges-border rounded-[20px] shadow-narges-sm cursor-pointer overflow-hidden flex flex-col p-2.5 ${isSmall ? 'w-40' : 'w-full'}`}
     >
       {/* Image */}
       <div className="relative">

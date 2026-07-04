@@ -9,12 +9,15 @@ import AdminApp from './panels/admin/AdminApp';
 import LoginPage from './panels/auth/LoginPage';
 import SignUpPage from './panels/auth/SignUpPage';
 import { useAuthStore } from './store/useAuthStore';
+import { useSettingsStore } from './store/useSettingsStore';
 
 export default function App() {
   const initAuth = useAuthStore((s) => s.initAuth);
+  const loadSettings = useSettingsStore((s) => s.load);
   useEffect(() => {
     initAuth();
-  }, [initAuth]);
+    loadSettings();
+  }, [initAuth, loadSettings]);
 
   return (
     <BrowserRouter>
