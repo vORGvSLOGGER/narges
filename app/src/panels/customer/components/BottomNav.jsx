@@ -3,10 +3,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useCartStore } from '../../../store/useCartStore';
 
 const navItems = [
-  { icon: Home, label: 'الرئيسية', path: '/Customer' },
   { icon: Grid3X3, label: 'الأقسام', path: '/Customer/categories' },
-  { icon: ShoppingCart, label: 'السلة', path: '/Customer/cart' },
   { icon: Building2, label: 'الشركات', path: '/Customer/brands' },
+  { icon: Home, label: 'الرئيسية', path: '/Customer' },
+  { icon: ShoppingCart, label: 'السلة', path: '/Customer/cart' },
   { icon: User, label: 'حسابي', path: '/Customer/profile' },
 ];
 

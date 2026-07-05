@@ -8,7 +8,6 @@ import BottomNav from '../components/BottomNav';
 const SORTS = [
   { id: 'alpha', label: 'أبجدي أ-ي' },
   { id: 'oldest', label: 'الأقدم تأسيساً' },
-  { id: 'products', label: 'الأكثر منتجات' },
 ];
 
 export default function BrandsPage() {
@@ -18,7 +17,6 @@ export default function BrandsPage() {
 
   const sorted = [...(brands || [])].sort((a, b) => {
     if (sort === 'oldest') return (a.foundedYear || 9999) - (b.foundedYear || 9999);
-    if (sort === 'products') return (b.productCount || 0) - (a.productCount || 0);
     return a.nameAr.localeCompare(b.nameAr, 'ar');
   });
 
