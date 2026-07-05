@@ -10,6 +10,7 @@ import { useSettingsStore } from '../../../store/useSettingsStore';
 import { isSupabaseConfigured } from '../../../lib/supabase';
 import { formatSAR } from '../../../utils/formatters';
 import toast from 'react-hot-toast';
+import BottomNav from '../components/BottomNav';
 
 const paymentMethods = [
   { id: 'cash', label: 'نقداً', icon: '💵' },
@@ -129,12 +130,13 @@ export default function CartPage() {
           <p className="text-narges-text-secondary text-center">أضف منتجات من المتجر لتظهر هنا</p>
           <button onClick={() => navigate('/Customer')} className="btn-primary px-8">تسوق الآن</button>
         </div>
+        <BottomNav />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-narges-bg flex flex-col pb-40">
+    <div className="min-h-screen bg-narges-bg flex flex-col pb-64">
       {/* Header */}
       <div className="bg-narges-surface px-4 py-3 flex items-center gap-3 shadow-sm sticky top-0 z-40">
         <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
@@ -292,11 +294,13 @@ export default function CartPage() {
       </div>
 
       {/* Confirm Button */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-narges-surface border-t shadow-lg">
+      <div className="fixed bottom-[60px] left-0 right-0 p-4 bg-narges-surface border-t border-narges-border shadow-lg z-40">
         <button onClick={handleConfirmOrder} disabled={placing} className="w-full btn-primary text-lg disabled:opacity-60">
           {placing ? 'جارٍ تأكيد الطلب...' : `تأكيد الطلب — ${formatSAR(total)}`}
         </button>
       </div>
+
+      <BottomNav />
     </div>
   );
 }

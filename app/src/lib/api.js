@@ -9,6 +9,7 @@ import {
   getById as mockGetById,
   searchProducts as mockSearch,
 } from '../data/products';
+import { brands as mockBrands } from '../data/brands';
 
 // ---- محوّلات snake_case (القاعدة) → camelCase (الواجهة) ----
 function mapProduct(row) {
@@ -27,6 +28,7 @@ function mapProduct(row) {
     rating: row.rating != null ? Number(row.rating) : 0,
     reviewCount: row.review_count ?? 0,
     image: row.image,
+    brandId: row.brand_id ?? row.brandId ?? null,
   };
 }
 
@@ -363,4 +365,48 @@ export async function validateCoupon(code, subtotal) {
   if (subtotal < c.minSubtotal) throw new Error(`الحد الأدنى للقسيمة ${c.minSubtotal} ر.س`);
   const discount = c.type === 'percent' ? (subtotal * c.value) / 100 : c.value;
   return { ...c, discount: Math.min(discount, subtotal) };
+}
+
+// ============ الشركات / العلامات التجارية ============
+function mapBrand(row, productCount = 0) {
+  return {
+    id: row.id,
+    nameAr: row.name_ar ?? row.nameAr,
+    nameEn: row.name_en ?? row.nameEn,
+    logo: row.logo,
+    foundedYear: row.founded_year ?? row.foundedYear,
+    country: row.country,
+    blurb: row.blurb,
+    tint: row.tint,
+    productCount,
+  };
+}
+
+// كل العلامات مع عدد منتجات كل واحدة
+export async function fetchBrands() {
+  if (!isSupabaseConfigured) {
+    return mockBrands.map((b) => mapBrand(b, mockProducts.filter((p) => p.brandId === b.id).length));
+  }
+  const { data, error } = await supabase.from('brands').select('*, products(count)');
+  if (error) {
+    console.warn('[api] fetchBrands fallback:', error.message);
+    return mockBrands.map((b) => mapBrand(b, mockProducts.filter((p) => p.brandId === b.id).length));
+  }
+  return data.map((row) => mapBrand(row, row.products?.[0]?.count ?? 0));
+}
+
+// علامة واحدة + منتجاتها
+export async function fetchBrandById(id) {
+  const all = await fetchBrands();
+  return all.find((b) => b.id === id) || null;
+}
+
+export async function fetchByBrand(brandId) {
+  if (!isSupabaseConfigured) return mockProducts.filter((p) => p.brandId === brandId);
+  const { data, error } = await supabase.from('products').select('*').eq('brand_id', brandId);
+  if (error) {
+    console.warn('[api] fetchByBrand fallback:', error.message);
+    return mockProducts.filter((p) => p.brandId === brandId);
+  }
+  return data.map(mapProduct);
 }

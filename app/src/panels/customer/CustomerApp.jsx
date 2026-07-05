@@ -10,6 +10,8 @@ import LoyaltyPage from './pages/LoyaltyPage';
 import OrdersPage from './pages/OrdersPage';
 import ProfilePage from './pages/ProfilePage';
 import FavoritesPage from './pages/FavoritesPage';
+import BrandsPage from './pages/BrandsPage';
+import BrandPage from './pages/BrandPage';
 
 export default function CustomerApp() {
   return (
@@ -25,6 +27,8 @@ export default function CustomerApp() {
       <Route path="orders" element={<OrdersPage />} />
       <Route path="profile" element={<ProfilePage />} />
       <Route path="favorites" element={<FavoritesPage />} />
+      <Route path="brands" element={<BrandsPage />} />
+      <Route path="brand/:id" element={<BrandPage />} />
       <Route path="*" element={<Navigate to="/Customer" replace />} />
     </Routes>
   );
