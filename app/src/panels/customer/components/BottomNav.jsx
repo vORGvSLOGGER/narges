@@ -1,10 +1,9 @@
-import { Home, Grid3X3, ShoppingCart, Building2, User } from 'lucide-react';
+import { Home, Grid3X3, ShoppingCart, User } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCartStore } from '../../../store/useCartStore';
 
 const navItems = [
   { icon: Grid3X3, label: 'الأقسام', path: '/Customer/categories' },
-  { icon: Building2, label: 'الشركات', path: '/Customer/brands' },
   { icon: Home, label: 'الرئيسية', path: '/Customer' },
   { icon: ShoppingCart, label: 'السلة', path: '/Customer/cart' },
   { icon: User, label: 'حسابي', path: '/Customer/profile' },
