@@ -63,7 +63,12 @@ export const useSettingsStore = create((set, get) => ({
       set({ loaded: true });
       return;
     }
-    const { data, error } = await supabase.from('settings').select('key, value');
+    let data = null, error = null;
+    try {
+      ({ data, error } = await supabase.from('settings').select('key, value'));
+    } catch (e) {
+      error = e;
+    }
     if (error) {
       console.warn('[settings] load:', error.message);
       applyThemeSettings(get().settings.theme);

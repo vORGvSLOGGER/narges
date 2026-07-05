@@ -11,6 +11,16 @@ import {
 } from '../data/products';
 import { brands as mockBrands } from '../data/brands';
 
+// يحوّل أي استثناء (مثل انقطاع/مهلة الشبكة) إلى شكل { data, error }
+// حتى تعمل آلية fallback في كل دالة بدل تعليق الواجهة.
+async function run(query) {
+  try {
+    return await query;
+  } catch (e) {
+    return { data: null, error: { message: e?.message || String(e) } };
+  }
+}
+
 // ---- محوّلات snake_case (القاعدة) → camelCase (الواجهة) ----
 function mapProduct(row) {
   return {
@@ -47,10 +57,10 @@ function mapCategory(row) {
 // ============ الأقسام ============
 export async function fetchCategories() {
   if (!isSupabaseConfigured) return mockCategories;
-  const { data, error } = await supabase
+  const { data, error } = await run(supabase
     .from('categories')
     .select('*, subcategories(id, name_ar)')
-    .order('sort_order', { ascending: true });
+    .order('sort_order', { ascending: true }));
   if (error) {
     console.warn('[api] fetchCategories fallback:', error.message);
     return mockCategories;
@@ -64,7 +74,7 @@ export async function fetchCategories() {
 // ============ المنتجات ============
 export async function fetchProducts() {
   if (!isSupabaseConfigured) return mockProducts;
-  const { data, error } = await supabase.from('products').select('*');
+  const { data, error } = await run(supabase.from('products').select('*'));
   if (error) {
     console.warn('[api] fetchProducts fallback:', error.message);
     return mockProducts;
@@ -74,7 +84,7 @@ export async function fetchProducts() {
 
 export async function fetchFeatured() {
   if (!isSupabaseConfigured) return mockGetFeatured();
-  const { data, error } = await supabase.from('products').select('*').eq('is_featured', true);
+  const { data, error } = await run(supabase.from('products').select('*').eq('is_featured', true));
   if (error) {
     console.warn('[api] fetchFeatured fallback:', error.message);
     return mockGetFeatured();
@@ -84,7 +94,7 @@ export async function fetchFeatured() {
 
 export async function fetchOffers() {
   if (!isSupabaseConfigured) return mockGetOffers();
-  const { data, error } = await supabase.from('products').select('*').eq('is_offer', true);
+  const { data, error } = await run(supabase.from('products').select('*').eq('is_offer', true));
   if (error) {
     console.warn('[api] fetchOffers fallback:', error.message);
     return mockGetOffers();
@@ -94,7 +104,7 @@ export async function fetchOffers() {
 
 export async function fetchByCategory(categoryId) {
   if (!isSupabaseConfigured) return mockGetByCategory(categoryId);
-  const { data, error } = await supabase.from('products').select('*').eq('category_id', categoryId);
+  const { data, error } = await run(supabase.from('products').select('*').eq('category_id', categoryId));
   if (error) {
     console.warn('[api] fetchByCategory fallback:', error.message);
     return mockGetByCategory(categoryId);
@@ -104,7 +114,7 @@ export async function fetchByCategory(categoryId) {
 
 export async function fetchProductById(id) {
   if (!isSupabaseConfigured) return mockGetById(id);
-  const { data, error } = await supabase.from('products').select('*').eq('id', id).maybeSingle();
+  const { data, error } = await run(supabase.from('products').select('*').eq('id', id).maybeSingle());
   if (error || !data) {
     if (error) console.warn('[api] fetchProductById fallback:', error.message);
     return mockGetById(id);
@@ -114,10 +124,10 @@ export async function fetchProductById(id) {
 
 export async function searchProducts(query) {
   if (!isSupabaseConfigured) return mockSearch(query);
-  const { data, error } = await supabase
+  const { data, error } = await run(supabase
     .from('products')
     .select('*')
-    .ilike('name_ar', `%${query}%`);
+    .ilike('name_ar', `%${query}%`));
   if (error) {
     console.warn('[api] searchProducts fallback:', error.message);
     return mockSearch(query);
@@ -210,7 +220,7 @@ export async function fetchOrders({ status } = {}) {
   if (!isSupabaseConfigured) return null; // null = استخدم المتجر المحلي (الوهمي)
   let q = supabase.from('orders').select(ORDERS_SELECT).order('created_at', { ascending: false });
   if (status) q = q.eq('status', status);
-  const { data, error } = await q;
+  const { data, error } = await run(q);
   if (error) {
     console.warn('[api] fetchOrders:', error.message);
     return null;
@@ -221,7 +231,7 @@ export async function fetchOrders({ status } = {}) {
 // طلب واحد بالتفاصيل
 export async function fetchOrderById(id) {
   if (!isSupabaseConfigured) return null;
-  const { data, error } = await supabase.from('orders').select(ORDERS_SELECT).eq('id', id).maybeSingle();
+  const { data, error } = await run(supabase.from('orders').select(ORDERS_SELECT).eq('id', id).maybeSingle());
   if (error || !data) {
     if (error) console.warn('[api] fetchOrderById:', error.message);
     return null;
@@ -307,7 +317,7 @@ function mapCoupon(row) {
 
 export async function fetchCoupons() {
   if (!isSupabaseConfigured) return [];
-  const { data, error } = await supabase.from('coupons').select('*').order('created_at', { ascending: false });
+  const { data, error } = await run(supabase.from('coupons').select('*').order('created_at', { ascending: false }));
   if (error) { console.warn('[api] fetchCoupons:', error.message); return []; }
   return data.map(mapCoupon);
 }
@@ -387,7 +397,7 @@ export async function fetchBrands() {
   if (!isSupabaseConfigured) {
     return mockBrands.map((b) => mapBrand(b, mockProducts.filter((p) => p.brandId === b.id).length));
   }
-  const { data, error } = await supabase.from('brands').select('*, products(count)');
+  const { data, error } = await run(supabase.from('brands').select('*, products(count)'));
   if (error) {
     console.warn('[api] fetchBrands fallback:', error.message);
     return mockBrands.map((b) => mapBrand(b, mockProducts.filter((p) => p.brandId === b.id).length));
@@ -403,7 +413,7 @@ export async function fetchBrandById(id) {
 
 export async function fetchByBrand(brandId) {
   if (!isSupabaseConfigured) return mockProducts.filter((p) => p.brandId === brandId);
-  const { data, error } = await supabase.from('products').select('*').eq('brand_id', brandId);
+  const { data, error } = await run(supabase.from('products').select('*').eq('brand_id', brandId));
   if (error) {
     console.warn('[api] fetchByBrand fallback:', error.message);
     return mockProducts.filter((p) => p.brandId === brandId);
