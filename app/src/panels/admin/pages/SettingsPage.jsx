@@ -93,6 +93,7 @@ export default function SettingsPage() {
       <Section icon={Gift} title="الولاء" desc="معدلات كسب واستبدال النقاط" saving={saving} onSave={doSave('loyalty', loyalty)}>
         <Field label="نقاط لكل 1 ر.س إنفاق" type="number" step="0.1" value={loyalty.earnPerSar} onChange={(e) => setLoyalty({ ...loyalty, earnPerSar: num(e.target.value) })} />
         <Field label="قيمة كل 100 نقطة (ر.س خصم)" type="number" step="0.5" value={loyalty.redeemPer100} onChange={(e) => setLoyalty({ ...loyalty, redeemPer100: num(e.target.value) })} />
+        <Field label="أقل قيمة طلب لكسب النقاط (ر.س)" type="number" value={loyalty.minEarnOrder ?? 30} onChange={(e) => setLoyalty({ ...loyalty, minEarnOrder: num(e.target.value) })} />
       </Section>
 
       <Section icon={Palette} title="المظهر والتصميم" desc="ألوان الهوية والوضع الافتراضي — تُطبَّق حيّاً" saving={saving} onSave={doSave('theme', theme)}>

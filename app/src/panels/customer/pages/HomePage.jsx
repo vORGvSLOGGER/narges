@@ -1,9 +1,12 @@
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Search, Truck, ShieldCheck, Gift } from 'lucide-react';
-import { fetchCategories, fetchFeatured, fetchOffers } from '../../../lib/api';
+import { ChevronLeft, Search, Truck, ShieldCheck, Gift, Lock, LayoutGrid } from 'lucide-react';
+import { fetchCategories, fetchOffers, fetchProducts } from '../../../lib/api';
 import { useFetch } from '../../../lib/useFetch';
 import { useLoyaltyStore, TIERS } from '../../../store/useLoyaltyStore';
 import { useSettingsStore } from '../../../store/useSettingsStore';
+import { useAuthStore } from '../../../store/useAuthStore';
+import { isSupabaseConfigured } from '../../../lib/supabase';
 import ProductCard from '../components/ProductCard';
 import FlashDeals from '../components/FlashDeals';
 import TopBar from '../components/TopBar';
@@ -11,39 +14,30 @@ import BottomNav from '../components/BottomNav';
 
 const TIER_ICONS = { bronze: '🥉', silver: '🥈', gold: '🥇' };
 
-const promos = [
-  { id: 1, badge: 'عرض اليوم', title: 'خصم حتى 30%', sub: 'على الفواكه والخضار', emoji: '🏷️', grad: 'linear-gradient(120deg,#FF7A00,#FF9D3D)' },
-  { id: 2, badge: 'حصري للأعضاء', title: 'توصيل مجاني', sub: 'لطلبات فوق 75 ر.س', emoji: '🚚', grad: 'linear-gradient(120deg,#0E1217,#2E7D32)' },
-  { id: 3, badge: 'جديدنا', title: 'منتجات طازجة', sub: 'تصلك كل صباح', emoji: '🥬', grad: 'linear-gradient(120deg,#1565C0,#42A5F5)' },
-];
-
-// ترويسة قسم بشريط تمييز أخضر + رابط «عرض الكل»
-function SectionHeader({ title, onAll }) {
-  return (
-    <div className="flex items-center justify-between mb-3">
-      <div className="flex items-center gap-2">
-        <span className="w-1.5 h-5 rounded-full bg-narges-green" />
-        <h2 className="text-[17px] font-bold text-narges-text">{title}</h2>
-      </div>
-      {onAll && (
-        <button onClick={onAll} className="text-narges-green text-xs font-bold flex items-center gap-0.5 active:scale-95 transition-transform">
-          عرض الكل <ChevronLeft size={15} />
-        </button>
-      )}
-    </div>
-  );
-}
-
 export default function HomePage() {
   const navigate = useNavigate();
-  const { data: featuredAll, loading: loadingFeatured } = useFetch(fetchFeatured, [], []);
   const { data: offersAll, loading: loadingOffers } = useFetch(fetchOffers, [], []);
   const { data: categories } = useFetch(fetchCategories, [], []);
-  const featured = (featuredAll || []).slice(0, 8);
+  const { data: allProducts } = useFetch(fetchProducts, [], []);
   const offers = (offersAll || []).slice(0, 8);
   const points = useLoyaltyStore((s) => s.points);
   const tier = useLoyaltyStore((s) => TIERS.findLast((t) => s.points >= t.minPoints) || TIERS[0]);
   const delivery = useSettingsStore((s) => s.settings.delivery);
+  const session = useAuthStore((s) => s.session);
+  const loggedIn = !isSupabaseConfigured || !!session;
+
+  // منتجات كل قسم (بنر القسم + صف منتجاته)
+  const catSections = useMemo(() => {
+    const byCat = new Map();
+    for (const p of allProducts || []) {
+      if (!byCat.has(p.categoryId)) byCat.set(p.categoryId, []);
+      byCat.get(p.categoryId).push(p);
+    }
+    return (categories || [])
+      .map((c) => ({ cat: c, products: (byCat.get(c.id) || []).slice(0, 8) }))
+      .filter((s) => s.products.length > 0)
+      .slice(0, 6);
+  }, [categories, allProducts]);
 
   const nextTier = TIERS.find((t) => t.minPoints > points);
   const floor = tier.minPoints;
@@ -62,7 +56,7 @@ export default function HomePage() {
       <TopBar />
 
       <div className="px-4 pt-3 space-y-5">
-        {/* شريط البحث البارز */}
+        {/* شريط البحث */}
         <button
           onClick={() => navigate('/Customer/search')}
           className="anim-fade-up w-full flex items-center gap-2.5 bg-narges-surface border border-narges-border rounded-2xl px-4 py-3 shadow-narges-sm active:scale-[0.99] transition-transform"
@@ -71,46 +65,62 @@ export default function HomePage() {
           <span className="text-sm text-narges-muted">ابحث عن منتج، قسم أو ماركة...</span>
         </button>
 
-        {/* بطاقة الولاء */}
-        <button
-          onClick={() => navigate('/Customer/loyalty')}
-          className="anim-fade-up anim-d1 w-full text-right rounded-3xl p-5 text-white relative overflow-hidden shadow-narges-green"
-          style={{ background: 'linear-gradient(135deg,#1B5E20,#2E7D32 45%,#66BB6A)' }}
-        >
-          <div className="absolute -top-8 -left-5 w-32 h-32 rounded-full bg-white/10" />
-          <div className="absolute -bottom-10 left-10 w-24 h-24 rounded-full bg-white/[0.07]" />
-          <div className="relative flex items-start justify-between">
-            <div>
-              <p className="text-white/90 text-xs">رصيد نقاط الولاء</p>
-              <p className="text-3xl font-bold mt-0.5 leading-tight">
-                {points.toLocaleString('en-US')} <span className="text-sm font-semibold">نقطة</span>
-              </p>
-            </div>
-            <span className="bg-white/[0.18] border border-white/30 px-3 py-1.5 rounded-full text-[13px] font-bold whitespace-nowrap">
-              {TIER_ICONS[tier.id]} عضوية {tier.label}
-            </span>
-          </div>
-          <div className="relative mt-4">
-            <div className="h-2 bg-white/25 rounded-full overflow-hidden">
-              <div className="h-full bg-white rounded-full transition-all duration-700" style={{ width: `${pct}%` }} />
-            </div>
-            <div className="flex justify-between text-[11px] mt-1.5 text-white/95">
-              <span>{nextTier ? `${remaining} نقطة تفصلك عن ${nextTier.label}` : 'أعلى مستوى 🎉'}</span>
-              <span>{pct}%</span>
-            </div>
-          </div>
-        </button>
+        {/* العروض أولاً — أول ما يجذب العميل */}
+        {loadingOffers && offers.length === 0 ? (
+          <div className="anim-fade-up anim-d1 h-56 rounded-[20px] skeleton" />
+        ) : (
+          <div className="anim-fade-up anim-d1"><FlashDeals products={offers} onAll={() => navigate('/Customer/offers')} /></div>
+        )}
 
-        {/* بطاقات العروض */}
-        <div className="anim-fade-up anim-d2 flex gap-3 overflow-x-auto no-scrollbar -mx-1 px-1">
-          {promos.map((b) => (
-            <div key={b.id} className="flex-shrink-0 w-60 rounded-[20px] p-4 text-white relative overflow-hidden" style={{ background: b.grad }}>
-              <span className="anim-float absolute -top-4 -left-2 text-[80px] opacity-[0.16] leading-none">{b.emoji}</span>
-              <span className="relative inline-block bg-white/25 text-[11px] font-bold px-2.5 py-1 rounded-full">{b.badge}</span>
-              <p className="relative font-bold text-[19px] mt-2.5 leading-snug">{b.title}<br />{b.sub}</p>
+        {/* بطاقة الولاء — مقفلة للزائر */}
+        {loggedIn ? (
+          <button
+            onClick={() => navigate('/Customer/loyalty')}
+            className="anim-fade-up anim-d2 w-full text-right rounded-3xl p-5 text-white relative overflow-hidden shadow-narges-green"
+            style={{ background: 'linear-gradient(135deg,#1B5E20,#2E7D32 45%,#66BB6A)' }}
+          >
+            <div className="absolute -top-8 -left-5 w-32 h-32 rounded-full bg-white/10" />
+            <div className="absolute -bottom-10 left-10 w-24 h-24 rounded-full bg-white/[0.07]" />
+            <div className="relative flex items-start justify-between">
+              <div>
+                <p className="text-white/90 text-xs">رصيد نقاط الولاء</p>
+                <p className="text-3xl font-bold mt-0.5 leading-tight">
+                  {points.toLocaleString('en-US')} <span className="text-sm font-semibold">نقطة</span>
+                </p>
+              </div>
+              <span className="bg-white/[0.18] border border-white/30 px-3 py-1.5 rounded-full text-[13px] font-bold whitespace-nowrap">
+                {TIER_ICONS[tier.id]} عضوية {tier.label}
+              </span>
             </div>
-          ))}
-        </div>
+            <div className="relative mt-4">
+              <div className="h-2 bg-white/25 rounded-full overflow-hidden">
+                <div className="h-full bg-white rounded-full transition-all duration-700" style={{ width: `${pct}%` }} />
+              </div>
+              <div className="flex justify-between text-[11px] mt-1.5 text-white/95">
+                <span>{nextTier ? `${remaining} نقطة تفصلك عن ${nextTier.label}` : 'أعلى مستوى 🎉'}</span>
+                <span>{pct}%</span>
+              </div>
+            </div>
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate('/login', { state: { from: '/Customer' } })}
+            className="anim-fade-up anim-d2 w-full text-right rounded-3xl p-5 text-white relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg,#37474F,#546E7A)' }}
+          >
+            <div className="absolute -top-8 -left-5 w-32 h-32 rounded-full bg-white/[0.08]" />
+            <div className="relative flex items-center gap-3">
+              <span className="w-11 h-11 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center flex-shrink-0">
+                <Lock size={20} />
+              </span>
+              <div className="flex-1">
+                <p className="font-bold text-[15px]">نقاط الولاء مقفلة 🔒</p>
+                <p className="text-white/80 text-xs mt-0.5">سجّل دخولك واكسب نقاطاً مع كل طلب تتحول لخصم بالريال</p>
+              </div>
+              <span className="bg-white text-narges-green text-xs font-bold px-3 py-1.5 rounded-full whitespace-nowrap">دخول</span>
+            </div>
+          </button>
+        )}
 
         {/* شريط المزايا */}
         <div className="anim-fade-up anim-d3 grid grid-cols-3 gap-2.5">
@@ -125,41 +135,52 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* الأقسام */}
-        <section className="anim-fade-up anim-d4">
-          <SectionHeader title="تسوّق حسب القسم" onAll={() => navigate('/Customer/categories')} />
-          <div className="grid grid-cols-4 gap-x-2 gap-y-4">
-            {categories.slice(0, 8).map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => navigate(`/Customer/category/${cat.id}`)}
-                className="flex flex-col items-center gap-2 active:scale-95 transition-transform"
-              >
-                <div className="w-[62px] h-[62px] rounded-2xl flex items-center justify-center text-[28px] shadow-narges-sm" style={{ backgroundColor: cat.color }}>
-                  {cat.icon}
+        {/* زر كل الأقسام — وصول سريع قبل الأقسام */}
+        <button
+          onClick={() => navigate('/Customer/categories')}
+          className="anim-fade-up anim-d4 w-full flex items-center justify-between bg-narges-surface border-2 border-dashed border-narges-green/40 rounded-2xl px-4 py-3 active:scale-[0.99] transition-transform"
+        >
+          <span className="flex items-center gap-2.5">
+            <span className="w-9 h-9 rounded-xl bg-narges-green/10 flex items-center justify-center">
+              <LayoutGrid size={17} className="text-narges-green" />
+            </span>
+            <span className="text-sm font-bold text-narges-text">تصفّح جميع الأقسام</span>
+          </span>
+          <ChevronLeft size={18} className="text-narges-green" />
+        </button>
+
+        {/* بنر كل قسم + منتجاته */}
+        {catSections.length === 0
+          ? [1, 2].map((i) => <div key={i} className="h-64 rounded-[20px] skeleton" />)
+          : catSections.map(({ cat, products }, idx) => (
+              <section key={cat.id} className={`anim-fade-up anim-d${Math.min(idx + 4, 6)}`}>
+                {/* بنر القسم */}
+                <button
+                  onClick={() => navigate(`/Customer/category/${cat.id}`)}
+                  className="w-full flex items-center gap-3 rounded-2xl px-4 py-3 mb-3 active:scale-[0.99] transition-transform"
+                  style={{ backgroundColor: cat.color }}
+                >
+                  <span className="w-11 h-11 rounded-xl bg-white/60 flex items-center justify-center text-2xl flex-shrink-0">
+                    {cat.icon}
+                  </span>
+                  <span className="flex-1 text-right">
+                    <span className="block font-bold text-[15px] text-gray-900">{cat.nameAr}</span>
+                    <span className="block text-[11px] text-gray-700">{cat.productCount} منتج</span>
+                  </span>
+                  <span className="flex items-center gap-0.5 bg-white/70 text-gray-900 text-[11px] font-bold px-2.5 py-1 rounded-full">
+                    عرض الكل <ChevronLeft size={13} />
+                  </span>
+                </button>
+                {/* منتجات القسم */}
+                <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1 -mx-1 px-1">
+                  {products.map((p) => (
+                    <div key={p.id} className="flex-shrink-0 w-40">
+                      <ProductCard product={p} size="small" />
+                    </div>
+                  ))}
                 </div>
-                <span className="text-[11px] text-narges-text-secondary font-semibold text-center leading-tight">{cat.nameAr}</span>
-              </button>
+              </section>
             ))}
-          </div>
-        </section>
-
-        {/* عروض الفلاش — صف واحد، والباقي في «عرض الكل» */}
-        {loadingOffers && offers.length === 0 ? (
-          <div className="anim-fade-up anim-d5 h-56 rounded-[20px] skeleton" />
-        ) : (
-          <div className="anim-fade-up anim-d5"><FlashDeals products={offers} onAll={() => navigate('/Customer/offers')} /></div>
-        )}
-
-        {/* الأكثر مبيعاً */}
-        <section className="anim-fade-up anim-d6">
-          <SectionHeader title="⭐ الأكثر مبيعاً" />
-          <div className="grid grid-cols-2 gap-3">
-            {loadingFeatured && featured.length === 0
-              ? [1, 2, 3, 4].map((i) => <div key={i} className="h-60 rounded-[20px] skeleton" />)
-              : featured.map((p) => <ProductCard key={p.id} product={p} />)}
-          </div>
-        </section>
       </div>
 
       <BottomNav />

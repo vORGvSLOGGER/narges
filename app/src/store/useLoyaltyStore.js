@@ -2,30 +2,28 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { useSettingsStore } from './useSettingsStore';
 
+// المستويات = حالة/مكانة فقط. المكافأة الوحيدة خصم بالريال من النقاط (لا نسب، لا استبدال نقدي).
 const TIERS = [
-  { id: 'bronze', label: 'برونزي', minPoints: 0, maxPoints: 499, color: '#CD7F32', discount: 0 },
-  { id: 'silver', label: 'فضي', minPoints: 500, maxPoints: 999, color: '#9E9E9E', discount: 5 },
-  { id: 'gold', label: 'ذهبي', minPoints: 1000, maxPoints: Infinity, color: '#FFD700', discount: 10 },
+  { id: 'bronze', label: 'برونزي', minPoints: 0, maxPoints: 499, color: '#CD7F32' },
+  { id: 'silver', label: 'فضي', minPoints: 500, maxPoints: 999, color: '#9E9E9E' },
+  { id: 'gold', label: 'ذهبي', minPoints: 1000, maxPoints: Infinity, color: '#FFD700' },
 ];
-
-function getTier(points) {
-  return TIERS.findLast(t => points >= t.minPoints) || TIERS[0];
-}
 
 export { TIERS };
 
 export const useLoyaltyStore = create(
   persist(
     (set, get) => ({
-      points: 120,
-      history: [
-        { id: 1, type: 'earn', points: 85, description: 'طلب #ORD-2025-001', date: new Date(Date.now() - 2 * 86400000).toISOString() },
-        { id: 2, type: 'earn', points: 35, description: 'طلب #ORD-2025-002', date: new Date(Date.now() - 86400000).toISOString() },
-      ],
+      points: 0,
+      history: [],
       pendingDiscount: 0,
 
+      // يكسب نقاطاً فقط إذا تجاوز الطلب الحد الأدنى (يشجع الشراء الأكبر)
       addPoints: (orderTotal) => {
-        const rate = useSettingsStore.getState().settings.loyalty.earnPerSar || 1;
+        const loyalty = useSettingsStore.getState().settings.loyalty;
+        const minOrder = loyalty.minEarnOrder ?? 30;
+        if (orderTotal < minOrder) return 0;
+        const rate = loyalty.earnPerSar || 1;
         const earned = Math.floor(orderTotal * rate);
         set(s => ({
           points: s.points + earned,
@@ -34,16 +32,24 @@ export const useLoyaltyStore = create(
             ...s.history,
           ],
         }));
+        return earned;
       },
 
-      redeemPoints: (pointsToRedeem) => {
+      // قيمة الخصم الحالية بالريال (كل 100 نقطة = X ر.س من إعدادات الأدمن)
+      discountValue: () => {
         const per100 = useSettingsStore.getState().settings.loyalty.redeemPer100 || 5;
-        const discount = (pointsToRedeem / 100) * per100;
+        return Math.floor(get().points / 100) * per100;
+      },
+
+      // استخدام الخصم = تصفير النقاط بالكامل. خصم بالريال على الطلب القادم، لا يُستبدل نقداً.
+      redeemAll: () => {
+        const discount = get().discountValue();
+        if (discount <= 0) return 0;
         set(s => ({
-          points: s.points - pointsToRedeem,
+          points: 0,
           pendingDiscount: discount,
           history: [
-            { id: Date.now(), type: 'redeem', points: -pointsToRedeem, description: `خصم ${discount} ر.س`, date: new Date().toISOString() },
+            { id: Date.now(), type: 'redeem', points: -s.points, description: `خصم ${discount} ر.س — تصفير النقاط`, date: new Date().toISOString() },
             ...s.history,
           ],
         }));

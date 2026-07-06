@@ -1,14 +1,12 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  ClipboardList, Heart, Gift, Moon, LogOut, LogIn,
-  ChevronLeft, ShieldCheck, UserPlus,
+  ClipboardList, Heart, Gift, Settings, Lock,
+  ChevronLeft, ShieldCheck,
 } from 'lucide-react';
 import { useAuthStore } from '../../../store/useAuthStore';
 import { useLoyaltyStore, TIERS } from '../../../store/useLoyaltyStore';
 import { useFavoritesStore } from '../../../store/useFavoritesStore';
 import { isSupabaseConfigured } from '../../../lib/supabase';
-import { isDark, setDark } from '../../../lib/theme';
 import BottomNav from '../components/BottomNav';
 
 const STAFF_PANEL = {
@@ -38,20 +36,14 @@ function Row({ icon: Icon, label, value, onClick, danger }) {
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const { session, user, profile, signOut } = useAuthStore();
+  const { session, user, profile } = useAuthStore();
   const points = useLoyaltyStore((s) => s.points);
   const tier = useLoyaltyStore((s) => TIERS.findLast((t) => s.points >= t.minPoints) || TIERS[0]);
   const favCount = useFavoritesStore((s) => s.ids.length);
-  const [dark, setDarkState] = useState(isDark());
 
   const loggedIn = !isSupabaseConfigured || !!session;
   const name = profile?.full_name || user?.email?.split('@')[0] || 'زائر نرجس';
   const staff = STAFF_PANEL[profile?.role];
-
-  const handleLogout = async () => {
-    await signOut();
-    navigate('/Customer');
-  };
 
   return (
     <div className="min-h-screen bg-narges-bg anim-fade-up pb-24">
@@ -67,7 +59,7 @@ export default function ProfilePage() {
           <div className="flex-1 min-w-0">
             <p className="font-bold text-lg truncate">{name}</p>
             {session ? (
-              <p className="text-white/80 text-xs mt-0.5 truncate" dir="ltr">{user?.email}</p>
+              <p className="text-white/80 text-xs mt-0.5 truncate" dir="ltr">{profile?.phone || user?.email}</p>
             ) : (
               <p className="text-white/80 text-xs mt-0.5">سجّل دخولك لتجربة أكمل</p>
             )}
@@ -81,19 +73,21 @@ export default function ProfilePage() {
       </div>
 
       <div className="px-4 -mt-5 space-y-4">
-        {/* بطاقة الولاء المصغّرة */}
+        {/* بطاقة الولاء المصغّرة — مقفلة للزائر */}
         <button
-          onClick={() => navigate('/Customer/loyalty')}
+          onClick={() => navigate(loggedIn ? '/Customer/loyalty' : '/login', loggedIn ? undefined : { state: { from: '/Customer/loyalty' } })}
           className="w-full card p-4 flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <span className="w-10 h-10 rounded-xl bg-narges-orange/10 flex items-center justify-center text-lg">🎁</span>
+            <span className="w-10 h-10 rounded-xl bg-narges-orange/10 flex items-center justify-center text-lg">
+              {loggedIn ? '🎁' : <Lock size={17} className="text-narges-text-secondary" />}
+            </span>
             <div className="text-right">
               <p className="text-sm font-bold text-narges-text">نقاط الولاء</p>
-              <p className="text-xs text-narges-text-secondary">مستوى {tier.label}</p>
+              <p className="text-xs text-narges-text-secondary">{loggedIn ? `مستوى ${tier.label}` : 'سجّل الدخول لفتح النقاط والإحالة'}</p>
             </div>
           </div>
-          <span className="font-bold text-narges-green text-lg">{points}</span>
+          {loggedIn && <span className="font-bold text-narges-green text-lg">{points}</span>}
         </button>
 
         {/* دخول الموظف للوحته */}
@@ -111,34 +105,10 @@ export default function ProfilePage() {
           <Row icon={ClipboardList} label="طلباتي" onClick={() => navigate('/Customer/orders')} />
           <Row icon={Heart} label="المفضلة" value={favCount ? `${favCount} منتج` : undefined} onClick={() => navigate('/Customer/favorites')} />
           <Row icon={Gift} label="مكافآتي ونقاطي" onClick={() => navigate('/Customer/loyalty')} />
-          {/* الوضع الداكن */}
-          <div className="w-full flex items-center gap-3 px-4 py-3.5">
-            <span className="w-9 h-9 rounded-xl bg-narges-surface2 flex items-center justify-center">
-              <Moon size={17} className="text-narges-text" />
-            </span>
-            <span className="flex-1 text-sm font-semibold text-narges-text text-right">الوضع الداكن</span>
-            <button
-              onClick={() => { setDark(!dark); setDarkState(!dark); }}
-              className={`relative w-12 h-7 rounded-full transition-colors ${dark ? 'bg-narges-green' : 'bg-narges-surface2'}`}
-            >
-              <span className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow transition-all ${dark ? 'right-1' : 'right-6'}`} />
-            </button>
-          </div>
+          <Row icon={Settings} label="الإعدادات" onClick={() => navigate('/Customer/settings')} />
         </div>
 
-        {/* دخول / خروج */}
-        {isSupabaseConfigured && !session ? (
-          <div className="card overflow-hidden divide-y divide-narges-border">
-            <Row icon={LogIn} label="تسجيل الدخول" onClick={() => navigate('/login', { state: { from: '/Customer/profile' } })} />
-            <Row icon={UserPlus} label="إنشاء حساب جديد" onClick={() => navigate('/signup')} />
-          </div>
-        ) : session ? (
-          <div className="card overflow-hidden">
-            <Row icon={LogOut} label="تسجيل الخروج" danger onClick={handleLogout} />
-          </div>
-        ) : null}
-
-        <p className="text-center text-[11px] text-narges-muted pt-2">نرجس سوبرماركت — الإصدار 0.9</p>
+        <p className="text-center text-[11px] text-narges-muted pt-2">نرجس سوبرماركت — الإصدار 0.15</p>
       </div>
 
       <BottomNav />
