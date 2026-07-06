@@ -1,11 +1,11 @@
-import { Home, Grid3X3, ShoppingCart, User } from 'lucide-react';
+import { Home, ShoppingCart, User } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCartStore } from '../../../store/useCartStore';
 
+// الترتيب في RTL: أول عنصر = أقصى اليمين. السلة يمين، الرئيسية بالوسط، حسابي يسار.
 const navItems = [
-  { icon: Grid3X3, label: 'الأقسام', path: '/Customer/categories' },
-  { icon: Home, label: 'الرئيسية', path: '/Customer' },
   { icon: ShoppingCart, label: 'السلة', path: '/Customer/cart' },
+  { icon: Home, label: 'الرئيسية', path: '/Customer' },
   { icon: User, label: 'حسابي', path: '/Customer/profile' },
 ];
 
@@ -16,7 +16,7 @@ export default function BottomNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 bg-narges-surface border-t border-narges-border safe-area-pb">
-      <div className="flex items-center justify-around px-1.5 py-2">
+      <div className="flex items-center justify-around px-4 py-2">
         {navItems.map(({ icon: Icon, label, path }) => {
           const active = location.pathname === path || (path !== '/Customer' && location.pathname.startsWith(path));
           return (
