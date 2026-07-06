@@ -10,6 +10,7 @@ import LoyaltyPage from './pages/LoyaltyPage';
 import OrdersPage from './pages/OrdersPage';
 import ProfilePage from './pages/ProfilePage';
 import FavoritesPage from './pages/FavoritesPage';
+import OffersPage from './pages/OffersPage';
 import BrandsPage from './pages/BrandsPage';
 import BrandPage from './pages/BrandPage';
 
@@ -18,6 +19,7 @@ export default function CustomerApp() {
     <Routes>
       <Route index element={<HomePage />} />
       <Route path="categories" element={<CategoriesPage />} />
+      <Route path="offers" element={<OffersPage />} />
       <Route path="category/:id" element={<CategoryPage />} />
       <Route path="product/:id" element={<ProductPage />} />
       <Route path="cart" element={<CartPage />} />

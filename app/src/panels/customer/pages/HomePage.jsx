@@ -144,26 +144,16 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* عروض الفلاش */}
-        <div className="anim-fade-up anim-d5"><FlashDeals products={offers} /></div>
-
-        {/* العروض الحصرية */}
-        <section className="anim-fade-up anim-d6">
-          <SectionHeader title="🔥 العروض الحصرية" onAll={() => navigate('/Customer/categories')} />
-          <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1 -mx-1 px-1">
-            {loadingOffers && offers.length === 0
-              ? [1, 2, 3].map((i) => <div key={i} className="flex-shrink-0 w-40 h-56 rounded-[20px] skeleton" />)
-              : offers.map((p) => (
-                  <div key={p.id} className="flex-shrink-0 w-40">
-                    <ProductCard product={p} size="small" />
-                  </div>
-                ))}
-          </div>
-        </section>
+        {/* عروض الفلاش — صف واحد، والباقي في «عرض الكل» */}
+        {loadingOffers && offers.length === 0 ? (
+          <div className="anim-fade-up anim-d5 h-56 rounded-[20px] skeleton" />
+        ) : (
+          <div className="anim-fade-up anim-d5"><FlashDeals products={offers} onAll={() => navigate('/Customer/offers')} /></div>
+        )}
 
         {/* الأكثر مبيعاً */}
         <section className="anim-fade-up anim-d6">
-          <SectionHeader title="⭐ الأكثر مبيعاً" onAll={() => navigate('/Customer/categories')} />
+          <SectionHeader title="⭐ الأكثر مبيعاً" />
           <div className="grid grid-cols-2 gap-3">
             {loadingFeatured && featured.length === 0
               ? [1, 2, 3, 4].map((i) => <div key={i} className="h-60 rounded-[20px] skeleton" />)

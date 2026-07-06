@@ -35,11 +35,20 @@ export default function ProductPage() {
     navigate(-1);
   };
 
+  const isPackshot = (product.image || '').includes('openfoodfacts');
+
   return (
     <div className="min-h-screen bg-narges-surface flex flex-col">
       {/* Image */}
-      <div className="relative h-72 bg-narges-bg">
-        <img src={product.image} alt={product.nameAr} className="w-full h-full object-cover" />
+      <div className={`relative h-72 ${isPackshot ? 'bg-white' : 'bg-narges-bg'}`}>
+        <img
+          src={product.image}
+          alt={product.nameAr}
+          className={`w-full h-full ${isPackshot ? 'object-contain p-4' : 'object-cover'}`}
+          onError={e => {
+            if (product.imageFallback && e.target.src !== product.imageFallback) e.target.src = product.imageFallback;
+          }}
+        />
 
         {/* Nav */}
         <div className="absolute top-12 left-0 right-0 flex items-center justify-between px-4">

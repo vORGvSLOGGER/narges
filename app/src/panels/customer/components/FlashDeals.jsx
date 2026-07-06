@@ -11,7 +11,7 @@ function secondsToMidnight() {
 
 const pad = (n) => String(n).padStart(2, '0');
 
-export default function FlashDeals({ products = [] }) {
+export default function FlashDeals({ products = [], onAll }) {
   const [left, setLeft] = useState(secondsToMidnight());
 
   useEffect(() => {
@@ -36,6 +36,7 @@ export default function FlashDeals({ products = [] }) {
           <p className="font-bold text-[15px] leading-tight">⚡ عروض تنتهي الليلة</p>
           <p className="text-white/85 text-[11px] mt-0.5">خصومات يومية — الحق قبل انتهاء الوقت</p>
         </div>
+        <div className="flex flex-col items-end gap-1.5">
         <div dir="ltr" className="flex items-center gap-1">
           {[pad(h), pad(m), pad(s)].map((v, i) => (
             <span key={i} className="flex items-center gap-1">
@@ -45,6 +46,12 @@ export default function FlashDeals({ products = [] }) {
               </span>
             </span>
           ))}
+        </div>
+        {onAll && (
+          <button onClick={onAll} className="bg-white/20 border border-white/30 rounded-full px-3 py-0.5 text-[11px] font-bold active:scale-95 transition-transform">
+            عرض الكل ←
+          </button>
+        )}
         </div>
       </div>
 
