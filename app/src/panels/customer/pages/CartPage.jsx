@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useCartStore } from '../../../store/useCartStore';
 import { useOrderStore } from '../../../store/useOrderStore';
 import { useLoyaltyStore } from '../../../store/useLoyaltyStore';
+import { useWalletStore } from '../../../store/useWalletStore';
 import { useAuthStore } from '../../../store/useAuthStore';
 import { createOrder, validateCoupon } from '../../../lib/api';
 import { useSettingsStore } from '../../../store/useSettingsStore';
@@ -12,7 +13,7 @@ import { formatSAR } from '../../../utils/formatters';
 import toast from 'react-hot-toast';
 import BottomNav from '../components/BottomNav';
 
-const paymentMethods = [
+const BASE_PAYMENT_METHODS = [
   { id: 'cash', label: 'نقداً', icon: '💵' },
   { id: 'card', label: 'بطاقة بنكية', icon: '💳' },
   { id: 'stc_pay', label: 'STC Pay', icon: '📱' },
@@ -24,6 +25,7 @@ export default function CartPage() {
   const { items, updateQty, removeItem, clearCart } = useCartStore();
   const addOrder = useOrderStore(s => s.addOrder);
   const { addPoints, pendingDiscount, clearPendingDiscount } = useLoyaltyStore();
+  const { balance: walletBalance, pay: walletPay } = useWalletStore();
   const { session, user, profile } = useAuthStore();
   const [paymentMethod, setPaymentMethod] = useState('cash');
   const [address, setAddress] = useState('حي الروضة، شارع الأمير محمد، مبنى 12');
@@ -55,6 +57,11 @@ export default function CartPage() {
   };
   const loyaltyDiscount = pendingDiscount;
   const total = Math.max(0, subtotal + deliveryFee - loyaltyDiscount - couponDiscount);
+  const walletCovers = walletBalance >= total && total > 0;
+  const paymentMethods = [
+    { id: 'wallet', label: `المحفظة (${formatSAR(walletBalance)})`, icon: '👛', disabled: !walletCovers },
+    ...BASE_PAYMENT_METHODS,
+  ];
 
   const handleConfirmOrder = async () => {
     if (!items.length || placing) return;
@@ -69,6 +76,11 @@ export default function CartPage() {
     const customerName = profile?.full_name || 'عميل نرجس';
     const customerPhone = profile?.phone || '';
     const orderItems = items.map(i => ({ productId: i.id, nameAr: i.nameAr, qty: i.qty, unitPrice: i.price, totalPrice: i.price * i.qty }));
+
+    if (paymentMethod === 'wallet' && !walletCovers) {
+      toast.error('رصيد المحفظة لا يكفي — اشحن رصيدك أو اختر وسيلة أخرى');
+      return;
+    }
 
     setPlacing(true);
     let createdId = null;
@@ -95,6 +107,13 @@ export default function CartPage() {
       return;
     }
 
+    // الدفع من المحفظة: خصم فوري من الرصيد
+    if (paymentMethod === 'wallet' && !walletPay(total, `طلب بقيمة ${total.toFixed(2)} ر.س`)) {
+      toast.error('تعذّر الخصم من المحفظة');
+      setPlacing(false);
+      return;
+    }
+
     // سجل محلي لتتبّع الطلب في الواجهة — نستخدم نفس مُعرّف القاعدة عند توفّره
     const order = addOrder({
       ...(createdId ? { id: createdId } : {}),
@@ -106,7 +125,7 @@ export default function CartPage() {
       deliveryFee,
       total,
       paymentMethod,
-      paymentStatus: paymentMethod === 'cash' ? 'pending' : 'paid',
+      paymentStatus: paymentMethod === 'cash' ? 'pending' : 'paid', // المحفظة والبطاقات = مدفوع
     });
     addPoints(total);
     clearPendingDiscount();
@@ -117,7 +136,7 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-narges-bg flex flex-col">
+      <div className="min-h-screen bg-narges-bg flex flex-col overflow-x-hidden">
         <div className="bg-narges-surface px-4 py-3 flex items-center gap-3 shadow-sm sticky top-0 z-40">
           <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
             <ArrowRight size={18} />
@@ -136,7 +155,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-narges-bg flex flex-col pb-64">
+    <div className="min-h-screen bg-narges-bg flex flex-col pb-72 overflow-x-hidden">
       {/* Header */}
       <div className="bg-narges-surface px-4 py-3 flex items-center gap-3 shadow-sm sticky top-0 z-40">
         <button onClick={() => navigate(-1)} className="w-9 h-9 rounded-xl bg-narges-bg flex items-center justify-center">
@@ -146,7 +165,7 @@ export default function CartPage() {
         <span className="text-sm text-narges-text-secondary">{items.length} منتج</span>
       </div>
 
-      <div className="px-4 pt-4 space-y-4">
+      <div className="px-4 pt-4 space-y-4 w-full max-w-md mx-auto">
         {/* Items */}
         <div className="card divide-y divide-narges-border">
           {items.map(item => (
@@ -217,13 +236,14 @@ export default function CartPage() {
             {paymentMethods.map(m => (
               <button
                 key={m.id}
+                disabled={m.disabled}
                 onClick={() => setPaymentMethod(m.id)}
-                className={`flex items-center gap-2 p-3 rounded-xl border-2 transition-all ${
+                className={`flex items-center gap-2 p-3 rounded-xl border-2 transition-all disabled:opacity-45 ${
                   paymentMethod === m.id ? 'border-narges-green bg-narges-green/10' : 'border-narges-border bg-narges-surface'
                 }`}
               >
                 <span>{m.icon}</span>
-                <span className="text-sm font-medium">{m.label}</span>
+                <span className="text-sm font-medium min-w-0 truncate">{m.label}</span>
               </button>
             ))}
           </div>
@@ -248,7 +268,7 @@ export default function CartPage() {
                 onChange={(e) => setCouponCode(e.target.value)}
                 placeholder="أدخل رمز القسيمة"
                 dir="ltr"
-                className="flex-1 border border-narges-border rounded-xl px-3 py-2.5 text-sm text-center font-bold tracking-widest focus:outline-none focus:border-narges-light"
+                className="flex-1 min-w-0 border border-narges-border rounded-xl px-3 py-2.5 text-sm text-center font-bold tracking-widest focus:outline-none focus:border-narges-light bg-transparent"
               />
               <button
                 onClick={applyCoupon}
@@ -293,9 +313,12 @@ export default function CartPage() {
         </div>
       </div>
 
-      {/* Confirm Button */}
-      <div className="fixed bottom-[60px] left-0 right-0 p-4 bg-narges-surface border-t border-narges-border shadow-lg z-40">
-        <button onClick={handleConfirmOrder} disabled={placing} className="w-full btn-primary text-lg disabled:opacity-60">
+      {/* Confirm Button — فوق شريط البروفايل مع مراعاة safe-area للجوالات ذات النوتش */}
+      <div
+        className="fixed left-0 right-0 p-4 bg-narges-surface border-t border-narges-border shadow-lg z-30"
+        style={{ bottom: 'calc(58px + env(safe-area-inset-bottom, 0px))' }}
+      >
+        <button onClick={handleConfirmOrder} disabled={placing} className="w-full max-w-md mx-auto block btn-primary text-lg disabled:opacity-60">
           {placing ? 'جارٍ تأكيد الطلب...' : `تأكيد الطلب — ${formatSAR(total)}`}
         </button>
       </div>

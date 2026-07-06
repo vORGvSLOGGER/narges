@@ -9,6 +9,24 @@ import toast from 'react-hot-toast';
 
 const TIER_ICONS = { bronze: '🥉', silver: '🥈', gold: '🥇' };
 
+// تجزئة djb2 لمعرّف الحساب → 8 رموز من أبجدية غير ملتبسة (بدون O/0/I/1) بصيغة NRJS-XXXXXXXX.
+// ثابت لكل حساب وفريد عملياً، ولا يمكن استنتاج بياناته منه.
+const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function makeReferralCode(userId) {
+  const seed = userId || 'narges-demo-user';
+  let h1 = 5381, h2 = 52711;
+  for (let i = 0; i < seed.length; i++) {
+    h1 = ((h1 * 33) ^ seed.charCodeAt(i)) >>> 0;
+    h2 = ((h2 * 37) ^ seed.charCodeAt(seed.length - 1 - i)) >>> 0;
+  }
+  let out = '';
+  for (let i = 0; i < 8; i++) {
+    const n = i < 4 ? h1 >>> (i * 8) : h2 >>> ((i - 4) * 8);
+    out += CODE_ALPHABET[n % CODE_ALPHABET.length];
+  }
+  return `NRJS-${out}`;
+}
+
 export default function LoyaltyPage() {
   const navigate = useNavigate();
   const { user, profile, session } = useAuthStore();
@@ -23,11 +41,8 @@ export default function LoyaltyPage() {
     : 100;
   const discountValue = Math.floor(points / 100) * (loyalty.redeemPer100 || 5);
 
-  // رمز إحالة فريد: أول حرفين من الاسم + آخر رقمين من الجوال + كود من عندنا (من معرّف الحساب)
-  const na = (profile?.full_name || 'نر').replace(/\s/g, '').slice(0, 2);
-  const ph = (profile?.phone || '00').replace(/\D/g, '').slice(-2) || '00';
-  const uid = (user?.id || 'nargesdemo').replace(/-/g, '').slice(0, 4).toUpperCase();
-  const referralCode = `${na}${ph}-${uid}`;
+  // رمز إحالة إنجليزي مولّد آلياً بالكامل من معرّف الحساب — لا يحمل أي جزء من الاسم أو الجوال
+  const referralCode = makeReferralCode(user?.id);
 
   // ---- شاشة القفل للزائر ----
   if (!loggedIn) {
@@ -189,7 +204,7 @@ export default function LoyaltyPage() {
             <h3 className="font-bold">دعوة الأصدقاء</h3>
           </div>
           <p className="text-sm text-narges-text-secondary mb-4">
-            رمزك باسمك أنت — ادع صديقاً واحصلا على 50 نقطة لكل منكما عند أول طلب له.
+            رمزك الخاص — ادع صديقاً واحصلا على 50 نقطة لكل منكما عند أول طلب له.
           </p>
           <div className="flex items-center gap-2 bg-narges-bg rounded-xl p-3">
             <span className="flex-1 font-mono font-bold text-narges-green tracking-widest text-center" dir="ltr">{referralCode}</span>

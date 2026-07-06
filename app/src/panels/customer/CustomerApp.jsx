@@ -10,6 +10,7 @@ import LoyaltyPage from './pages/LoyaltyPage';
 import OrdersPage from './pages/OrdersPage';
 import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
+import WalletPage from './pages/WalletPage';
 import FavoritesPage from './pages/FavoritesPage';
 import OffersPage from './pages/OffersPage';
 import BrandsPage from './pages/BrandsPage';
@@ -30,6 +31,7 @@ export default function CustomerApp() {
       <Route path="orders" element={<OrdersPage />} />
       <Route path="profile" element={<ProfilePage />} />
       <Route path="settings" element={<SettingsPage />} />
+      <Route path="wallet" element={<WalletPage />} />
       <Route path="favorites" element={<FavoritesPage />} />
       <Route path="brands" element={<BrandsPage />} />
       <Route path="brand/:id" element={<BrandPage />} />

@@ -137,3 +137,25 @@ export const categories = [
     ],
   },
 ];
+
+// ترتيب العرض الذكي: الطازج أولاً (لحوم ثم ألبان...) ثم البقالة ثم المنزلية — بلا تشتت
+export const CATEGORY_ORDER = [
+  'meat-poultry',
+  'dairy-eggs',
+  'fruits-veg',
+  'bakery',
+  'beverages',
+  'frozen',
+  'grains-staples',
+  'snacks',
+  'cleaning',
+  'personal-care',
+];
+
+export function sortCategories(list = []) {
+  const rank = (id) => {
+    const i = CATEGORY_ORDER.indexOf(id);
+    return i === -1 ? 999 : i;
+  };
+  return [...list].sort((a, b) => rank(a.id) - rank(b.id));
+}

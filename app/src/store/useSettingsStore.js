@@ -4,8 +4,8 @@ import { supabase, isSupabaseConfigured } from '../lib/supabase';
 // الإعدادات الافتراضية — تعمل بدون قاعدة، وتُدمج فوقها قيم الأدمن من جدول settings
 export const DEFAULT_SETTINGS = {
   site: { storeName: 'نرجس سوبرماركت', phone: '0112345678', city: 'الرياض', district: 'حي الروضة' },
-  delivery: { fee: 10, freeAt: 75, minOrder: 20, etaMinutes: 40 },
-  loyalty: { earnPerSar: 1, redeemPer100: 5, minEarnOrder: 30 },
+  delivery: { fee: 10, freeAt: 100, minOrder: 20, etaMinutes: 40 },
+  loyalty: { earnPerSar: 1, redeemPer100: 5, minEarnOrder: 75 },
   theme: { primary: '#2E7D32', accent: '#FF7A00', defaultMode: 'dark' },
 };
 

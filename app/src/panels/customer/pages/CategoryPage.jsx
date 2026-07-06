@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowRight, SlidersHorizontal } from 'lucide-react';
 import { useState } from 'react';
 import { fetchCategories, fetchByCategory } from '../../../lib/api';
@@ -11,11 +11,12 @@ import { ShoppingCart } from 'lucide-react';
 export default function CategoryPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { data: categories } = useFetch(fetchCategories, [], []);
   const { data: products, loading } = useFetch(() => fetchByCategory(id), [id], []);
   const category = (categories || []).find(c => c.id === id) || { nameAr: '...', icon: '📦', subcategories: [] };
   const allProducts = products || [];
-  const [activeSubcat, setActiveSubcat] = useState('all');
+  const [activeSubcat, setActiveSubcat] = useState(searchParams.get('sub') || 'all');
   const items = useCartStore(s => s.items);
   const totalItems = items.reduce((sum, i) => sum + i.qty, 0);
 

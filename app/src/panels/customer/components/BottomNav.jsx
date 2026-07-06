@@ -1,7 +1,8 @@
-import { Settings, LogIn, UserPlus, Gift } from 'lucide-react';
+import { Settings, LogIn, UserPlus, Gift, Wallet } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../../store/useAuthStore';
 import { useLoyaltyStore } from '../../../store/useLoyaltyStore';
+import { useWalletStore } from '../../../store/useWalletStore';
 import { isSupabaseConfigured } from '../../../lib/supabase';
 
 // الشريط السفلي = اختصار بروفايل العميل (لا تبويبات مكررة):
@@ -11,6 +12,7 @@ export default function BottomNav() {
   const navigate = useNavigate();
   const { session, user, profile } = useAuthStore();
   const points = useLoyaltyStore((s) => s.points);
+  const balance = useWalletStore((s) => s.balance);
   const loggedIn = !isSupabaseConfigured || !!session;
 
   if (!loggedIn) {
@@ -58,7 +60,17 @@ export default function BottomNav() {
           </span>
         </button>
 
-        {/* الرصيد → الولاء */}
+        {/* رصيد المحفظة → المحفظة */}
+        <button
+          onClick={() => navigate('/Customer/wallet')}
+          className="flex items-center gap-1.5 bg-narges-orange/10 text-narges-orange rounded-full px-3 py-1.5 active:scale-95 transition-transform flex-shrink-0"
+        >
+          <Wallet size={14} />
+          <span className="text-[13px] font-bold tabular-nums">{balance % 1 === 0 ? balance : balance.toFixed(2)}</span>
+          <span className="text-[10px] font-semibold">ر.س</span>
+        </button>
+
+        {/* النقاط → الولاء */}
         <button
           onClick={() => navigate('/Customer/loyalty')}
           className="flex items-center gap-1.5 bg-narges-green/10 text-narges-green rounded-full px-3 py-1.5 active:scale-95 transition-transform flex-shrink-0"
